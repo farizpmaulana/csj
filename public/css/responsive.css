@@ -1,0 +1,593 @@
+/* Responsive Design dengan Relative Units */
+/* File ini menggantikan penggunaan fixed units (px) dengan relative units */
+
+/* ===== ROOT VARIABLES ===== */
+:root {
+  /* Spacing Scale */
+  --space-xs: 0.25rem; /* 4px */
+  --space-sm: 0.5rem; /* 8px */
+  --space-md: 1rem; /* 16px */
+  --space-lg: 1.5rem; /* 24px */
+  --space-xl: 2rem; /* 32px */
+  --space-2xl: 3rem; /* 48px */
+  --space-3xl: 4rem; /* 64px */
+
+  /* Font Sizes */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+
+  /* Unified content width */
+  --site-max-width: 1280px;
+
+  /* Container Max Widths */
+  --container-sm: 100%;
+  --container-md: 100%;
+  --container-lg: 100%;
+  --container-xl: 1280px;
+
+  /* Breakpoints */
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1200px;
+}
+
+/* ===== RESPONSIVE CONTAINER ===== */
+.container {
+  width: 100%;
+  max-width: 100%;
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+  margin: 0 auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: var(--site-max-width);
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: var(--site-max-width);
+  }
+}
+
+/* ===== RESPONSIVE NAVBAR ===== */
+.navbar {
+  padding: var(--space-md) 0;
+  min-height: 5rem; /* 80px */
+  max-height: 5rem;
+  background: rgba(255 255 255 0.7) !important; /* Lebih transparan */
+  backdrop-filter: blur(8px) !important; /* Efek blur yang lebih halus */
+  -webkit-backdrop-filter: blur(8px) !important; /* Support untuk Safari */
+  transition: all 0.3s ease; /* Smooth transition untuk semua perubahan */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Border halus */
+}
+
+/* Hover effect untuk navbar */
+.navbar:hover {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+}
+
+.navbar .container {
+  height: 3.125rem; /* 50px */
+  max-height: 3.125rem;
+}
+
+.navbar-brand {
+  height: 3.125rem;
+  max-height: 3.125rem;
+  width: 8.59375rem; /* 137.5px */
+  min-width: 8.59375rem;
+}
+
+.logo {
+  height: 3.125rem;
+  max-height: 3.125rem;
+  width: 8.59375rem; /* 137.5px */
+  min-width: 8.59375rem;
+}
+
+.logo-image {
+  width: 8.59375rem; /* 137.5px */
+  height: 4.296875rem; /* 68.75px */
+  top: -0.4296875rem; /* -6.875px */
+  left: 0;
+}
+
+.company-name {
+  font-size: 1.25rem; /* 20px */
+  left: 3.4375rem; /* 55px */
+}
+
+/* ===== RESPONSIVE HERO SECTION ===== */
+.hero-section {
+  min-height: auto;
+}
+
+.banner-slider {
+  height: min(46.25vw, calc(100vh - 80px));
+  min-height: 220px;
+}
+
+.banner-nav-btn {
+  width: 3.125rem; /* 50px */
+  height: 3.125rem;
+}
+
+.prev-btn {
+  left: 1.875rem; /* 30px */
+}
+
+.next-btn {
+  right: 1.875rem;
+}
+
+.banner-progress {
+  bottom: 1.875rem;
+  gap: var(--space-sm);
+}
+
+.banner-progress-bar {
+  width: 3.25rem; /* 52px */
+  height: 0.3125rem; /* 5px */
+}
+
+/* ===== RESPONSIVE TYPOGRAPHY ===== */
+.vision-title {
+  font-size: clamp(1.5rem, 5vw, 3.5rem); /* Responsive font size */
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.vision-text {
+  font-size: clamp(1rem, 3vw, 1.75rem);
+  line-height: 1.8;
+}
+
+.section-title {
+  font-size: clamp(1.5rem, 4vw, 2.25rem);
+  margin-bottom: clamp(2rem, 5vw, 3.125rem);
+}
+
+.company-title {
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+}
+
+.company-description,
+.company-services {
+  font-size: clamp(0.875rem, 2.5vw, 1rem);
+}
+
+/* ===== RESPONSIVE SPACING ===== */
+.about-section,
+.partners-section,
+.products-section,
+.clients-section,
+.gallery-section,
+.contact-section {
+  padding: clamp(3rem, 8vw, 6.25rem) 0;
+}
+
+.about-content {
+  padding: clamp(1.25rem, 4vw, 1.875rem);
+}
+
+/* ===== RESPONSIVE IMAGES ===== */
+.about-image {
+  height: clamp(15rem, 40vw, 25rem); /* 300px - 400px */
+}
+
+.partner-logo-img,
+.product-image-img {
+  width: clamp(10rem, 25vw, 13.75rem); /* 160px - 220px */
+  height: clamp(10rem, 25vw, 13.75rem);
+}
+
+.client-logo-img {
+  width: clamp(5rem, 15vw, 8.75rem); /* 80px - 140px */
+  height: clamp(3.75rem, 12vw, 6.25rem); /* 60px - 100px */
+}
+
+.gallery-image {
+  height: clamp(12.5rem, 35vw, 17.5rem); /* 200px - 280px */
+}
+
+@media (max-width: 992px) {
+  .about-tab-panels {
+    position: static;
+    height: auto;
+  }
+
+  .about-tab-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 576px) {
+  .about-tabs {
+    gap: 16px;
+  }
+
+  .about-tab {
+    flex: 1 1 auto;
+    justify-content: center;
+    padding: 10px 4px 12px;
+    font-size: 12.5px;
+  }
+
+  .about-purpose-card {
+    padding: 22px 22px 22px 72px;
+  }
+
+  .about-purpose-icon {
+    top: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+/* ===== RESPONSIVE GRID ===== */
+.row {
+  margin-left: calc(-1 * var(--space-md));
+  margin-right: calc(-1 * var(--space-md));
+}
+
+.col,
+.col-1,
+.col-2,
+.col-3,
+.col-4,
+.col-5,
+.col-6,
+.col-7,
+.col-8,
+.col-9,
+.col-10,
+.col-11,
+.col-12 {
+  padding-left: var(--space-md);
+  padding-right: var(--space-md);
+}
+
+/* ===== RESPONSIVE BREAKPOINTS ===== */
+@media (max-width: 992px) {
+  .about-layout {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .about-heading {
+    max-width: 100%;
+  }
+
+  .about-tab-panels {
+    min-height: 0;
+  }
+
+  .navbar-nav .nav-link {
+    margin: 0 var(--space-sm);
+    padding: var(--space-sm) var(--space-md) !important;
+    font-size: 0.9375rem; /* 15px */
+  }
+
+  .company-name {
+    font-size: 1.125rem; /* 18px */
+    left: 3.125rem; /* 50px */
+  }
+
+  .logo-image {
+    width: 10rem; /* 160px */
+    height: 10rem;
+    top: -3.4375rem; /* -55px */
+    left: -2.5rem; /* -40px (disesuaikan untuk 20px ke kanan) */
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: var(--space-sm) 0;
+    min-height: 4.375rem; /* 70px */
+    max-height: 4.375rem;
+    background: rgba(
+      255,
+      255,
+      255,
+      0.6
+    ) !important; /* Lebih transparan di mobile */
+    backdrop-filter: blur(6px) !important; /* Blur yang lebih halus di mobile */
+    -webkit-backdrop-filter: blur(6px) !important;
+  }
+
+  .navbar .container {
+    height: 2.875rem; /* 46px */
+    max-height: 2.875rem;
+  }
+
+  .navbar-brand,
+  .logo {
+    height: 2.875rem;
+    max-height: 2.875rem;
+  }
+
+  .logo-image {
+    width: 9.375rem; /* 150px */
+    height: 9.375rem;
+    top: -3.125rem; /* -50px */
+    left: -1.875rem; /* -30px (disesuaikan untuk 20px ke kanan) */
+  }
+
+  .company-name {
+    left: 2.5rem; /* 40px */
+    font-size: 1.125rem; /* 18px */
+  }
+
+  .banner-nav-btn {
+    width: 2.5rem; /* 40px */
+    height: 2.5rem;
+  }
+
+  .prev-btn {
+    left: 0.9375rem; /* 15px */
+  }
+
+  .next-btn {
+    right: 0.9375rem;
+  }
+
+  .banner-progress {
+    bottom: 1.25rem; /* 20px */
+  }
+
+  .vision-content {
+    padding: 0 1.25rem;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 576px) {
+  .navbar {
+    padding: var(--space-xs) 0;
+    min-height: 4.0625rem; /* 65px */
+    max-height: 4.0625rem;
+    background: rgba(
+      255,
+      255,
+      255,
+      0.5
+    ) !important; /* Sangat transparan di mobile kecil */
+    backdrop-filter: blur(4px) !important; /* Blur minimal untuk performance */
+    -webkit-backdrop-filter: blur(4px) !important;
+  }
+
+  .navbar .container {
+    height: 2.8125rem; /* 45px */
+    max-height: 2.8125rem;
+  }
+
+  .navbar-brand,
+  .logo {
+    height: 2.8125rem;
+    max-height: 2.8125rem;
+    width: 2.1875rem; /* 35px */
+    min-width: 2.1875rem;
+  }
+
+  .logo-image {
+    width: 7.5rem; /* 120px */
+    height: 7.5rem;
+    top: -2.1875rem; /* -35px */
+    left: -0.625rem; /* -10px (disesuaikan untuk 20px ke kanan) */
+  }
+
+  .company-name {
+    display: none;
+  }
+
+  .banner-nav-btn {
+    width: 2.1875rem; /* 35px */
+    height: 2.1875rem;
+  }
+
+  .prev-btn {
+    left: 0.625rem; /* 10px */
+  }
+
+  .next-btn {
+    right: 0.625rem;
+  }
+
+  .vision-content {
+    padding: 0 1.25rem;
+  }
+
+  .about-image {
+    height: 18.75rem; /* 300px */
+    margin-bottom: 1.875rem;
+  }
+
+  .about-visual {
+    padding-right: 10px;
+  }
+
+  .about-panel-headline {
+    font-size: 1.75rem;
+  }
+
+  .about-purpose-cards {
+    gap: var(--space-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.5rem 0;
+    min-height: 3.75rem; /* 60px */
+    max-height: 3.75rem;
+    background: rgba(
+      255,
+      255,
+      255,
+      0.4
+    ) !important; /* Paling transparan di mobile extra small */
+    backdrop-filter: blur(
+      3px
+    ) !important; /* Blur minimal untuk performance optimal */
+    -webkit-backdrop-filter: blur(3px) !important;
+  }
+
+  .navbar .container {
+    height: 2.75rem; /* 44px */
+    max-height: 2.75rem;
+  }
+
+  .navbar-brand,
+  .logo {
+    height: 2.75rem;
+    max-height: 2.75rem;
+    width: 1.875rem; /* 30px */
+    min-width: 1.875rem;
+  }
+
+  .logo-image {
+    width: 6.25rem; /* 100px */
+    height: 6.25rem;
+    top: -1.875rem; /* -30px */
+    left: 0rem; /* 0px (disesuaikan untuk 20px ke kanan) */
+  }
+
+  .banner-nav-btn {
+    width: 1.875rem; /* 30px */
+    height: 1.875rem;
+  }
+
+  .prev-btn {
+    left: 0.5rem; /* 8px */
+  }
+
+  .next-btn {
+    right: 0.5rem;
+  }
+}
+
+/* ===== SCROLL EFFECTS ===== */
+.navbar.scrolled {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(15px) !important;
+  -webkit-backdrop-filter: blur(15px) !important;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+.d-none-responsive {
+  display: none !important;
+}
+
+.d-block-responsive {
+  display: block !important;
+}
+
+@media (max-width: 768px) {
+  .d-md-none {
+    display: none !important;
+  }
+
+  .d-md-block {
+    display: block !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .d-sm-none {
+    display: none !important;
+  }
+
+  .d-sm-block {
+    display: block !important;
+  }
+}
+
+/* ===== RESPONSIVE ANIMATIONS ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .clients-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .banner-nav-btn:hover,
+  .partner-card:hover,
+  .product-card:hover,
+  .gallery-item:hover,
+  .value-card:hover,
+  .floating-whatsapp a:hover {
+    transform: none !important;
+  }
+}
+
+/* ===== RESPONSIVE ACCESSIBILITY ===== */
+@media (max-width: 768px) {
+  .navbar-nav .nav-link {
+    min-height: 3rem; /* 48px for touch targets */
+    padding: 1rem 1.25rem !important;
+  }
+
+  .banner-nav-btn {
+    min-height: 2.75rem; /* 44px for touch targets */
+    min-width: 2.75rem;
+  }
+}
+
+/* ===== RESPONSIVE PRINT ===== */
+@media print {
+  .navbar,
+  .banner-nav,
+  .banner-progress {
+    display: none !important;
+  }
+
+  .hero-section {
+    min-height: auto;
+    page-break-after: always;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
