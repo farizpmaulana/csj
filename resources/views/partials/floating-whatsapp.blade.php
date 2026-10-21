@@ -1,6 +1,6 @@
 <div class="floating-whatsapp">
     <a
-        href="https://wa.me/6281140000223"
+        href="{{ wa_link() }}"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Contact us via WhatsApp"

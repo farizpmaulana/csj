@@ -2,37 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
+use App\Models\Product;
 use Illuminate\Contracts\View\View;
 
 class ProductController extends Controller
 {
     public function brand(string $brand): View
     {
-        $brands = config('catalog.brands');
-
-        abort_unless(isset($brands[$brand]), 404);
+        $brandModel = Brand::query()
+            ->where('slug', $brand)
+            ->where('is_visible', true)
+            ->with(['categories' => fn ($query) => $query->orderBy('position'),
+                'categories.products' => fn ($query) => $query->visible()->orderBy('position'),
+                'categories.products.brand',
+                'uncategorisedProducts' => fn ($query) => $query->visible()->with('brand'),
+            ])
+            ->firstOrFail();
 
         return view('products.brand', [
-            'brandKey' => $brand,
-            'brand' => $brands[$brand],
-            'products' => config('catalog.products'),
+            'brandModel' => $brandModel,
         ]);
     }
 
     public function show(string $brand, string $product): View
     {
-        $brands = config('catalog.brands');
-        $products = config('catalog.products');
+        $brandModel = Brand::query()
+            ->where('slug', $brand)
+            ->where('is_visible', true)
+            ->firstOrFail();
 
-        abort_unless(isset($brands[$brand]), 404);
-        abort_unless(isset($products[$product]), 404);
-        abort_unless($products[$product]['brand'] === $brand, 404);
+        $productModel = Product::query()
+            ->whereBelongsTo($brandModel)
+            ->where('slug', $product)
+            ->where('is_visible', true)
+            ->firstOrFail();
 
         return view('products.show', [
-            'brandKey' => $brand,
-            'brand' => $brands[$brand],
-            'productSlug' => $product,
-            'product' => $products[$product],
+            'brandModel' => $brandModel,
+            'productModel' => $productModel,
         ]);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
 use Illuminate\Contracts\View\View;
 
 class ArticleController extends Controller
@@ -9,19 +10,22 @@ class ArticleController extends Controller
     public function index(): View
     {
         return view('articles.index', [
-            'articles' => config('articles'),
+            // The category filter runs in the browser, so every published
+            // article is rendered rather than paginated.
+            'articles' => Article::query()
+                ->published()
+                ->newestFirst()
+                ->get(),
         ]);
     }
 
     public function show(string $article): View
     {
-        $articles = config('articles');
-
-        abort_unless(isset($articles[$article]), 404);
-
         return view('articles.show', [
-            'articleSlug' => $article,
-            'article' => $articles[$article],
+            'articleModel' => Article::query()
+                ->where('slug', $article)
+                ->published()
+                ->firstOrFail(),
         ]);
     }
 }

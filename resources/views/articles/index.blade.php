@@ -7,8 +7,8 @@
 
     $filters = ['all' => 'All'];
 
-    foreach (config('articles') as $article) {
-        $filters[$article['category']] ??= $article['category_label'];
+    foreach ($articles as $article) {
+        $filters[$article->category->value] ??= $article->category_label;
     }
 @endphp
 @extends('layouts.app')
@@ -43,16 +43,16 @@
             </div>
 
             <div class="article-grid" id="articleGrid">
-                @foreach ($articles as $articleSlug => $article)
+                @foreach ($articles as $article)
                     <a
-                        class="article-card {{ $article['featured'] ? 'article-card-featured' : '' }}"
-                        data-category="{{ $article['category'] }}"
-                        href="{{ route('articles.show', ['article' => $articleSlug]) }}"
+                        class="article-card {{ $article->featured ? 'article-card-featured' : '' }}"
+                        data-category="{{ $article->category->value }}"
+                        href="{{ route('articles.show', ['article' => $article->slug]) }}"
                     >
                         <div class="article-card-image">
                             <img
-                                src="{{ asset($article['card_image']) }}"
-                                alt="{{ $article['card_alt'] }}"
+                                src="{{ media($article->card_image) }}"
+                                alt="{{ $article->card_alt }}"
                                 loading="lazy"
                                 decoding="async"
                                 width="900"
@@ -61,11 +61,11 @@
                         </div>
                         <div class="article-card-body">
                             <div class="article-card-meta">
-                                <span class="article-card-tag">{{ $article['category_label'] }}</span
-                                ><span>{{ $article['published_label'] }}</span>
+                                <span class="article-card-tag">{{ $article->category_label }}</span
+                                ><span>{{ $article->published_label }}</span>
                             </div>
-                            <h3 class="article-card-title">{{ $article['title'] }}</h3>
-                            <p class="article-card-excerpt">{{ $article['excerpt'] }}</p>
+                            <h3 class="article-card-title">{{ $article->title }}</h3>
+                            <p class="article-card-excerpt">{{ $article->excerpt }}</p>
                             <span class="article-card-link">Read more &rarr;</span>
                         </div>
                     </a>

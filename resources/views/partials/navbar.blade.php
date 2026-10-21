@@ -1,6 +1,7 @@
 @php
     $variant = $variant ?? 'main';
     $home = route('home');
+    $siteSettings = $siteSettings ?? \App\Models\SiteSetting::current();
 @endphp
 @if ($variant === 'inner')
     <nav class="{{ $innerClass }}">
@@ -8,8 +9,8 @@
             <a class="navbar-brand" href="{{ $home }}">
                 <div class="logo">
                     <img
-                        src="{{ asset('images/logo_own/logo_csj02.png') }}"
-                        alt="PT Cahaya Sarange Jaya Logo"
+                        src="{{ media($siteSettings->logo_path) }}"
+                        alt="{{ $siteSettings->company_name }} Logo"
                         class="logo-image"
                         loading="eager"
                         decoding="async"
@@ -20,15 +21,15 @@
             </a>
             <a class="article-navbar-back" href="{{ $backUrl }}">&larr; {{ $backLabel }}</a>
         </div>
-    </nav>
+    </nav>  
 @else
     <nav class="navbar navbar-expand-lg navbar-light fixed-top">
         <div class="container">
             <a class="navbar-brand" href="{{ $home }}#home">
                 <div class="logo">
                     <img
-                        src="{{ asset('images/logo_own/logo_csj02.png') }}"
-                        alt="PT Cahaya Sarange Jaya Logo"
+                        src="{{ media($siteSettings->logo_path) }}"
+                        alt="{{ $siteSettings->company_name }} Logo"
                         class="logo-image"
                         loading="eager"
                         decoding="async"

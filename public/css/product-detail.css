@@ -13,84 +13,6 @@ body {
   background: #ffffff;
 }
 
-.detail-navbar {
-  background: #ffffff;
-  border-bottom: 1px solid var(--border-soft);
-  padding: 12px 0;
-}
-
-.product-list-navbar {
-  background: #ffffff;
-  border-bottom: 1px solid var(--border-soft);
-  padding: 12px 40px;
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-}
-
-.product-list-navbar-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  max-width: 1280px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.product-list-navbar .navbar-brand {
-  display: flex;
-  align-items: center;
-  width: 100px;
-  min-width: 100px;
-  height: 50px;
-}
-
-.product-list-navbar .logo {
-  display: flex;
-  align-items: center;
-  width: 100px;
-  height: 50px;
-}
-
-.product-list-navbar .logo-image {
-  width: 100px;
-  height: 50px;
-  object-fit: contain;
-}
-
-.product-list-navbar a {
-  color: var(--brand-primary);
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.product-list-navbar-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border: 1px solid #dbe4f0;
-  border-radius: 8px;
-  background: #ffffff;
-  font-size: 14px;
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.product-list-navbar-back:hover {
-  background: #eff6ff;
-  border-color: #93c5fd;
-}
-
-.detail-navbar a {
-  color: var(--brand-primary);
-  text-decoration: none;
-  font-weight: 600;
-}
-
 .product-hero {
   background: linear-gradient(120deg, var(--brand-primary) 0%, #1d4ed8 100%);
   color: #ffffff;
@@ -306,6 +228,79 @@ body {
   margin: 0;
   color: var(--text-muted);
   line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+.detail-description > :first-child {
+  margin-top: 0;
+}
+
+.detail-description > :last-child {
+  margin-bottom: 0;
+}
+
+.detail-description p {
+  margin: 0 0 14px;
+}
+
+.detail-description ul,
+.detail-description ol {
+  margin: 0 0 14px;
+  padding-left: 20px;
+}
+
+.detail-description li {
+  margin-bottom: 6px;
+}
+
+.detail-description h2,
+.detail-description h3,
+.detail-description h4 {
+  color: var(--text-dark);
+  font-weight: 700;
+  margin: 22px 0 10px;
+}
+
+.detail-description h2 {
+  font-size: 22px;
+}
+
+.detail-description h3 {
+  font-size: 19px;
+}
+
+.detail-description h4 {
+  font-size: 17px;
+}
+
+.detail-description a {
+  color: var(--brand-primary);
+}
+
+.detail-description blockquote {
+  margin: 0 0 14px;
+  padding: 10px 16px;
+  border-left: 4px solid var(--brand-primary);
+  border-radius: 8px;
+  background: var(--bg-soft);
+  color: var(--text-dark);
+}
+
+.detail-description img,
+.detail-description video,
+.detail-description iframe,
+.detail-description table {
+  max-width: 100%;
+  height: auto;
+}
+
+.detail-description pre {
+  max-width: 100%;
+  margin: 0 0 14px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  border-radius: 8px;
+  background: var(--bg-soft);
 }
 
 .detail-table {

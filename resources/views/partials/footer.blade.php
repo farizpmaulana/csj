@@ -1,37 +1,25 @@
 @php
     $home = route('home');
+    $siteSettings = $siteSettings ?? \App\Models\SiteSetting::current();
 @endphp
 <footer class="footer">
     <div class="footer-main">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <h2 class="footer-brand-name">PT Cahaya Sarange Jaya</h2>
+                    <h2 class="footer-brand-name">{{ $siteSettings->company_name }}</h2>
                     <div class="footer-social">
-                        <a
-                            href="https://www.instagram.com/cahayasarangejaya"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Follow us on Instagram"
-                        >
-                            <i class="fab fa-instagram" aria-hidden="true"></i>
-                        </a>
-                        <a
-                            href="https://www.facebook.com/ptcahayasarangejaya"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Follow us on Facebook"
-                        >
-                            <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                        </a>
-                        <a
-                            href="https://www.linkedin.com/company/pt-cahayasarangejaya/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label="Follow us on LinkedIn"
-                        >
-                            <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-                        </a>
+                        @foreach ([
+                            'instagram' => $siteSettings->instagram_url,
+                            'facebook' => $siteSettings->facebook_url,
+                            'linkedin' => $siteSettings->linkedin_url,
+                        ] as $network => $url)
+                            @if ($url)
+                                <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" aria-label="Follow us on {{ ucfirst($network) }}">
+                                    <i class="fab fa-{{ $network === 'linkedin' ? 'linkedin-in' : $network }}" aria-hidden="true"></i>
+                                </a>
+                            @endif
+                        @endforeach
                     </div>
                 </div>
                 <div class="footer-col">
@@ -48,21 +36,11 @@
                 <div class="footer-col">
                     <h3 class="footer-heading">Products</h3>
                     <ul class="footer-links">
-                        <li>
-                            <a href="{{ route('products.brand', ['brand' => 'sumato']) }}">Sumato Fire Extinguishers</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('products.brand', ['brand' => 'bosch']) }}">Bosch Tools</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('products.brand', ['brand' => 'buccheri']) }}">Buccheri Safety Shoes</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('products.brand', ['brand' => 'sata']) }}">SATA Tools</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('products.brand', ['brand' => 'consumables']) }}">Consumables</a>
-                        </li>
+                        @foreach (\App\Models\Brand::query()->visible()->ordered()->get() as $brand)
+                            <li>
+                                <a href="{{ route('products.brand', ['brand' => $brand->slug]) }}">{{ $brand->name }}</a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -70,23 +48,21 @@
                     <ul class="footer-contact">
                         <li>
                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                            Jl. MT Haryono Ruko Haryono Palace No.25, Balikpapan,
-                            Kalimantan Timur 76125
+                            {{ $siteSettings->address_primary }}
                         </li>
                         <li>
                             <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                            Jl. Cilandak Raya KKO / Komplek Vico Kav. 12, Jakarta Selatan,
-                            DKI Jakarta 12560
+                            {{ $siteSettings->address_secondary }}
                         </li>
                         <li>
                             <i class="fab fa-whatsapp" aria-hidden="true"></i>
-                            <a href="https://wa.me/6281140000223" target="_blank" rel="noopener noreferrer"
-                                >+62 811 40000 223</a
+                            <a href="{{ wa_link() }}" target="_blank" rel="noopener noreferrer"
+                                >{{ $siteSettings->contact_phone }}</a
                             >
                         </li>
                         <li>
                             <i class="fas fa-envelope" aria-hidden="true"></i>
-                            <a href="mailto:info@cahayasarangejaya.co.id">info@cahayasarangejaya.co.id</a>
+                            <a href="mailto:{{ $siteSettings->contact_email }}">{{ $siteSettings->contact_email }}</a>
                         </li>
                     </ul>
                 </div>
@@ -96,7 +72,7 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-inner">
-                <p>&copy; {{ date('Y') }} PT Cahaya Sarange Jaya. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} {{ $siteSettings->company_name }}. All rights reserved.</p>
                 <a href="#home" class="footer-back-top"
                     ><i class="fas fa-arrow-up" aria-hidden="true"></i> Back to top</a
                 >

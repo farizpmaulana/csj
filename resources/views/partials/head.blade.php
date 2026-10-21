@@ -1,8 +1,10 @@
 @php
-    $title ??= config('app.name');
+    $siteSettings = $siteSettings ?? \App\Models\SiteSetting::current();
+
+    $title ??= $siteSettings->company_name;
     $description ??= null;
     $canonical ??= null;
-    $ogImage ??= asset('images/logo_own/logo_csj02.png');
+    $ogImage ??= media($siteSettings->default_social_image);
     $styles ??= [];
     $fontAwesome ??= false;
     $jsonLd ??= null;
@@ -11,7 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $title }}</title>
     <meta name="description" content="{{ $description }}" />
-    <meta name="author" content="PT Cahaya Sarange Jaya" />
+    <meta name="author" content="{{ $siteSettings->company_name }}" />
     <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#1e3a8a" />
     @if ($canonical)
@@ -19,7 +21,7 @@
     @endif
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="PT Cahaya Sarange Jaya" />
+    <meta property="og:site_name" content="{{ $siteSettings->company_name }}" />
     <meta property="og:title" content="{{ $title }}" />
     <meta property="og:description" content="{{ $description }}" />
     <meta property="og:url" content="{{ $canonical ?? url()->current() }}" />
@@ -35,10 +37,10 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     @endif
     @foreach ($styles as $style)
-        <link rel="stylesheet" href="{{ asset($style) }}" />
+        <link rel="stylesheet" href="{{ style($style) }}" />
     @endforeach
 
-    <link rel="icon" type="image/svg+xml" href="{{ asset('images/favicon.svg') }}" />
+    <link rel="icon" type="image/svg+xml" href="{{ media($siteSettings->favicon_path) }}" />
 
     @if ($jsonLd)
         <script type="application/ld+json">

@@ -1,8 +1,8 @@
 @php
-    $title = $article['seo_title'];
-    $description = $article['lead'];
-    $canonical = route('articles.show', ['article' => $articleSlug]);
-    $ogImage = asset($article['hero_image']);
+    $title = $articleModel->seo_title;
+    $description = $articleModel->lead;
+    $canonical = route('articles.show', ['article' => $articleModel->slug]);
+    $ogImage = media($articleModel->hero_image);
     $styles = ['css/article.css'];
 @endphp
 @extends('layouts.app')
@@ -21,19 +21,19 @@
         <div class="container">
             <img
                 class="article-detail-hero-image"
-                src="{{ asset($article['hero_image']) }}"
-                alt="{{ $article['hero_alt'] }}"
+                src="{{ media($articleModel->hero_image) }}"
+                alt="{{ $articleModel->hero_alt }}"
                 width="1600"
                 height="900"
             />
             <div class="article-detail-hero-copy">
                 <div class="article-detail-meta">
-                    <span class="article-detail-tag">{{ $article['category_label'] }}</span>
-                    <span>{{ $article['published_label'] }}</span>
-                    <span>{{ $article['reading_time'] }}</span>
+                    <span class="article-detail-tag">{{ $articleModel->category_label }}</span>
+                    <span>{{ $articleModel->published_label }}</span>
+                    <span>{{ $articleModel->reading_time }}</span>
                 </div>
-                <h1>{{ $article['title'] }}</h1>
-                <p>{{ $article['lead'] }}</p>
+                <h1>{{ $articleModel->title }}</h1>
+                <p>{{ $articleModel->lead }}</p>
             </div>
         </div>
     </header>
@@ -41,11 +41,11 @@
     <main class="article-detail-body">
         <div class="container">
             <article class="article-detail-content">
-                {!! $article['body'] !!}
+                {!! $articleModel->body !!}
 
                 <div class="article-detail-cta">
-                    <p>{{ $article['cta_text'] }}</p>
-                    <a href="https://wa.me/6281140000223" target="_blank" rel="noopener noreferrer"
+                    <p>{{ $articleModel->cta_text }}</p>
+                    <a href="{{ wa_link() }}" target="_blank" rel="noopener noreferrer"
                         >Contact Our Team</a
                     >
                 </div>

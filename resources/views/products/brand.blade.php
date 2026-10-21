@@ -1,7 +1,7 @@
 @php
-    $title = $brand['seo_title'];
-    $description = $brand['intro'];
-    $canonical = route('products.brand', ['brand' => $brandKey]);
+    $title = $brandModel->seo_title;
+    $description = $brandModel->intro;
+    $canonical = route('products.brand', ['brand' => $brandModel->slug]);
     $styles = ['css/product-detail.css', 'css/style.css', 'css/responsive.css'];
 @endphp
 @extends('layouts.app')
@@ -13,8 +13,8 @@
 @section('content')
     <header class="product-hero">
         <div class="container">
-            <h1>{{ $brand['name'] }}</h1>
-            <p>{{ $brand['headline'] }}</p>
+            <h1>{{ $brandModel->name }}</h1>
+            <p>{{ $brandModel->headline }}</p>
         </div>
     </header>
 
@@ -25,49 +25,29 @@
                 Back to Partners
             </a>
 
-            <p class="catalog-intro">{{ $brand['intro'] }}</p>
+            <p class="catalog-intro">{{ $brandModel->intro }}</p>
 
-            @foreach ($brand['categories'] as $category)
-                @if ($category['name'])
-                    <h2 class="catalog-category-title">{{ $category['name'] }}</h2>
+            @foreach ($brandModel->categories as $category)
+                @if ($category->name)
+                    <h2 class="catalog-category-title">{{ $category->name }}</h2>
                 @endif
 
                 <div class="catalog-grid">
-                    @foreach ($category['products'] as $card)
-                        @php
-                            $productUrl = route('products.show', ['brand' => $brandKey, 'product' => $card['slug']]);
-                        @endphp
-
-                        <article class="catalog-card">
-                            <div class="catalog-card-image">
-                                <a class="catalog-card-image-link" href="{{ $productUrl }}">
-                                    <img src="{{ asset($card['image']) }}" alt="{{ $card['alt'] }}" />
-                                </a>
-                            </div>
-                            <div class="catalog-card-body">
-                                @if ($card['label'])
-                                    <p class="catalog-card-spec">{{ $card['label'] }}</p>
-                                @endif
-                                <h3 class="catalog-card-title">{{ $card['title'] }}</h3>
-                                <p class="catalog-card-spec">{{ $card['excerpt'] }}</p>
-                                <div class="catalog-card-actions">
-                                    <a
-                                        class="catalog-card-btn catalog-card-btn-primary"
-                                        href="{{ $products[$card['slug']]['whatsapp'] }}"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        Request Price
-                                    </a>
-                                    <a class="catalog-card-btn catalog-card-btn-outline" href="{{ $productUrl }}">
-                                        View Details
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    @endforeach
+                    @forelse ($category->products as $product)
+                        @include('products.partials.card', ['product' => $product])
+                    @empty
+                        <p class="catalog-empty">No products in this category yet.</p>
+                    @endforelse
                 </div>
             @endforeach
+
+            @if ($brandModel->uncategorisedProducts->isNotEmpty())
+                <div class="catalog-grid">
+                    @foreach ($brandModel->uncategorisedProducts as $product)
+                        @include('products.partials.card', ['product' => $product])
+                    @endforeach
+                </div>
+            @endif
         </div>
     </main>
 @endsection

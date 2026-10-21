@@ -1,8 +1,8 @@
 @php
-    $title = $product['seo_title'];
-    $description = $product['description'];
-    $canonical = route('products.show', ['brand' => $brandKey, 'product' => $productSlug]);
-    $ogImage = asset($product['gallery'][0]['src']);
+    $title = $productModel->seo_title;
+    $description = \Illuminate\Support\Str::limit(trim(strip_tags((string) $productModel->description)), 155);
+    $canonical = $productModel->url;
+    $ogImage = media($productModel->images->first()?->path);
     $styles = ['css/product-detail.css', 'css/style.css'];
 @endphp
 @extends('layouts.app')
@@ -11,7 +11,7 @@
     @include('partials.navbar', [
         'variant' => 'inner',
         'innerClass' => 'products-navbar',
-        'backUrl' => route('products.brand', ['brand' => $brandKey]),
+        'backUrl' => route('products.brand', ['brand' => $brandModel->slug]),
         'backLabel' => 'Back to Products',
     ])
 @endsection
@@ -19,24 +19,24 @@
 @section('content')
     <header class="product-hero">
         <div class="container">
-            <h1>{{ $product['name'] }}</h1>
-            <p>{{ $product['subtitle'] }}</p>
+            <h1>{{ $productModel->name }}</h1>
+            <p>{{ $productModel->subtitle }}</p>
         </div>
     </header>
 
     <section
         class="product-gallery"
         data-product-gallery
-        aria-label="{{ $product['name'] }} product image gallery"
+        aria-label="{{ $productModel->name }} product image gallery"
         tabindex="0"
     >
         <div class="product-gallery-inner">
             <div class="product-gallery-stage">
-                @foreach ($product['gallery'] as $index => $image)
+                @foreach ($productModel->images as $index => $image)
                     <figure class="product-gallery-slide {{ $index === 0 ? 'is-active' : '' }}">
                         <img
-                            src="{{ asset($image['src']) }}"
-                            alt="{{ $image['alt'] }}"
+                            src="{{ media($image->path) }}"
+                            alt="{{ $image->alt }}"
                             @if ($index === 0)
                                 fetchpriority="high"
                             @else
@@ -68,34 +68,36 @@
 
     <main class="product-content">
         <div class="container">
-            <section class="detail-card">
-                <h2>Product Description</h2>
-                <p class="detail-description">{{ $product['description'] }}</p>
-            </section>
-
-            @foreach ($product['sections'] as $section)
+            @if (filled($productModel->description))
                 <section class="detail-card">
-                    <h2>{{ $section['title'] }}</h2>
+                    <h2>Product Description</h2>
+                    <div class="detail-description">{!! $productModel->description !!}</div>
+                </section>
+            @endif
 
-                    @if ($section['type'] === 'table')
+            @foreach ($productModel->sections as $section)
+                <section class="detail-card">
+                    <h2>{{ $section->title }}</h2>
+
+                    @if ($section->type === \App\Enums\ProductSectionType::Table)
                         <table class="detail-table">
-                            @foreach ($section['rows'] as $row)
+                            @foreach ($section->rows as $row)
                                 <tr>
-                                    <th>{{ $row['label'] }}</th>
-                                    <td>{{ $row['value'] }}</td>
+                                    <th>{{ $row->label }}</th>
+                                    <td>{{ $row->value }}</td>
                                 </tr>
                             @endforeach
                         </table>
-                    @elseif ($section['type'] === 'ordered')
+                    @elseif ($section->type === \App\Enums\ProductSectionType::Ordered)
                         <ol class="detail-list">
-                            @foreach ($section['items'] as $item)
-                                <li>{{ $item }}</li>
+                            @foreach ($section->rows as $row)
+                                <li>{{ $row->label }}</li>
                             @endforeach
                         </ol>
                     @else
                         <ul class="detail-list">
-                            @foreach ($section['items'] as $item)
-                                <li>{{ $item }}</li>
+                            @foreach ($section->rows as $row)
+                                <li>{{ $row->label }}</li>
                             @endforeach
                         </ul>
                     @endif
@@ -112,7 +114,7 @@
                 </div>
                 <div class="cta-actions">
                     <a
-                        href="{{ $product['whatsapp'] }}"
+                        href="{{ $productModel->whatsapp_link }}"
                         class="btn btn-whatsapp"
                         target="_blank"
                         rel="noopener noreferrer"
@@ -131,7 +133,7 @@
                         WhatsApp Consultation
                     </a>
                     <a
-                        href="{{ $product['whatsapp'] }}"
+                        href="{{ $productModel->whatsapp_link }}"
                         class="btn btn-ghost-light"
                         target="_blank"
                         rel="noopener noreferrer"

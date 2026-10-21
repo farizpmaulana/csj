@@ -1,14 +1,23 @@
 <?php
 
-$catalog = require __DIR__.'/../../config/catalog.php';
+use App\Models\LegacyRedirect;
+use Illuminate\Support\Facades\Artisan;
 
-it('redirects every legacy page to its new address', function (string $legacyPath) use ($catalog) {
-    $target = $catalog['legacy'][$legacyPath];
+beforeEach(function () {
+    Artisan::call('app:import-catalog');
+});
 
-    $this->get('/'.$legacyPath)
-        ->assertMovedPermanently()
-        ->assertRedirect(route($target['route'], $target['parameters']));
-})->with(array_keys($catalog['legacy']));
+it('redirects every legacy page to its new address', function () {
+    $redirects = LegacyRedirect::orderBy('id')->get();
+
+    expect($redirects)->not->toBeEmpty();
+
+    $redirects->each(function (LegacyRedirect $redirect): void {
+        $this->get('/'.$redirect->from_path)
+            ->assertMovedPermanently()
+            ->assertRedirect($redirect->destinationUrl());
+    });
+});
 
 it('returns 404 for an unknown legacy path', function () {
     $this->get('/products/does-not-exist.html')->assertNotFound();

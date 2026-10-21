@@ -10,7 +10,7 @@
         '@type' => 'Organization',
         'name' => 'PT Cahaya Sarange Jaya',
         'url' => route('home'),
-        'logo' => asset('images/logo_own/logo_csj02.png'),
+        'logo' => media('images/logo_own/logo_csj02.png'),
         'email' => 'info@cahayasarangejaya.co.id',
         'telephone' => '+62 542 8860262',
         'sameAs' => [
@@ -38,16 +38,7 @@
         ],
     ];
 
-    $brands = config('catalog.brands');
-    $partners = array_map(
-        fn (string $key) => ['key' => $key] + $brands[$key],
-        ['sumato', 'bosch', 'buccheri', 'sata', 'consumables'],
-    );
-
-    $featuredArticles = array_filter(
-        config('articles'),
-        fn (array $article) => $article['featured'],
-    );
+    $gallerySizes = '(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw';
 @endphp
 @extends('layouts.app')
 
@@ -64,27 +55,27 @@
                 <source
                   type="image/avif"
                   srcset="
-                    {{ asset('images/banner/bn2-1648.avif') }} 1648w,
-                    {{ asset('images/banner/bn2-1024.avif') }} 1024w,
-                    {{ asset('images/banner/bn2-640.avif') }}   640w
+                    {{ media('images/banner/bn2-1648.avif') }} 1648w,
+                    {{ media('images/banner/bn2-1024.avif') }} 1024w,
+                    {{ media('images/banner/bn2-640.avif') }}   640w
                   "
                   sizes="100vw"
                 />
                 <source
                   type="image/webp"
                   srcset="
-                    {{ asset('images/banner/bn2-1648.webp') }} 1648w,
-                    {{ asset('images/banner/bn2-1024.webp') }} 1024w,
-                    {{ asset('images/banner/bn2-640.webp') }}   640w
+                    {{ media('images/banner/bn2-1648.webp') }} 1648w,
+                    {{ media('images/banner/bn2-1024.webp') }} 1024w,
+                    {{ media('images/banner/bn2-640.webp') }}   640w
                   "
                   sizes="100vw"
                 />
                 <img
-                  src="{{ asset('images/banner/bn2-1024.jpg') }}"
+                  src="{{ media('images/banner/bn2-1024.jpg') }}"
                   srcset="
-                    {{ asset('images/banner/bn2-1648.jpg') }} 1648w,
-                    {{ asset('images/banner/bn2-1024.jpg') }} 1024w,
-                    {{ asset('images/banner/bn2-640.jpg') }}   640w
+                    {{ media('images/banner/bn2-1648.jpg') }} 1648w,
+                    {{ media('images/banner/bn2-1024.jpg') }} 1024w,
+                    {{ media('images/banner/bn2-640.jpg') }}   640w
                   "
                   sizes="100vw"
                   alt="Banner PT Cahaya Sarange Jaya 2"
@@ -102,27 +93,27 @@
                 <source
                   type="image/avif"
                   srcset="
-                    {{ asset('images/banner/bn4-1846.avif') }} 1846w,
-                    {{ asset('images/banner/bn4-1024.avif') }} 1024w,
-                    {{ asset('images/banner/bn4-640.avif') }}   640w
+                    {{ media('images/banner/bn4-1846.avif') }} 1846w,
+                    {{ media('images/banner/bn4-1024.avif') }} 1024w,
+                    {{ media('images/banner/bn4-640.avif') }}   640w
                   "
                   sizes="100vw"
                 />
                 <source
                   type="image/webp"
                   srcset="
-                    {{ asset('images/banner/bn4-1846.webp') }} 1846w,
-                    {{ asset('images/banner/bn4-1024.webp') }} 1024w,
-                    {{ asset('images/banner/bn4-640.webp') }}   640w
+                    {{ media('images/banner/bn4-1846.webp') }} 1846w,
+                    {{ media('images/banner/bn4-1024.webp') }} 1024w,
+                    {{ media('images/banner/bn4-640.webp') }}   640w
                   "
                   sizes="100vw"
                 />
                 <img
-                  src="{{ asset('images/banner/bn4-1024.png') }}"
+                  src="{{ media('images/banner/bn4-1024.png') }}"
                   srcset="
-                    {{ asset('images/banner/bn4-1846.png') }} 1846w,
-                    {{ asset('images/banner/bn4-1024.png') }} 1024w,
-                    {{ asset('images/banner/bn4-640.png') }}   640w
+                    {{ media('images/banner/bn4-1846.png') }} 1846w,
+                    {{ media('images/banner/bn4-1024.png') }} 1024w,
+                    {{ media('images/banner/bn4-640.png') }}   640w
                   "
                   sizes="100vw"
                   alt="Banner PT Cahaya Sarange Jaya 4"
@@ -178,14 +169,14 @@
               <div class="about-visual">
                 <div class="about-image">
                   <img
-                    src="{{ asset('images/bg/about_us.webp') }}"
+                    src="{{ media('images/bg/about_us.webp') }}"
                     alt="Industrial supply and distribution support from PT Cahaya Sarange Jaya"
                     class="about-us-image"
                     loading="lazy"
                     decoding="async"
                     width="3840"
                     height="2154"
-                    data-fallback="{{ asset('images/bg/about_us.webp') }}"
+                    data-fallback="{{ media('images/bg/about_us.webp') }}"
                   />
                 </div>
               </div>
@@ -297,28 +288,28 @@
         <section
           id="partners"
           class="partners-section"
-          data-bg-lazy="{{ asset('images/bg/background-navy-07.webp') }}"
+          data-bg-lazy="{{ media('images/bg/background-navy-07.webp') }}"
         >
           <div class="container">
             <h2 class="section-title">Our Partners</h2>
             <div class="partners-grid">
-              @foreach ($partners as $partner)
+              @foreach ($brands as $partner)
                 <a
                     class="partner-card"
-                    href="{{ route('products.brand', ['brand' => $partner['key']]) }}"
-                    aria-label="View {{ $partner['name'] }} products"
+                    href="{{ route('products.brand', ['brand' => $partner->slug]) }}"
+                    aria-label="View {{ $partner->name }} products"
                 >
                     <div class="partner-logo">
                         <div class="partner-logo-img">
                             <img
-                                src="{{ asset($partner['card_image']) }}"
-                                alt="{{ $partner['card_alt'] }}"
+                                src="{{ media($partner->card_image) }}"
+                                alt="{{ $partner->card_alt }}"
                                 class="partner-logo-image"
                                 loading="lazy"
                                 decoding="async"
                                 width="130"
                                 height="130"
-                                data-fallback="{{ asset($partner['card_image']) }}"
+                                data-fallback="{{ media($partner->card_image) }}"
                             />
                         </div>
                     </div>
@@ -335,330 +326,25 @@
             <h2 class="section-title">Our Clients</h2>
             <div class="clients-marquee">
               <div class="clients-track">
-                <!-- First set of logos -->
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_arka-280.jpg') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_arka-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_arka-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_arka-280.jpg') }}  280w
-                      "
-                      sizes="140px"
-                      alt="ARKA Mining and Construction"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
+                @forelse ($clients as $client)
+                  <div class="client-logo">
+                    <div class="client-logo-img">
+                      <img
+                        src="{{ $client->url() }}"
+                        srcset="{{ $client->variantSrcset() }}"
+                        sizes="140px"
+                        alt="{{ $client->alt }}"
+                        class="client-logo-image img-fade"
+                        loading="lazy"
+                        decoding="async"
+                        width="140"
+                        height="100"
+                      />
+                    </div>
                   </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_dirgantara_yudha_artha-273.jpg') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_dirgantara_yudha_artha-273.webp') }} 273w,
-                        {{ asset('images/logo-client/logo_dirgantara_yudha_artha-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_dirgantara_yudha_artha-273.jpg') }}  273w
-                      "
-                      sizes="140px"
-                      alt="Dirgantara Yudha Artha"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_nipindo-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_nipindo-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_nipindo-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_nipindo-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="NIPINDO"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_Siloam_Hospitals-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_Siloam_Hospitals-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_Siloam_Hospitals-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_Siloam_Hospitals-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Siloam Hospitals"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_kaleyo-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_kaleyo-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_kaleyo-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_kaleyo-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="KALEYO Bebek Goreng"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_sany-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_sany-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_sany-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_sany-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="SANY"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_pratasaba-280.jpg') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_pratasaba-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_pratasaba-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_pratasaba-280.jpg') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Pratasaba"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/batara_client-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/batara_client-280.webp') }} 280w,
-                        {{ asset('images/logo-client/batara_client-160.webp') }} 160w,
-                        {{ asset('images/logo-client/batara_client-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Batara Client"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/mall_big-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/mall_big-280.webp') }} 280w,
-                        {{ asset('images/logo-client/mall_big-160.webp') }} 160w,
-                        {{ asset('images/logo-client/mall_big-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Big Mall"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/fugo_hsmd-209.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/fugo_hsmd-209.webp') }} 209w,
-                        {{ asset('images/logo-client/fugo_hsmd-160.webp') }} 160w,
-                        {{ asset('images/logo-client/fugo_hsmd-209.png') }}  209w
-                      "
-                      sizes="140px"
-                      alt="Hotel Fugo"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/cleo_lo-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/cleo_lo-280.webp') }} 280w,
-                        {{ asset('images/logo-client/cleo_lo-160.webp') }} 160w,
-                        {{ asset('images/logo-client/cleo_lo-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="PT. Sariguna Prima Tirta"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_balikpapanplaza-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_balikpapanplaza-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_balikpapanplaza-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_balikpapanplaza-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Balikpapan Plaza"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_bbe-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_bbe-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_bbe-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_bbe-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Logo BBE"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_caturpilarsejati-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_caturpilarsejati-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_caturpilarsejati-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_caturpilarsejati-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="PT Catur Pillar Sejati"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_maxone-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_maxone-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_maxone-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_maxone-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Maxone"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_petrosea-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_petrosea-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_petrosea-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_petrosea-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="Petrosea"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
-                <div class="client-logo">
-                  <div class="client-logo-img">
-                    <img
-                      src="{{ asset('images/logo-client/logo_wbs-280.png') }}"
-                      srcset="
-                        {{ asset('images/logo-client/logo_wbs-280.webp') }} 280w,
-                        {{ asset('images/logo-client/logo_wbs-160.webp') }} 160w,
-                        {{ asset('images/logo-client/logo_wbs-280.png') }}  280w
-                      "
-                      sizes="140px"
-                      alt="WBS"
-                      class="client-logo-image img-fade"
-                      loading="lazy"
-                      decoding="async"
-                      width="140"
-                      height="100"
-                    />
-                  </div>
-                </div>
+                @empty
+                  <p class="clients-empty">No clients yet.</p>
+                @endforelse
               </div>
             </div>
           </div>
@@ -668,221 +354,50 @@
         <section
           id="gallery"
           class="gallery-section"
-          data-bg-lazy="{{ asset('images/bg/background-navy-07.webp') }}"
+          data-bg-lazy="{{ media('images/bg/background-navy-07.webp') }}"
         >
           <div class="container">
             <h2 class="section-title">Gallery</h2>
             <div class="row">
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="gallery-item">
-                  <div class="gallery-image-container">
-                    <picture>
-                      <source
-                        type="image/avif"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly7-900.avif') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly7-600.avif') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly7-400.avif') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <source
-                        type="image/webp"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly7-900.webp') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly7-600.webp') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly7-400.webp') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <img
-                        src="{{ asset('images/foto-galeri-pemasangan/gly7-600.jpg') }}"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly7-900.jpg') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly7-600.jpg') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly7-400.jpg') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                        alt="Buccheri safety shoes installation"
-                        class="gallery-image img-fade"
-                        width="5328"
-                        height="4000"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </picture>
-                    <div class="gallery-overlay">
-                      <p class="gallery-caption">Safety Shoes Buccheri</p>
-                      <button
-                        type="button"
-                        class="gallery-zoom-button"
-                        data-gallery-image="{{ asset('images/foto-galeri-pemasangan/gly7.jpg') }}"
-                        aria-label="View Buccheri safety shoes installation fullscreen"
-                      >
-                        <i class="fas fa-search-plus" aria-hidden="true"></i>
-                      </button>
+              @forelse ($gallery as $image)
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <div class="gallery-item">
+                    <div class="gallery-image-container">
+                      <picture>
+                        @foreach ($image->sourceSrcsets() as $type => $srcset)
+                          <source type="{{ $type }}" srcset="{{ $srcset }}" sizes="{{ $gallerySizes }}" />
+                        @endforeach
+                        <img
+                          src="{{ $image->url() }}"
+                          srcset="{{ $image->variantSrcset() }}"
+                          sizes="{{ $gallerySizes }}"
+                          alt="{{ $image->alt }}"
+                          class="gallery-image img-fade"
+                          width="{{ $image->width }}"
+                          height="{{ $image->height }}"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      </picture>
+                      <div class="gallery-overlay">
+                        @if ($image->caption)
+                          <p class="gallery-caption">{{ $image->caption }}</p>
+                        @endif
+                        <button
+                          type="button"
+                          class="gallery-zoom-button"
+                          data-gallery-image="{{ $image->fullUrl() }}"
+                          aria-label="View {{ $image->alt }} fullscreen"
+                        >
+                          <i class="fas fa-search-plus" aria-hidden="true"></i>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="gallery-item">
-                  <div class="gallery-image-container">
-                    <picture>
-                      <source
-                        type="image/avif"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly8-900.avif') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly8-600.avif') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly8-400.avif') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <source
-                        type="image/webp"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly8-900.webp') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly8-600.webp') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly8-400.webp') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <img
-                        src="{{ asset('images/foto-galeri-pemasangan/gly8-600.png') }}"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly8-900.png') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly8-600.png') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly8-400.png') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                        alt="Sumato SM-05 on an electrical panel"
-                        class="gallery-image img-fade"
-                        width="1200"
-                        height="1600"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </picture>
-                    <div class="gallery-overlay">
-                      <p class="gallery-caption">Sumato SM-05 pada Panel Listrik</p>
-                      <button
-                        type="button"
-                        class="gallery-zoom-button"
-                        data-gallery-image="{{ asset('images/foto-galeri-pemasangan/gly8.png') }}"
-                        aria-label="View Sumato SM-05 on an electrical panel fullscreen"
-                      >
-                        <i class="fas fa-search-plus" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="gallery-item">
-                  <div class="gallery-image-container">
-                    <picture>
-                      <source
-                        type="image/avif"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly9-900.avif') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly9-600.avif') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly9-400.avif') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <source
-                        type="image/webp"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly9-900.webp') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly9-600.webp') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly9-400.webp') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <img
-                        src="{{ asset('images/foto-galeri-pemasangan/gly9-600.png') }}"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly9-900.png') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly9-600.png') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly9-400.png') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                        alt="Sumato SM-05 inside an engine compartment"
-                        class="gallery-image img-fade"
-                        width="1280"
-                        height="957"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </picture>
-                    <div class="gallery-overlay">
-                      <p class="gallery-caption">Sumato SM-05 di dalam Kap Mesin</p>
-                      <button
-                        type="button"
-                        class="gallery-zoom-button"
-                        data-gallery-image="{{ asset('images/foto-galeri-pemasangan/gly9.png') }}"
-                        aria-label="View Sumato SM-05 inside an engine compartment fullscreen"
-                      >
-                        <i class="fas fa-search-plus" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <div class="gallery-item">
-                  <div class="gallery-image-container">
-                    <picture>
-                      <source
-                        type="image/avif"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly10-900.avif') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly10-600.avif') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly10-400.avif') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <source
-                        type="image/webp"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly10-900.webp') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly10-600.webp') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly10-400.webp') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                      />
-                      <img
-                        src="{{ asset('images/foto-galeri-pemasangan/gly10-600.png') }}"
-                        srcset="
-                          {{ asset('images/foto-galeri-pemasangan/gly10-900.png') }} 900w,
-                          {{ asset('images/foto-galeri-pemasangan/gly10-600.png') }} 600w,
-                          {{ asset('images/foto-galeri-pemasangan/gly10-400.png') }} 400w
-                        "
-                        sizes="(min-width: 992px) 33vw, (min-width: 768px) 50vw, 100vw"
-                        alt="Sumato SM-10 in a production room"
-                        class="gallery-image img-fade"
-                        width="1200"
-                        height="1600"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </picture>
-                    <div class="gallery-overlay">
-                      <p class="gallery-caption">
-                        Sumato SM-10 pada Ruang Produksi
-                      </p>
-                      <button
-                        type="button"
-                        class="gallery-zoom-button"
-                        data-gallery-image="{{ asset('images/foto-galeri-pemasangan/gly10.png') }}"
-                        aria-label="View Sumato SM-10 in a production room fullscreen"
-                      >
-                        <i class="fas fa-search-plus" aria-hidden="true"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              @empty
+                <div class="col-12"><p class="gallery-empty">No gallery images yet.</p></div>
+              @endforelse
             </div>
           </div>
         </section>
@@ -1013,15 +528,15 @@
             </div>
 
             <div class="recent-articles-grid">
-              @foreach ($featuredArticles as $articleSlug => $article)
+              @foreach ($latestArticles as $article)
                 <a
                     class="recent-article-card"
-                    href="{{ route('articles.show', ['article' => $articleSlug]) }}"
+                    href="{{ route('articles.show', ['article' => $article->slug]) }}"
                 >
                     <div class="recent-article-image">
                         <img
-                            src="{{ asset($article['card_image']) }}"
-                            alt="{{ $article['card_alt'] }}"
+                            src="{{ media($article->card_image) }}"
+                            alt="{{ $article->card_alt }}"
                             loading="lazy"
                             decoding="async"
                             width="900"
@@ -1030,11 +545,11 @@
                     </div>
                     <div class="recent-article-body">
                         <div class="recent-article-meta">
-                            <span>{{ $article['category_label'] }}</span
-                            ><time datetime="{{ $article['published_at'] }}">{{ $article['published_label'] }}</time>
+                            <span>{{ $article->category_label }}</span
+                            ><time datetime="{{ $article->published_at?->toDateString() }}">{{ $article->published_label }}</time>
                         </div>
-                        <h3>{{ $article['title'] }}</h3>
-                        <p>{{ $article['excerpt'] }}</p>
+                        <h3>{{ $article->title }}</h3>
+                        <p>{{ $article->excerpt }}</p>
                         <span class="recent-article-link"
                             >Read more <span aria-hidden="true">&rarr;</span></span
                         >
@@ -1049,7 +564,7 @@
         <section
           id="contact"
           class="contact-section"
-          data-bg-lazy="{{ asset('images/bg/background-navy-07.webp') }}"
+          data-bg-lazy="{{ media('images/bg/background-navy-07.webp') }}"
         >
           <div class="container">
             <h2 class="section-title">Find Us</h2>
