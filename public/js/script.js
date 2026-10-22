@@ -4,7 +4,7 @@
 let currentSlide = 0;
 let autoSlideInterval;
 let autoSlideResumeTimeout;
-const AUTO_SLIDE_INTERVAL_MS = 5000;
+const AUTO_SLIDE_INTERVAL_MS = 8000;
 
 function bannerSlides() {
   return document.querySelectorAll(".banner-slide");
@@ -29,9 +29,23 @@ function showSlide(index) {
   if (slides.length === 0) return;
 
   currentSlide = (index + slides.length) % slides.length;
-  slides.forEach((slide, i) =>
-    slide.classList.toggle("active", i === currentSlide),
-  );
+  slides.forEach((slide, i) => {
+    const active = i === currentSlide;
+    slide.classList.toggle("active", active);
+
+    if (active) {
+      const animatedElements = slide.querySelectorAll(
+        ".banner-image, .hero-eyebrow, .hero-copy h1, .hero-copy h2, .hero-copy p, .hero-cta",
+      );
+      animatedElements.forEach((element) => {
+        element.style.animation = "none";
+      });
+      void slide.offsetWidth;
+      animatedElements.forEach((element) => {
+        element.style.removeProperty("animation");
+      });
+    }
+  });
   progressBars.forEach((bar, i) => {
     const active = i === currentSlide;
     bar.classList.toggle("active", active);
@@ -237,14 +251,26 @@ function initAboutTabs() {
 // Navigation
 function setActiveNavLink() {
   const sections = document.querySelectorAll("section[id]");
+  if (sections.length === 0) return;
   const links = document.querySelectorAll(".navbar-nav .nav-link");
-  let current = "";
+  const navbar = document.querySelector(".navbar");
+  const marker = window.scrollY + (navbar?.offsetHeight ?? 80) + 24;
+  let current = sections[0]?.id ?? "";
 
   sections.forEach((section) => {
-    if (window.scrollY >= section.offsetTop - 200) current = section.id;
+    if (section.getBoundingClientRect().top + window.scrollY <= marker) {
+      current = section.id;
+    }
   });
   links.forEach((link) => {
-    const active = link.getAttribute("href") === `#${current}`;
+    const href = link.getAttribute("href");
+    let targetId = "";
+    try {
+      targetId = new URL(href, window.location.href).hash.slice(1);
+    } catch {
+      targetId = "";
+    }
+    const active = targetId !== "" && targetId === current;
     link.classList.toggle("active", active);
     if (active) link.setAttribute("aria-current", "page");
     else link.removeAttribute("aria-current");
@@ -259,18 +285,19 @@ function closeMobileMenu() {
 }
 
 function initNavigation() {
-  document.querySelectorAll(".navbar-nav .nav-link").forEach((link) => {
+  document.querySelectorAll(".navbar-nav .nav-link, .hero-cta").forEach((link) => {
     link.addEventListener("click", (event) => {
-      const targetId = link.getAttribute("href");
-      if (!targetId?.startsWith("#")) return;
+      const targetUrl = new URL(link.getAttribute("href"), window.location.href);
+      if (targetUrl.origin !== window.location.origin || targetUrl.pathname !== window.location.pathname || !targetUrl.hash) return;
 
-      const target = document.querySelector(targetId);
+      const target = document.querySelector(targetUrl.hash);
       if (!target) return;
       event.preventDefault();
       window.scrollTo({
-        top: Math.max(0, target.offsetTop - 80),
+        top: Math.max(0, target.getBoundingClientRect().top + window.scrollY - (document.querySelector(".navbar")?.offsetHeight ?? 80)),
         behavior: "smooth",
       });
+      window.history.replaceState(null, "", targetUrl.hash);
       closeMobileMenu();
     });
   });
@@ -278,15 +305,23 @@ function initNavigation() {
 
 function initNavbar() {
   const navbar = document.querySelector(".navbar");
+  const hero = document.querySelector(".hero-section");
   let scrollTicking = false;
+
+  const updateNavbar = () => {
+    const heroBottom = hero ? hero.getBoundingClientRect().bottom : 0;
+    navbar?.classList.toggle("scrolled", !hero || heroBottom <= (navbar?.offsetHeight ?? 80));
+    setActiveNavLink();
+  };
+
+  updateNavbar();
 
   window.addEventListener(
     "scroll",
     () => {
       if (scrollTicking) return;
       window.requestAnimationFrame(() => {
-        setActiveNavLink();
-        navbar?.classList.toggle("scrolled", window.scrollY > 100);
+        updateNavbar();
         scrollTicking = false;
       });
       scrollTicking = true;
@@ -440,19 +475,95 @@ function initClientsMarquee() {
   document.querySelectorAll(".clients-track").forEach((track) => {
     if (track.dataset.loopReady === "true") return;
 
-    const originalItems = [...track.children];
-    if (originalItems.length === 0) return;
+    const initialItems = [...track.children];
+    if (initialItems.length === 0) return;
 
-    originalItems.forEach((item) => {
+    const showcase = track.closest(".clients-showcase");
+    const staticList = showcase?.querySelector("[data-client-static-list]");
+    const showcaseContent = showcase?.querySelector(".clients-showcase-content");
+    const showAllButton = showcase?.querySelector("[data-client-show-all]");
+    const showCarouselButton = showcase?.querySelector("[data-client-show-carousel]");
+    const marqueeWidth = track.parentElement?.clientWidth ?? 0;
+    const cloneLogo = (item, decorative = true) => {
       const clone = item.cloneNode(true);
-      clone.setAttribute("aria-hidden", "true");
-      clone.querySelectorAll("img").forEach((image) => {
-        image.alt = "";
+      if (decorative) {
+        clone.setAttribute("aria-hidden", "true");
+        clone.querySelectorAll("img").forEach((image) => {
+          image.alt = "";
+        });
+      }
+      return clone;
+    };
+
+    initialItems.forEach((item) => {
+      staticList?.appendChild(cloneLogo(item, false));
+    });
+
+    let repeatedItems = 1;
+
+    while (track.scrollWidth < marqueeWidth && repeatedItems < 20) {
+      initialItems.forEach((item) => {
+        track.appendChild(cloneLogo(item));
       });
-      track.appendChild(clone);
+      repeatedItems += 1;
+    }
+
+    [...track.children].forEach((item) => {
+      track.appendChild(cloneLogo(item));
     });
 
     track.dataset.loopReady = "true";
+    let staticListCollapseTimer;
+    let marqueeHideTimer;
+
+    showAllButton?.addEventListener("click", () => {
+      if (!staticList || !showCarouselButton) return;
+      window.clearTimeout(staticListCollapseTimer);
+      window.clearTimeout(marqueeHideTimer);
+      showcase.classList.add("is-static");
+      showcaseContent?.classList.add("is-showing-all");
+      staticList.hidden = false;
+      staticList.style.maxHeight = "0px";
+      staticList.style.opacity = "0";
+      track.style.animationPlayState = "paused";
+      showAllButton.hidden = true;
+      showAllButton.setAttribute("aria-expanded", "true");
+      showCarouselButton.hidden = false;
+      requestAnimationFrame(() => {
+        staticList.style.maxHeight = `${staticList.scrollHeight}px`;
+        staticList.style.opacity = "1";
+      });
+      marqueeHideTimer = window.setTimeout(() => {
+        if (showcase.classList.contains("is-static")) {
+          track.parentElement.hidden = true;
+        }
+      }, 950);
+      showCarouselButton.focus();
+    });
+
+    showCarouselButton?.addEventListener("click", () => {
+      if (!staticList || !showAllButton) return;
+      window.clearTimeout(staticListCollapseTimer);
+      window.clearTimeout(marqueeHideTimer);
+      showcase.classList.remove("is-static");
+      track.parentElement.hidden = false;
+      staticList.style.maxHeight = `${staticList.scrollHeight}px`;
+      staticList.style.opacity = "1";
+      requestAnimationFrame(() => {
+        showcaseContent?.classList.remove("is-showing-all");
+        staticList.style.maxHeight = "0px";
+        staticList.style.opacity = "0";
+      });
+      track.style.removeProperty("animation-play-state");
+      showCarouselButton.hidden = true;
+      showAllButton.hidden = false;
+      showAllButton.setAttribute("aria-expanded", "false");
+      staticListCollapseTimer = window.setTimeout(() => {
+        staticList.hidden = true;
+        staticList.removeAttribute("style");
+      }, 950);
+      showAllButton.focus();
+    });
   });
 }
 
@@ -511,10 +622,8 @@ function initMotionEffects() {
   gsap.registerPlugin(window.ScrollTrigger);
 
   const motionTargets = [
-    ".section-title",
-    ".about-layout",
+    ".section-title:not(.about-section-title)",
     ".partners-grid .partner-card",
-    ".clients-track .client-logo",
     ".gallery-item",
     ".value-card",
     ".cta-strip",
@@ -550,18 +659,6 @@ function initMotionEffects() {
   };
 
   gsap.fromTo(
-    ".hero-section .banner-slider",
-    { scale: 1.06, opacity: 0.8 },
-    {
-      scale: 1,
-      opacity: 1,
-      duration: 1.25,
-      ease: "power2.out",
-      delay: 0.12,
-    },
-  );
-
-  gsap.fromTo(
     ".banner-nav-btn, .banner-progress-bar",
     { opacity: 0, y: 14 },
     {
@@ -574,7 +671,7 @@ function initMotionEffects() {
     },
   );
 
-  gsap.utils.toArray(".section-title").forEach((title) => {
+  gsap.utils.toArray(".section-title:not(.about-section-title)").forEach((title) => {
     gsap.fromTo(
       title,
       { opacity: 0, y: 24 },
@@ -582,6 +679,7 @@ function initMotionEffects() {
         opacity: 1,
         y: 0,
         duration: 0.8,
+        delay: 0.3,
         ease: "power3.out",
         scrollTrigger: {
           trigger: title,
@@ -591,51 +689,77 @@ function initMotionEffects() {
     );
   });
 
-  gsap.fromTo(
-    ".about-stat",
-    { opacity: 0, y: 18 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      stagger: 0.12,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".about-section",
-        start: "top 72%",
-        onEnter: counterAnimation,
-      },
-    },
-  );
+  window.ScrollTrigger.create({
+    trigger: ".about-section",
+    start: "top 72%",
+    once: true,
+    onEnter: counterAnimation,
+  });
 
-  gsap.fromTo(
-    ".about-layout, .partners-grid .partner-card",
-    { opacity: 0, y: 34, scale: 0.98 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.9,
-      stagger: 0.1,
-      ease: "power3.out",
-      scrollTrigger: {
-        trigger: ".about-section, .partners-section",
-        start: "top 78%",
-      },
-    },
-  );
+  const smallScreen = window.matchMedia("(max-width: 767px)").matches;
+  const sideSwipeDistance = smallScreen ? 34 : 58;
+  const revealAboutElement = (element, direction, delay) => {
+    const startPosition = direction === "left"
+      ? { x: -sideSwipeDistance, y: 0 }
+      : direction === "right"
+        ? { x: sideSwipeDistance, y: 0 }
+        : { x: 0, y: 46 };
 
-  // Hover lift driven by GSAP so it layers on top of the entrance tween
-  // (a CSS transform on the card would be overridden by GSAP's inline
-  // transform). Only 'y' is touched, so the fade-in's opacity/scale are
-  // never interfered with.
-  gsap.utils.toArray(".partners-grid .partner-card").forEach((card) => {
-    card.addEventListener("pointerenter", () => {
-      gsap.to(card, { y: -10, duration: 0.35, ease: "power2.out" });
+    const revealTimeline = gsap.timeline({
+      delay,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 84%",
+        once: true,
+      },
     });
-    card.addEventListener("pointerleave", () => {
-      gsap.to(card, { y: 0, duration: 0.45, ease: "power2.out" });
-    });
+
+    revealTimeline
+      .fromTo(
+        element,
+        { autoAlpha: 0 },
+        { autoAlpha: 1, duration: 0.48, ease: "power1.out" },
+        0,
+      )
+      .fromTo(
+        element,
+        startPosition,
+        { x: 0, y: 0, duration: 1.45, ease: "power3.out" },
+        0,
+      );
+  };
+
+  document.querySelectorAll(".about-overview").forEach((element) => {
+    revealAboutElement(element, "left", 0.4);
+  });
+  document.querySelectorAll(".about-visual").forEach((element) => {
+    revealAboutElement(element, "up", 0.48);
+  });
+  document.querySelectorAll(".about-purpose").forEach((element) => {
+    revealAboutElement(element, "right", 0.56);
+  });
+  document.querySelectorAll(".clients-showcase").forEach((element) => {
+    revealAboutElement(element, "up", 0.42);
+  });
+
+  gsap.utils.toArray(".partners-grid .partner-card").forEach((card, index) => {
+    gsap.fromTo(
+      card,
+      { autoAlpha: 0, y: 34, scale: 0.98 },
+      {
+        autoAlpha: 1,
+        y: 0,
+        scale: 1,
+        duration: 1.2,
+        delay: 0.3 + (index % 4) * 0.1,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: card,
+          start: "top 86%",
+          once: true,
+        },
+      },
+    );
   });
 
   gsap.fromTo(
@@ -646,6 +770,7 @@ function initMotionEffects() {
       y: 0,
       scale: 1,
       duration: 0.8,
+      delay: 0.3,
       ease: "power3.out",
       stagger: 0,
       scrollTrigger: {
@@ -661,34 +786,16 @@ function initMotionEffects() {
     {
       opacity: 1,
       y: 0,
-      duration: 0.6,
-      stagger: 0,
-      ease: "linear",
-      delay: 0,
+      duration: 0.9,
+      stagger: 0.08,
+      ease: "power3.out",
+      delay: 0.3,
       scrollTrigger: {
         trigger: ".why-us-section, .cta-strip-section",
         start: "top 82%",
       },
     },
   );
-
-  gsap.utils.toArray(".clients-track .client-logo").forEach((logo, index) => {
-    gsap.fromTo(
-      logo,
-      { opacity: 0, scale: 0.8 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.7,
-        delay: index * 0.03,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: logo,
-          start: "top 95%",
-        },
-      },
-    );
-  });
 
   gsap.fromTo(
     ".contact-list, .office-block, .contact-social-icons",
@@ -697,6 +804,7 @@ function initMotionEffects() {
       opacity: 1,
       y: 0,
       duration: 0.7,
+      delay: 0.3,
       stagger: 0.12,
       ease: "power2.out",
       scrollTrigger: {
@@ -705,19 +813,6 @@ function initMotionEffects() {
       },
     },
   );
-
-  gsap.to(".clients-track", {
-    xPercent: -50,
-    ease: "none",
-    duration: 30,
-    repeat: -1,
-    scrollTrigger: {
-      trigger: ".clients-section",
-      start: "top center",
-      end: "bottom top",
-      scrub: 1,
-    },
-  });
 
   document.querySelectorAll(".cta-strip-btn").forEach((button) => {
     button.addEventListener("pointermove", (event) => {

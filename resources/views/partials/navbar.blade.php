@@ -23,20 +23,32 @@
         </div>
     </nav>  
 @else
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top {{ request()->routeIs('home') ? 'navbar--hero' : '' }}">
         <div class="container">
             <a class="navbar-brand" href="{{ $home }}#home">
                 <div class="logo">
                     <img
                         src="{{ media($siteSettings->logo_path) }}"
                         alt="{{ $siteSettings->company_name }} Logo"
-                        class="logo-image"
+                        class="logo-image {{ request()->routeIs('home') ? 'logo-image--default' : '' }}"
                         loading="eager"
                         decoding="async"
                         fetchpriority="high"
                         width="180"
                         height="180"
                     />
+                    @if (request()->routeIs('home'))
+                        <img
+                            src="{{ media('images/logo_own/logo_csj_white.png') }}"
+                            alt=""
+                            class="logo-image logo-image--light"
+                            loading="eager"
+                            decoding="async"
+                            width="180"
+                            height="180"
+                            aria-hidden="true"
+                        />
+                    @endif
                 </div>
             </a>
 

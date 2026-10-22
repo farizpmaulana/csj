@@ -50,89 +50,108 @@
         <!-- Home Section -->
         <section id="home" class="hero-section">
           <div class="banner-slider">
-            <div class="banner-slide banner-slide--fill">
+            <div class="banner-slide banner-slide--fill" style="--hero-shade: 0.56">
               <picture>
                 <source
                   type="image/avif"
                   srcset="
-                    {{ media('images/banner/bn2-1648.avif') }} 1648w,
-                    {{ media('images/banner/bn2-1024.avif') }} 1024w,
-                    {{ media('images/banner/bn2-640.avif') }}   640w
+                    {{ media('images/hero/hero1-640.avif') }} 640w,
+                    {{ media('images/hero/hero1-960.avif') }} 960w,
+                    {{ media('images/hero/hero1-1440.avif') }} 1440w,
+                    {{ media('images/hero/hero1-1920.avif') }} 1920w
                   "
                   sizes="100vw"
                 />
                 <source
                   type="image/webp"
                   srcset="
-                    {{ media('images/banner/bn2-1648.webp') }} 1648w,
-                    {{ media('images/banner/bn2-1024.webp') }} 1024w,
-                    {{ media('images/banner/bn2-640.webp') }}   640w
+                    {{ media('images/hero/hero1-640.webp') }} 640w,
+                    {{ media('images/hero/hero1-960.webp') }} 960w,
+                    {{ media('images/hero/hero1-1440.webp') }} 1440w,
+                    {{ media('images/hero/hero1-1920.webp') }} 1920w
                   "
                   sizes="100vw"
                 />
                 <img
-                  src="{{ media('images/banner/bn2-1024.jpg') }}"
+                  src="{{ media('images/hero/hero1-960.jpg') }}"
                   srcset="
-                    {{ media('images/banner/bn2-1648.jpg') }} 1648w,
-                    {{ media('images/banner/bn2-1024.jpg') }} 1024w,
-                    {{ media('images/banner/bn2-640.jpg') }}   640w
+                    {{ media('images/hero/hero1-640.jpg') }} 640w,
+                    {{ media('images/hero/hero1-960.jpg') }} 960w,
+                    {{ media('images/hero/hero1-1440.jpg') }} 1440w,
+                    {{ media('images/hero/hero1-1920.jpg') }} 1920w
                   "
                   sizes="100vw"
-                  alt="Banner PT Cahaya Sarange Jaya 2"
+                  alt="Petugas gudang memeriksa persediaan perlengkapan industri"
                   class="banner-image"
-                  width="1648"
-                  height="954"
+                  width="1920"
+                  height="1111"
                   loading="eager"
                   decoding="async"
                   fetchpriority="high"
                 />
               </picture>
+              <div class="hero-copy">
+                <span class="hero-eyebrow">Industrial Supply &amp; Distribution</span>
+                <h1>PT. Cahaya Sarange Jaya</h1>
+                <p>Safety equipment and industrial products to support your projects and operations.</p>
+                <a class="hero-cta" href="#about">Discover More <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
             </div>
-            <div class="banner-slide banner-slide--fill">
+            <div class="banner-slide banner-slide--fill" style="--hero-shade: 0.24">
               <picture>
                 <source
                   type="image/avif"
                   srcset="
-                    {{ media('images/banner/bn4-1846.avif') }} 1846w,
-                    {{ media('images/banner/bn4-1024.avif') }} 1024w,
-                    {{ media('images/banner/bn4-640.avif') }}   640w
+                    {{ media('images/hero/hero2-640.avif') }} 640w,
+                    {{ media('images/hero/hero2-960.avif') }} 960w,
+                    {{ media('images/hero/hero2-1440.avif') }} 1440w,
+                    {{ media('images/hero/hero2-1920.avif') }} 1920w
                   "
                   sizes="100vw"
                 />
                 <source
                   type="image/webp"
                   srcset="
-                    {{ media('images/banner/bn4-1846.webp') }} 1846w,
-                    {{ media('images/banner/bn4-1024.webp') }} 1024w,
-                    {{ media('images/banner/bn4-640.webp') }}   640w
+                    {{ media('images/hero/hero2-640.webp') }} 640w,
+                    {{ media('images/hero/hero2-960.webp') }} 960w,
+                    {{ media('images/hero/hero2-1440.webp') }} 1440w,
+                    {{ media('images/hero/hero2-1920.webp') }} 1920w
                   "
                   sizes="100vw"
                 />
                 <img
-                  src="{{ media('images/banner/bn4-1024.png') }}"
+                  src="{{ media('images/hero/hero2-960.jpg') }}"
                   srcset="
-                    {{ media('images/banner/bn4-1846.png') }} 1846w,
-                    {{ media('images/banner/bn4-1024.png') }} 1024w,
-                    {{ media('images/banner/bn4-640.png') }}   640w
+                    {{ media('images/hero/hero2-640.jpg') }} 640w,
+                    {{ media('images/hero/hero2-960.jpg') }} 960w,
+                    {{ media('images/hero/hero2-1440.jpg') }} 1440w,
+                    {{ media('images/hero/hero2-1920.jpg') }} 1920w
                   "
                   sizes="100vw"
-                  alt="Banner PT Cahaya Sarange Jaya 4"
+                  alt="Rak penyimpanan produk dan perlengkapan industri di dalam gudang"
                   class="banner-image"
-                  width="1846"
-                  height="823"
-                  loading="eager"
+                  width="1920"
+                  height="854"
+                  loading="lazy"
                   decoding="async"
+                  fetchpriority="low"
                 />
               </picture>
+              <div class="hero-copy">
+                <span class="hero-eyebrow">Your Trusted Supply Partner</span>
+                <h2>Everything Your Business Needs</h2>
+                <p>Dependable products and responsive service for manufacturing, projects, and daily operations.</p>
+                <a class="hero-cta" href="#partners">Explore Our Partners <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+              </div>
             </div>
 
             <!-- Banner Navigation -->
             <div class="banner-nav">
               <button class="banner-nav-btn prev-btn" aria-label="Previous slide">
-                <i class="fas fa-chevron-left"></i>
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
               </button>
               <button class="banner-nav-btn next-btn" aria-label="Next slide">
-                <i class="fas fa-chevron-right"></i>
+                <i class="fas fa-arrow-right" aria-hidden="true"></i>
               </button>
             </div>
 
@@ -163,9 +182,30 @@
         <!-- About Section -->
         <section id="about" class="about-section">
           <div class="container">
-            <h2 class="section-title">About Us</h2>
+            <div class="about-composition">
+              <div class="about-overview">
+                <h2 class="section-title about-section-title">About Us</h2>
+                <h3 class="about-panel-headline">
+                  Industrial supply, built on trust
+                </h3>
+                <p class="about-panel-sub">
+                  As an official distributor of Sumato, Bosch, and Buccheri,
+                  PT Cahaya Sarange Jaya connects businesses with dependable
+                  industrial products, practical guidance, and responsive support
+                  to keep projects and daily operations moving.
+                </p>
+                <div class="about-stats" aria-label="Company network statistics">
+                  <div class="about-stat">
+                    <strong data-target="17">0</strong>
+                    <span>Total Clients</span>
+                  </div>
+                  <div class="about-stat">
+                    <strong data-target="5">0</strong>
+                    <span>Total Partners</span>
+                  </div>
+                </div>
+              </div>
 
-            <div class="about-layout">
               <div class="about-visual">
                 <div class="about-image">
                   <img
@@ -180,107 +220,103 @@
                   />
                 </div>
               </div>
-              <div class="about-content">
-                <div class="about-tabs" role="tablist" aria-label="About section slides">
-                  <button
-                    class="about-tab active"
-                    id="tab-overview-btn"
-                    data-tab="overview"
-                    role="tab"
-                    aria-selected="true"
-                    aria-controls="tab-overview"
-                  >
-                    <i class="fas fa-building" aria-hidden="true"></i>
-                    <span>Company Overview</span>
-                  </button>
-                  <button
-                    class="about-tab"
-                    id="tab-purpose-btn"
-                    data-tab="purpose"
-                    role="tab"
-                    aria-selected="false"
-                    aria-controls="tab-purpose"
-                  >
-                    <i class="fas fa-bullseye" aria-hidden="true"></i>
-                    <span>Vision &amp; Mission</span>
-                  </button>
+              <div class="about-purpose">
+                <div class="about-purpose-card about-purpose-vision">
+                  <div class="about-purpose-icon">
+                    <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                  </div>
+                  <h3 class="about-purpose-label">Our Vision</h3>
+                  <p class="about-purpose-text">
+                    To be a fast and trustworthy one-stop goods supplier for
+                    companies around the world.
+                  </p>
                 </div>
-
-                <div class="about-tab-panels">
-                  <div
-                    class="about-tab-panel active"
-                    id="tab-overview"
-                    role="tabpanel"
-                    aria-labelledby="tab-overview-btn"
-                  >
-                    <h3 class="about-panel-headline">
-                      Sumato, Bosch, Buccheri Industrial Official Distributor
-                    </h3>
-                    <p class="about-panel-sub">
-                      PT Cahaya Sarange Jaya connects businesses with dependable
-                      products from Sumato, Bosch, and Buccheri. We combine quality
-                      products, practical product guidance, and responsive service
-                      to help procurement and operations teams move with confidence.
-                    </p>
-                    <div
-                      class="about-stats"
-                      aria-label="Company network statistics"
-                    >
-                      <div class="about-stat">
-                        <strong data-target="5">0</strong>
-                        <span>Total Partners</span>
-                      </div>
-                      <div class="about-stat">
-                        <strong data-target="17">0</strong>
-                        <span>Total Clients</span>
-                      </div>
-                    </div>
+                <div class="about-purpose-card about-purpose-mission">
+                  <div class="about-purpose-icon">
+                    <i class="fas fa-layer-group" aria-hidden="true"></i>
                   </div>
-
-                  <div
-                    class="about-tab-panel"
-                    id="tab-purpose"
-                    role="tabpanel"
-                    aria-labelledby="tab-purpose-btn"
-                    hidden
-                  >
-                    <div class="about-purpose-cards">
-                      <div class="about-purpose-card about-purpose-vision">
-                        <div class="about-purpose-icon">
-                          <i class="fas fa-eye" aria-hidden="true"></i>
-                        </div>
-                        <h4 class="about-purpose-label">Our Vision</h4>
-                        <p class="about-purpose-text">
-                          To be a fast and trustworthy one-stop goods supplier for
-                          companies around the world.
-                        </p>
-                      </div>
-                      <div class="about-purpose-card about-purpose-mission">
-                        <div class="about-purpose-icon">
-                          <i class="fas fa-flag" aria-hidden="true"></i>
-                        </div>
-                        <h4 class="about-purpose-label">Our Mission</h4>
-                        <ul class="about-purpose-list">
-                          <li>
-                            To distribute the best quality of product to our
-                            consumers.
-                          </li>
-                          <li>
-                            To become the choice of global partners for top quality
-                            brands.
-                          </li>
-                          <li>
-                            To best bridge the business process between brands and
-                            consumer. To deliver the best performance of sales.
-                          </li>
-                          <li>To conduct trustworthy business ethics.</li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
+                  <h3 class="about-purpose-label">Our Mission</h3>
+                  <ul class="about-purpose-list">
+                    <li>To distribute the best quality of product to our consumers.</li>
+                    <li>To become the choice of global partners for top quality brands.</li>
+                    <li>To best bridge the business process between brands and consumers.</li>
+                    <li>To conduct trustworthy business ethics.</li>
+                  </ul>
                 </div>
               </div>
             </div>
+
+            <section id="clients" class="clients-showcase" aria-label="Client companies">
+              <div class="clients-showcase-info">
+                <p class="clients-showcase-tagline">
+                  Trusted by the teams that keep industry moving
+                </p>
+                <p class="clients-showcase-description">
+                  We help businesses stay equipped with dependable products and
+                  responsive support.
+                </p>
+              </div>
+
+              @if ($clients->isNotEmpty())
+                <div class="clients-showcase-content">
+                  <div class="clients-marquee clients-showcase-marquee" role="group" aria-label="Client logos">
+                    <div id="clients-marquee" class="clients-track" role="list" aria-label="Client companies" aria-live="off">
+                      @foreach ($clients as $client)
+                        <div class="client-logo" role="listitem">
+                          <div class="client-logo-img">
+                            <img
+                              src="{{ $client->url() }}"
+                              srcset="{{ $client->variantSrcset() }}"
+                              sizes="160px"
+                              alt="{{ $client->alt }}"
+                              class="client-logo-image img-fade"
+                              loading="lazy"
+                              decoding="async"
+                              width="160"
+                              height="100"
+                            />
+                          </div>
+                        </div>
+                      @endforeach
+                    </div>
+                  </div>
+                  <div
+                    id="clients-static-list"
+                    class="clients-static"
+                    data-client-static-list
+                    role="list"
+                    aria-label="All client companies"
+                    hidden
+                  ></div>
+                  <div class="clients-mode-actions">
+                    <button
+                      type="button"
+                      class="clients-mode-link"
+                      data-client-show-all
+                      aria-expanded="false"
+                      aria-controls="clients-static-list"
+                    >
+                      See all clients
+                      <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </button>
+                    <button
+                      type="button"
+                      class="clients-mode-link"
+                      data-client-show-carousel
+                      aria-controls="clients-marquee"
+                      hidden
+                    >
+                      Back to carousel
+                      <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              @else
+                <div class="clients-showcase-content">
+                  <p class="clients-empty">Our client logos will be featured here soon.</p>
+                </div>
+              @endif
+            </section>
           </div>
         </section>
 
@@ -291,60 +327,113 @@
           data-bg-lazy="{{ media('images/bg/background-navy-07.webp') }}"
         >
           <div class="container">
-            <h2 class="section-title">Our Partners</h2>
+            <div class="partners-intro">
+              <p class="partners-eyebrow">A trusted network</p>
+              <h2 class="section-title">Our Partners</h2>
+              <p class="partners-description">
+                We work with trusted names in tools and industrial supplies, giving
+                your team dependable products and a more confident way to source
+                what keeps work moving.
+              </p>
+            </div>
             <div class="partners-grid">
               @foreach ($brands as $partner)
                 <a
-                    class="partner-card"
-                    href="{{ route('products.brand', ['brand' => $partner->slug]) }}"
-                    aria-label="View {{ $partner->name }} products"
+                  class="partner-card"
+                  href="{{ route('products.brand', ['brand' => $partner->slug]) }}"
+                  aria-label="View {{ $partner->name }} products"
                 >
-                    <div class="partner-logo">
-                        <div class="partner-logo-img">
-                            <img
-                                src="{{ media($partner->card_image) }}"
-                                alt="{{ $partner->card_alt }}"
-                                class="partner-logo-image"
-                                loading="lazy"
-                                decoding="async"
-                                width="130"
-                                height="130"
-                                data-fallback="{{ media($partner->card_image) }}"
-                            />
-                        </div>
+                  <div class="partner-logo">
+                    <div class="partner-logo-img">
+                      <img
+                        src="{{ media($partner->card_image) }}"
+                        alt="{{ $partner->card_alt }}"
+                        class="partner-logo-image"
+                        loading="lazy"
+                        decoding="async"
+                        width="130"
+                        height="130"
+                        data-fallback="{{ media($partner->card_image) }}"
+                      />
                     </div>
-                    <span class="partner-view-link">View Products</span>
+                  </div>
+                  <span class="partner-view-link">
+                    View Products
+                  </span>
                 </a>
               @endforeach
             </div>
           </div>
         </section>
 
-        <!-- Clients Section -->
-        <section id="clients" class="clients-section">
+        <!-- Why Choose Us Section -->
+        <section id="why-us" class="why-us-section">
           <div class="container">
-            <h2 class="section-title">Our Clients</h2>
-            <div class="clients-marquee">
-              <div class="clients-track">
-                @forelse ($clients as $client)
-                  <div class="client-logo">
-                    <div class="client-logo-img">
-                      <img
-                        src="{{ $client->url() }}"
-                        srcset="{{ $client->variantSrcset() }}"
-                        sizes="140px"
-                        alt="{{ $client->alt }}"
-                        class="client-logo-image img-fade"
-                        loading="lazy"
-                        decoding="async"
-                        width="140"
-                        height="100"
-                      />
-                    </div>
-                  </div>
-                @empty
-                  <p class="clients-empty">No clients yet.</p>
-                @endforelse
+            <h2 class="section-title">Why Choose Us</h2>
+            <p class="section-intro">
+              We Help Procurement and Operations Teams Secure the Right Supplies
+              Quickly and Reliably.
+            </p>
+            <div class="row">
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="value-card">
+                  <div class="value-icon"><i class="fas fa-bolt"></i></div>
+                  <h3>Quick Response</h3>
+                  <p>
+                    Inquiries and quotations are addressed promptly, ensuring timely
+                    service.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="value-card">
+                  <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
+                  <h3>Trusted Products</h3>
+                  <p>
+                    Provide high-quality products to meet your industrial needs.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="value-card">
+                  <div class="value-icon"><i class="fas fa-truck-fast"></i></div>
+                  <h3>Time Delivery</h3>
+                  <p>
+                    Dependable shipping to ensure optimal efficiency of your
+                    operations.
+                  </p>
+                </div>
+              </div>
+              <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="value-card">
+                  <div class="value-icon"><i class="fas fa-handshake"></i></div>
+                  <h3>Long-Term Partnership</h3>
+                  <p>
+                    Sustaining valuable business relationships through reliable and
+                    professional service.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="cta-strip">
+              <div class="cta-strip-text">
+                <h3>Need a quick quote for your project or operational needs?</h3>
+                <p>
+                  Our team is ready to help you choose the right products for your
+                  requirements.
+                </p>
+              </div>
+              <div class="cta-strip-actions">
+                <a href="#contact" class="cta-strip-btn cta-strip-btn-primary"
+                  >Contact Us</a
+                >
+                <a
+                  href="https://wa.me/6281140000223"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="cta-strip-btn cta-strip-btn-secondary"
+                  >Chat WhatsApp</a
+                >
               </div>
             </div>
           </div>
@@ -435,85 +524,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Why Choose Us Section -->
-        <section id="why-us" class="why-us-section">
-          <div class="container">
-            <h2 class="section-title">Why Choose Us</h2>
-            <p class="section-intro">
-              We Help Procurement and Operations Teams Secure the Right Supplies
-              Quickly and Reliably.
-            </p>
-            <div class="row">
-              <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="value-card">
-                  <div class="value-icon"><i class="fas fa-bolt"></i></div>
-                  <h3>Quick Response</h3>
-                  <p>
-                    Inquiries and quotations are addressed promptly, ensuring timely
-                    service.
-                  </p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="value-card">
-                  <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
-                  <h3>Trusted Products</h3>
-                  <p>
-                    Provide high-quality products to meet your industrial needs.
-                  </p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="value-card">
-                  <div class="value-icon"><i class="fas fa-truck-fast"></i></div>
-                  <h3>Time Delivery</h3>
-                  <p>
-                    Dependable shipping to ensure optimal efficiency of your
-                    operations.
-                  </p>
-                </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-12">
-                <div class="value-card">
-                  <div class="value-icon"><i class="fas fa-handshake"></i></div>
-                  <h3>Long-Term Partnership</h3>
-                  <p>
-                    Sustaining valuable business relationships through reliable and
-                    professional service.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- CTA Strip -->
-        <section class="cta-strip-section">
-          <div class="container">
-            <div class="cta-strip">
-              <div class="cta-strip-text">
-                <h3>Need a quick quote for your project or operational needs?</h3>
-                <p>
-                  Our team is ready to help you choose the right products for your
-                  requirements.
-                </p>
-              </div>
-              <div class="cta-strip-actions">
-                <a href="#contact" class="cta-strip-btn cta-strip-btn-primary"
-                  >Contact Us</a
-                >
-                <a
-                  href="https://wa.me/6281140000223"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="cta-strip-btn cta-strip-btn-secondary"
-                  >Chat WhatsApp</a
-                >
-              </div>
-            </div>
-          </div>
-        </section>
 
         <!-- Recent Articles Section -->
         <!-- <section id="recent-articles" class="recent-articles-section">
