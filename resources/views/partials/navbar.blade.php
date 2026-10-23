@@ -23,7 +23,7 @@
         </div>
     </nav>  
 @else
-    <nav class="navbar navbar-expand-lg navbar-light fixed-top {{ request()->routeIs('home') ? 'navbar--hero' : '' }}">
+    <nav class="navbar navbar-expand-lg navbar-light {{ request()->routeIs('products.*') ? 'navbar--catalog' : 'fixed-top' }} {{ request()->routeIs('home') ? 'navbar--hero' : '' }}">
         <div class="container">
             <a class="navbar-brand" href="{{ $home }}#home">
                 <div class="logo">

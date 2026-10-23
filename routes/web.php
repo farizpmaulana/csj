@@ -15,9 +15,10 @@ $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
 Route::get('/', HomeController::class)->name('home');
 
-Route::get('/products/{brand}', [ProductController::class, 'brand'])
-    ->where('brand', $slug)
-    ->name('products.brand');
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+Route::get('/products/{brand}', fn (string $brand) => redirect()->route('products.index', ['brand' => [$brand]]))
+    ->where('brand', $slug);
 
 Route::get('/products/{brand}/{product}', [ProductController::class, 'show'])
     ->where(['brand' => $slug, 'product' => $slug])

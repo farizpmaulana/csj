@@ -186,13 +186,13 @@
               <div class="about-overview">
                 <h2 class="section-title about-section-title">About Us</h2>
                 <h3 class="about-panel-headline">
-                  Industrial supply, built on trust
+                  Sumato, Bosch, Buccheri Industrial Official Distributor
                 </h3>
                 <p class="about-panel-sub">
-                  As an official distributor of Sumato, Bosch, and Buccheri,
                   PT Cahaya Sarange Jaya connects businesses with dependable
-                  industrial products, practical guidance, and responsive support
-                  to keep projects and daily operations moving.
+                  products from Sumato, Bosch, and Buccheri. We combine quality
+                  products, practical product guidance, and responsive service
+                  to help procurement and operations teams move with confidence.
                 </p>
                 <div class="about-stats" aria-label="Company network statistics">
                   <div class="about-stat">
@@ -267,7 +267,7 @@
                             <img
                               src="{{ $client->url() }}"
                               srcset="{{ $client->variantSrcset() }}"
-                              sizes="160px"
+                              sizes="(min-width: 1200px) 160px, (min-width: 768px) 28vw, 45vw"
                               alt="{{ $client->alt }}"
                               class="client-logo-image img-fade"
                               loading="lazy"
@@ -296,18 +296,17 @@
                       aria-expanded="false"
                       aria-controls="clients-static-list"
                     >
-                      See all clients
-                      <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                      See all clients <span aria-hidden="true">&rarr;</span>
                     </button>
                     <button
                       type="button"
                       class="clients-mode-link"
                       data-client-show-carousel
-                      aria-controls="clients-marquee"
+                      aria-expanded="true"
+                      aria-controls="clients-static-list"
                       hidden
                     >
-                      Back to carousel
-                      <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                      Back to carousel <span aria-hidden="true">&larr;</span>
                     </button>
                   </div>
                 </div>
@@ -328,40 +327,111 @@
         >
           <div class="container">
             <div class="partners-intro">
-              <p class="partners-eyebrow">A trusted network</p>
               <h2 class="section-title">Our Partners</h2>
               <p class="partners-description">
-                We work with trusted names in tools and industrial supplies, giving
-                your team dependable products and a more confident way to source
-                what keeps work moving.
+                We are proud to work with trusted partners as an official distributor of quality products for industrial needs.
               </p>
             </div>
-            <div class="partners-grid">
+
+            <div class="partners-brand-selectors" role="group" aria-label="Filter product showcase by brand">
               @foreach ($brands as $partner)
-                <a
-                  class="partner-card"
-                  href="{{ route('products.brand', ['brand' => $partner->slug]) }}"
-                  aria-label="View {{ $partner->name }} products"
+                <button
+                  class="partners-brand-selector"
+                  type="button"
+                  data-partner-brand-filter="{{ $partner->slug }}"
+                  aria-pressed="false"
+                  aria-label="Show {{ $partner->name }} products"
                 >
-                  <div class="partner-logo">
-                    <div class="partner-logo-img">
-                      <img
-                        src="{{ media($partner->card_image) }}"
-                        alt="{{ $partner->card_alt }}"
-                        class="partner-logo-image"
-                        loading="lazy"
-                        decoding="async"
-                        width="130"
-                        height="130"
-                        data-fallback="{{ media($partner->card_image) }}"
-                      />
-                    </div>
-                  </div>
-                  <span class="partner-view-link">
-                    View Products
-                  </span>
-                </a>
+                  <img
+                    class="partners-brand-logo {{ in_array($partner->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partners-brand-logo-wide' : 'partners-brand-logo-compact' }}"
+                    src="{{ media($partner->card_image) }}"
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </button>
               @endforeach
+            </div>
+
+            <div class="partner-product-showcase" data-partner-product-showcase>
+              <div class="partner-product-showcase-heading">
+                <div>
+                  <h3>A closer look at products from our partners</h3>
+                </div>
+                <div class="partner-product-showcase-actions">
+                  <div class="partner-product-carousel-controls" data-partner-product-controls>
+                    <button type="button" data-partner-product-previous aria-label="Previous products" disabled>
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m12.5 4.5-5.5 5.5 5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                    <button type="button" data-partner-product-next aria-label="Next products" disabled>
+                      <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              @if ($partnerProducts->isNotEmpty())
+                <div class="partner-product-grid" data-partner-product-track role="list" aria-label="Products">
+                  @php
+                    $brandProductIndexes = [];
+                  @endphp
+                  @foreach ($partnerProducts as $product)
+                    @php
+                      $brandProductIndex = $brandProductIndexes[$product->brand_id] ?? 0;
+                      $brandProductIndexes[$product->brand_id] = $brandProductIndex + 1;
+                      $showByDefault = in_array($product->id, $initialShowcaseProductIds, true);
+                    @endphp
+                    <a
+                      class="partner-product-card"
+                      href="{{ $product->url }}"
+                      data-product-brand="{{ $product->brand->slug }}"
+                      data-product-index="{{ $brandProductIndex }}"
+                      {{ $showByDefault ? '' : 'hidden' }}
+                      role="listitem"
+                      aria-label="{{ $product->name }} by {{ $product->brand->name }}"
+                    >
+                      <span class="partner-product-card-image">
+                        <img
+                          src="{{ media($product->card_image) }}"
+                          alt="{{ $product->card_alt }}"
+                          width="480"
+                          height="320"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                        <span class="partner-product-brand-badge">
+                          <img
+                            class="partner-product-brand-logo {{ in_array($product->brand->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partner-product-brand-logo-wide' : 'partner-product-brand-logo-compact' }}"
+                            src="{{ media($product->brand->card_image) }}"
+                            alt=""
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        </span>
+                        <span class="partner-product-card-arrow" aria-hidden="true">
+                          <svg viewBox="0 0 20 20" fill="none">
+                            <path d="M5 15 15 5M6 5h9v9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </span>
+                      </span>
+                      <span class="partner-product-card-title">{{ $product->name }}</span>
+                    </a>
+                  @endforeach
+                </div>
+                <p class="partner-product-empty" data-partner-product-empty hidden>
+                  No products are currently listed for this brand.
+                </p>
+              @else
+                <p class="partner-product-empty">
+                  Products will be added to the showcase soon.
+                </p>
+              @endif
+              <div class="partner-product-showcase-footer">
+                <a class="partner-product-showcase-link" href="{{ route('products.index') }}">
+                  <span class="partner-product-showcase-link-label">Browse full catalog</span>
+                  <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -415,6 +485,12 @@
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        <!-- CTA Strip -->
+        <section class="cta-strip-section">
+          <div class="container">
             <div class="cta-strip">
               <div class="cta-strip-text">
                 <h3>Need a quick quote for your project or operational needs?</h3>
@@ -526,7 +602,7 @@
         </div>
 
         <!-- Recent Articles Section -->
-        <!-- <section id="recent-articles" class="recent-articles-section">
+        <section id="recent-articles" class="recent-articles-section">
           <div class="container">
             <div class="recent-articles-heading">
               <div>
@@ -540,35 +616,35 @@
             <div class="recent-articles-grid">
               @foreach ($latestArticles as $article)
                 <a
-                    class="recent-article-card"
-                    href="{{ route('articles.show', ['article' => $article->slug]) }}"
+                  class="recent-article-card"
+                  href="{{ route('articles.show', ['article' => $article->slug]) }}"
                 >
-                    <div class="recent-article-image">
-                        <img
-                            src="{{ media($article->card_image) }}"
-                            alt="{{ $article->card_alt }}"
-                            loading="lazy"
-                            decoding="async"
-                            width="900"
-                            height="506"
-                        />
+                  <div class="recent-article-image">
+                    <img
+                      src="{{ media($article->card_image) }}"
+                      alt="{{ $article->card_alt }}"
+                      loading="lazy"
+                      decoding="async"
+                      width="900"
+                      height="506"
+                    />
+                  </div>
+                  <div class="recent-article-body">
+                    <div class="recent-article-meta">
+                      <span>{{ $article->category_label }}</span>
+                      <time datetime="{{ $article->published_at?->toDateString() }}">{{ $article->published_label }}</time>
                     </div>
-                    <div class="recent-article-body">
-                        <div class="recent-article-meta">
-                            <span>{{ $article->category_label }}</span
-                            ><time datetime="{{ $article->published_at?->toDateString() }}">{{ $article->published_label }}</time>
-                        </div>
-                        <h3>{{ $article->title }}</h3>
-                        <p>{{ $article->excerpt }}</p>
-                        <span class="recent-article-link"
-                            >Read more <span aria-hidden="true">&rarr;</span></span
-                        >
-                    </div>
+                    <h3>{{ $article->title }}</h3>
+                    <p>{{ $article->excerpt }}</p>
+                    <span class="recent-article-link">
+                      Read more <span aria-hidden="true">&rarr;</span>
+                    </span>
+                  </div>
                 </a>
               @endforeach
             </div>
           </div>
-        </section> -->
+        </section>
 
         <!-- Contact Section -->
         <section

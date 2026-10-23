@@ -36,10 +36,9 @@
                 <div class="footer-col">
                     <h3 class="footer-heading">Products</h3>
                     <ul class="footer-links">
+                        <li><a href="{{ route('products.index') }}">All Products</a></li>
                         @foreach (\App\Models\Brand::query()->visible()->ordered()->get() as $brand)
-                            <li>
-                                <a href="{{ route('products.brand', ['brand' => $brand->slug]) }}">{{ $brand->name }}</a>
-                            </li>
+                            <li><a href="{{ route('products.index', ['brand' => [$brand->slug]]) }}">{{ $brand->name }}</a></li>
                         @endforeach
                     </ul>
                 </div>

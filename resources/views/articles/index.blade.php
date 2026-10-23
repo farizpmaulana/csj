@@ -20,6 +20,9 @@
 @section('content')
     <header class="article-hero">
         <div class="container">
+            <a class="page-back-link page-back-link-light" href="{{ route('home') }}">
+                <span aria-hidden="true">&larr;</span> Back to Home
+            </a>
             <h1>Articles &amp; News</h1>
             <p>
                 Up-to-date information on industrial equipment, workplace safety, and other relevant topics
@@ -51,8 +54,8 @@
                     >
                         <div class="article-card-image">
                             <img
-                                src="{{ media($article->card_image) }}"
-                                alt="{{ $article->card_alt }}"
+                                src="{{ media($article->hero_image) }}"
+                                alt="{{ $article->hero_alt }}"
                                 loading="lazy"
                                 decoding="async"
                                 width="900"

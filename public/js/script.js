@@ -567,6 +567,80 @@ function initClientsMarquee() {
   });
 }
 
+function initPartnerProductFilter() {
+  const showcase = document.querySelector("[data-partner-product-showcase]");
+  if (!showcase) return;
+
+  const filters = [...showcase.parentElement.querySelectorAll("[data-partner-brand-filter]")];
+  const products = [...showcase.querySelectorAll("[data-product-brand]")];
+  const emptyState = showcase.querySelector("[data-partner-product-empty]");
+  const track = showcase.querySelector("[data-partner-product-track]");
+  const controls = showcase.querySelector("[data-partner-product-controls]");
+  const previousButton = showcase.querySelector("[data-partner-product-previous]");
+  const nextButton = showcase.querySelector("[data-partner-product-next]");
+
+  const visibleProducts = () => products.filter((product) => !product.hidden);
+
+  const updateCarouselControls = () => {
+    if (!track || !controls || !previousButton || !nextButton) return;
+
+    const canScroll = track.scrollWidth > track.clientWidth + 2;
+    controls.hidden = !canScroll;
+    previousButton.disabled = !canScroll || track.scrollLeft <= 2;
+    nextButton.disabled =
+      !canScroll || track.scrollLeft + track.clientWidth >= track.scrollWidth - 2;
+  };
+
+  const scrollCarousel = (direction) => {
+    if (!track) return;
+
+    const firstProduct = visibleProducts()[0];
+    if (!firstProduct) return;
+
+    const gap = Number.parseFloat(window.getComputedStyle(track).columnGap) || 16;
+    track.scrollBy({
+      left: direction * (firstProduct.getBoundingClientRect().width + gap),
+      behavior: "smooth",
+    });
+  };
+
+  filters.forEach((filter) => {
+    filter.addEventListener("click", () => {
+      const selectedBrand = filter.dataset.partnerBrandFilter;
+      let visibleProducts = 0;
+
+      filters.forEach((button) => {
+        const isSelected = button === filter;
+        button.classList.toggle("is-active", isSelected);
+        button.setAttribute("aria-pressed", String(isSelected));
+      });
+
+      products.forEach((product) => {
+        const shouldShow =
+          product.dataset.productBrand === selectedBrand &&
+          Number(product.dataset.productIndex) < 4;
+
+        product.hidden = !shouldShow;
+        if (shouldShow) visibleProducts += 1;
+      });
+
+      if (track) track.scrollTo({ left: 0, behavior: "smooth" });
+
+      if (emptyState) {
+        emptyState.hidden = visibleProducts > 0;
+      }
+
+      window.requestAnimationFrame(updateCarouselControls);
+    });
+  });
+
+  previousButton?.addEventListener("click", () => scrollCarousel(-1));
+  nextButton?.addEventListener("click", () => scrollCarousel(1));
+  track?.addEventListener("scroll", updateCarouselControls, { passive: true });
+  window.addEventListener("resize", updateCarouselControls);
+  window.requestAnimationFrame(updateCarouselControls);
+}
+
 function initGalleryModal() {
   const modalImage = document.querySelector("#galleryModalImage");
   const galleryModal = document.querySelector("#galleryModal");
@@ -623,13 +697,19 @@ function initMotionEffects() {
 
   const motionTargets = [
     ".section-title:not(.about-section-title)",
-    ".partners-grid .partner-card",
+    ".partners-description",
+    ".partners-brand-selector",
+    ".partner-product-showcase-heading",
+    ".partner-product-grid",
+    ".partner-product-showcase-footer",
     ".gallery-item",
     ".value-card",
     ".cta-strip",
     ".contact-list",
+    ".contact-item",
     ".office-block",
     ".contact-social-icons",
+    ".recent-article-card",
   ];
 
   motionTargets.forEach((selector) => {
@@ -637,6 +717,11 @@ function initMotionEffects() {
       element.classList.add("motion-reveal");
     });
   });
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    gsap.set(".motion-reveal", { autoAlpha: 1 });
+    return;
+  }
 
   const counterAnimation = () => {
     document
@@ -671,23 +756,46 @@ function initMotionEffects() {
     },
   );
 
-  gsap.utils.toArray(".section-title:not(.about-section-title)").forEach((title) => {
-    gsap.fromTo(
-      title,
-      { opacity: 0, y: 24 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        delay: 0.3,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: title,
-          start: "top 85%",
+  const revealOnScroll = (selector, directions = ["up"]) => {
+    gsap.utils.toArray(selector).forEach((element, index) => {
+      if (element.hidden) return;
+
+      const direction = directions[index % directions.length];
+      const offset = window.matchMedia("(max-width: 767px)").matches ? 22 : 34;
+      const from = { autoAlpha: 0, x: 0, y: 0 };
+
+      if (direction === "left") {
+        from.x = -offset;
+      } else {
+        from.y = offset;
+      }
+
+      gsap.fromTo(
+        element,
+        from,
+        {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          duration: 0.85,
+          delay: 0.18 + (index % 4) * 0.08,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: element,
+            start: "top 88%",
+            once: true,
+          },
         },
-      },
-    );
-  });
+      );
+    });
+  };
+
+  revealOnScroll(".section-title:not(.about-section-title)");
+  revealOnScroll(".partners-description, .partner-product-showcase-heading", ["up", "left"]);
+  revealOnScroll(".partners-brand-selector");
+  revealOnScroll(".partner-product-grid, .partner-product-showcase-footer", ["up", "left"]);
+  revealOnScroll(".recent-article-card");
+  revealOnScroll(".contact-item");
 
   window.ScrollTrigger.create({
     trigger: ".about-section",
@@ -701,9 +809,7 @@ function initMotionEffects() {
   const revealAboutElement = (element, direction, delay) => {
     const startPosition = direction === "left"
       ? { x: -sideSwipeDistance, y: 0 }
-      : direction === "right"
-        ? { x: sideSwipeDistance, y: 0 }
-        : { x: 0, y: 46 };
+      : { x: 0, y: 46 };
 
     const revealTimeline = gsap.timeline({
       delay,
@@ -736,7 +842,7 @@ function initMotionEffects() {
     revealAboutElement(element, "up", 0.48);
   });
   document.querySelectorAll(".about-purpose").forEach((element) => {
-    revealAboutElement(element, "right", 0.56);
+    revealAboutElement(element, "left", 0.56);
   });
   document.querySelectorAll(".clients-showcase").forEach((element) => {
     revealAboutElement(element, "up", 0.42);
@@ -844,6 +950,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.classList.add("js-img-fade");
   initImageLoading();
   initClientsMarquee();
+  initPartnerProductFilter();
   initImageFade();
   initBgLazyLoad();
   initBannerSlider();

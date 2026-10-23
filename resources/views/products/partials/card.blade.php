@@ -1,16 +1,16 @@
-<article class="catalog-card">
+<article class="catalog-card" data-product-search-card>
+    <a
+        class="catalog-card-cover-link"
+        href="{{ $product->url }}"
+        aria-label="View {{ $product->name }} details"
+    ></a>
     <div class="catalog-card-image">
-        <a
-            class="catalog-card-image-link"
-            href="{{ $product->url }}"
-        >
-            <img
-                src="{{ media($product->card_image) }}"
-                alt="{{ $product->card_alt }}"
-                loading="lazy"
-                decoding="async"
-            />
-        </a>
+        <img
+            src="{{ media($product->card_image) }}"
+            alt="{{ $product->card_alt }}"
+            loading="lazy"
+            decoding="async"
+        />
     </div>
     <div class="catalog-card-body">
         @if ($product->card_label)
