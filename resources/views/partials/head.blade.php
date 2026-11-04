@@ -15,7 +15,7 @@
     <meta name="description" content="{{ $description }}" />
     <meta name="author" content="{{ $siteSettings->company_name }}" />
     <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#1e3a8a" />
+    <meta name="theme-color" content="#022e54" />
     @if ($canonical)
         <link rel="canonical" href="{{ $canonical }}" />
     @endif

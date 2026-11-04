@@ -463,10 +463,9 @@ body {
 
 .article-detail-back:hover,
 .article-detail-back:focus-visible {
-  color: #1474b5;
+  color: var(--brand-primary);
   gap: 13px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
+  text-decoration: none;
 }
 
 .article-detail-back-top {

@@ -1062,7 +1062,7 @@ body {
 }
 
 .products-brand-details:hover {
-  color: #0b4774;
+  color: var(--brand-primary-dark);
   transform: translateX(3px);
 }
 

@@ -695,7 +695,15 @@ function initMotionEffects() {
   const { gsap } = window;
   gsap.registerPlugin(window.ScrollTrigger);
 
-  const motionTargets = [
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+
+  const revealOffset = window.matchMedia("(max-width: 767px)").matches
+    ? 24
+    : 36;
+
+  const revealSelectors = [
     ".section-title:not(.about-section-title)",
     ".partners-description",
     ".partners-brand-selector",
@@ -705,23 +713,16 @@ function initMotionEffects() {
     ".gallery-item",
     ".value-card",
     ".cta-strip",
-    ".contact-list",
     ".contact-item",
     ".office-block",
     ".contact-social-icons",
     ".recent-article-card",
+    ".about-overview",
+    ".about-visual",
+    ".about-purpose",
+    ".clients-showcase",
+    ".partners-grid .partner-card",
   ];
-
-  motionTargets.forEach((selector) => {
-    document.querySelectorAll(selector).forEach((element) => {
-      element.classList.add("motion-reveal");
-    });
-  });
-
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    gsap.set(".motion-reveal", { autoAlpha: 1 });
-    return;
-  }
 
   const counterAnimation = () => {
     document
@@ -743,6 +744,58 @@ function initMotionEffects() {
       });
   };
 
+  const sectionReveals = new Map();
+
+  gsap.utils.toArray(revealSelectors.join(",")).forEach((element) => {
+    if (element.hidden) return;
+
+    const section = element.closest("section") || element.parentElement;
+    if (!section) return;
+
+    if (!sectionReveals.has(section)) {
+      sectionReveals.set(section, []);
+    }
+
+    sectionReveals.get(section).push(element);
+  });
+
+  sectionReveals.forEach((elements, section) => {
+    if (prefersReducedMotion) return;
+
+    elements.forEach((element) => {
+      element.classList.add("motion-reveal", "motion-revealing");
+    });
+
+    gsap.set(elements, { autoAlpha: 0, x: 0, y: revealOffset });
+
+    window.ScrollTrigger.create({
+      trigger: section,
+      start: "top 82%",
+      once: true,
+      onEnter: () => {
+        gsap.to(elements, {
+          autoAlpha: 1,
+          x: 0,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          delay: 0.3,
+          stagger: 0.08,
+          overwrite: true,
+          onComplete: () => {
+            elements.forEach((element) => {
+              element.classList.remove("motion-reveal", "motion-revealing");
+            });
+
+            if (section.querySelector(".about-stat strong[data-target]")) {
+              counterAnimation();
+            }
+          },
+        });
+      },
+    });
+  });
+
   gsap.fromTo(
     ".banner-nav-btn, .banner-progress-bar",
     { opacity: 0, y: 14 },
@@ -753,170 +806,6 @@ function initMotionEffects() {
       stagger: 0.08,
       ease: "power2.out",
       delay: 0.3,
-    },
-  );
-
-  const revealOnScroll = (selector, directions = ["up"]) => {
-    gsap.utils.toArray(selector).forEach((element, index) => {
-      if (element.hidden) return;
-
-      const direction = directions[index % directions.length];
-      const offset = window.matchMedia("(max-width: 767px)").matches ? 22 : 34;
-      const from = { autoAlpha: 0, x: 0, y: 0 };
-
-      if (direction === "left") {
-        from.x = -offset;
-      } else {
-        from.y = offset;
-      }
-
-      gsap.fromTo(
-        element,
-        from,
-        {
-          autoAlpha: 1,
-          x: 0,
-          y: 0,
-          duration: 0.85,
-          delay: 0.18 + (index % 4) * 0.08,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: element,
-            start: "top 88%",
-            once: true,
-          },
-        },
-      );
-    });
-  };
-
-  revealOnScroll(".section-title:not(.about-section-title)");
-  revealOnScroll(".partners-description, .partner-product-showcase-heading", ["up", "left"]);
-  revealOnScroll(".partners-brand-selector");
-  revealOnScroll(".partner-product-grid, .partner-product-showcase-footer", ["up", "left"]);
-  revealOnScroll(".recent-article-card");
-  revealOnScroll(".contact-item");
-
-  window.ScrollTrigger.create({
-    trigger: ".about-section",
-    start: "top 72%",
-    once: true,
-    onEnter: counterAnimation,
-  });
-
-  const smallScreen = window.matchMedia("(max-width: 767px)").matches;
-  const sideSwipeDistance = smallScreen ? 34 : 58;
-  const revealAboutElement = (element, direction, delay) => {
-    const startPosition = direction === "left"
-      ? { x: -sideSwipeDistance, y: 0 }
-      : { x: 0, y: 46 };
-
-    const revealTimeline = gsap.timeline({
-      delay,
-      scrollTrigger: {
-        trigger: element,
-        start: "top 84%",
-        once: true,
-      },
-    });
-
-    revealTimeline
-      .fromTo(
-        element,
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.48, ease: "power1.out" },
-        0,
-      )
-      .fromTo(
-        element,
-        startPosition,
-        { x: 0, y: 0, duration: 1.45, ease: "power3.out" },
-        0,
-      );
-  };
-
-  document.querySelectorAll(".about-overview").forEach((element) => {
-    revealAboutElement(element, "left", 0.4);
-  });
-  document.querySelectorAll(".about-visual").forEach((element) => {
-    revealAboutElement(element, "up", 0.48);
-  });
-  document.querySelectorAll(".about-purpose").forEach((element) => {
-    revealAboutElement(element, "left", 0.56);
-  });
-  document.querySelectorAll(".clients-showcase").forEach((element) => {
-    revealAboutElement(element, "up", 0.42);
-  });
-
-  gsap.utils.toArray(".partners-grid .partner-card").forEach((card, index) => {
-    gsap.fromTo(
-      card,
-      { autoAlpha: 0, y: 34, scale: 0.98 },
-      {
-        autoAlpha: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        delay: 0.3 + (index % 4) * 0.1,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: card,
-          start: "top 86%",
-          once: true,
-        },
-      },
-    );
-  });
-
-  gsap.fromTo(
-    ".gallery-item",
-    { opacity: 0, y: 30, scale: 0.97 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.8,
-      delay: 0.3,
-      ease: "power3.out",
-      stagger: 0,
-      scrollTrigger: {
-        trigger: ".gallery-section",
-        start: "top 78%",
-      },
-    },
-  );
-
-  gsap.fromTo(
-    ".value-card, .cta-strip",
-    { opacity: 0, y: 28 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      stagger: 0.08,
-      ease: "power3.out",
-      delay: 0.3,
-      scrollTrigger: {
-        trigger: ".why-us-section, .cta-strip-section",
-        start: "top 82%",
-      },
-    },
-  );
-
-  gsap.fromTo(
-    ".contact-list, .office-block, .contact-social-icons",
-    { opacity: 0, y: 24 },
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.7,
-      delay: 0.3,
-      stagger: 0.12,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: ".contact-section",
-        start: "top 78%",
-      },
     },
   );
 

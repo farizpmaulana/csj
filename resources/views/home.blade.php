@@ -97,7 +97,7 @@
                 <a class="hero-cta" href="#about">Discover More <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
               </div>
             </div>
-            <div class="banner-slide banner-slide--fill" style="--hero-shade: 0.24">
+            <div class="banner-slide banner-slide--fill" style="--hero-shade: 0.72">
               <picture>
                 <source
                   type="image/avif"
@@ -186,13 +186,13 @@
               <div class="about-overview">
                 <h2 class="section-title about-section-title">About Us</h2>
                 <h3 class="about-panel-headline">
-                  Sumato, Bosch, Buccheri Industrial Official Distributor
+                  Official Distributor of Sumato, Bosch, and Buccheri Industrial
                 </h3>
                 <p class="about-panel-sub">
                   PT Cahaya Sarange Jaya connects businesses with dependable
-                  products from Sumato, Bosch, and Buccheri. We combine quality
-                  products, practical product guidance, and responsive service
-                  to help procurement and operations teams move with confidence.
+                  products from Sumato, Bosch, and Buccheri. We pair quality
+                  products with practical guidance and responsive service, so
+                  your teams can move with confidence.
                 </p>
                 <div class="about-stats" aria-label="Company network statistics">
                   <div class="about-stat">
@@ -227,8 +227,8 @@
                   </div>
                   <h3 class="about-purpose-label">Our Vision</h3>
                   <p class="about-purpose-text">
-                    To be a fast and trustworthy one-stop goods supplier for
-                    companies around the world.
+                    To be a fast, trustworthy one-stop supplier of industrial
+                    goods for companies around the world.
                   </p>
                 </div>
                 <div class="about-purpose-card about-purpose-mission">
@@ -237,10 +237,10 @@
                   </div>
                   <h3 class="about-purpose-label">Our Mission</h3>
                   <ul class="about-purpose-list">
-                    <li>To distribute the best quality of product to our consumers.</li>
-                    <li>To become the choice of global partners for top quality brands.</li>
-                    <li>To best bridge the business process between brands and consumers.</li>
-                    <li>To conduct trustworthy business ethics.</li>
+                    <li>To deliver top-quality products to our customers.</li>
+                    <li>To become the first choice of global partners for top-quality brands.</li>
+                    <li>To connect brands and customers through a smooth business process.</li>
+                    <li>To do business with trust and integrity.</li>
                   </ul>
                 </div>
               </div>
@@ -252,7 +252,7 @@
                   Trusted by the teams that keep industry moving
                 </p>
                 <p class="clients-showcase-description">
-                  We help businesses stay equipped with dependable products and
+                  We keep businesses equipped with dependable products and
                   responsive support.
                 </p>
               </div>
@@ -312,7 +312,7 @@
                 </div>
               @else
                 <div class="clients-showcase-content">
-                  <p class="clients-empty">Our client logos will be featured here soon.</p>
+                  <p class="clients-empty">We will feature our client logos here soon.</p>
                 </div>
               @endif
             </section>
@@ -329,7 +329,8 @@
             <div class="partners-intro">
               <h2 class="section-title">Our Partners</h2>
               <p class="partners-description">
-                We are proud to work with trusted partners as an official distributor of quality products for industrial needs.
+                We are proud to work with trusted partners as an official
+                distributor of quality products for industry.
               </p>
             </div>
 
@@ -356,7 +357,7 @@
             <div class="partner-product-showcase" data-partner-product-showcase>
               <div class="partner-product-showcase-heading">
                 <div>
-                  <h3>A closer look at products from our partners</h3>
+                  <h3>A closer look at our partners' products</h3>
                 </div>
                 <div class="partner-product-showcase-actions">
                   <div class="partner-product-carousel-controls" data-partner-product-controls>
@@ -423,7 +424,7 @@
                 </p>
               @else
                 <p class="partner-product-empty">
-                  Products will be added to the showcase soon.
+                  We will add products to the showcase soon.
                 </p>
               @endif
               <div class="partner-product-showcase-footer">
@@ -441,8 +442,8 @@
           <div class="container">
             <h2 class="section-title">Why Choose Us</h2>
             <p class="section-intro">
-              We Help Procurement and Operations Teams Secure the Right Supplies
-              Quickly and Reliably.
+              We help procurement and operations teams get the right supplies
+              quickly, and reliably.
             </p>
             <div class="row">
               <div class="col-lg-3 col-md-6 col-sm-12">
@@ -450,8 +451,8 @@
                   <div class="value-icon"><i class="fas fa-bolt"></i></div>
                   <h3>Quick Response</h3>
                   <p>
-                    Inquiries and quotations are addressed promptly, ensuring timely
-                    service.
+                    We answer inquiries and quotations without delay, so your
+                    project keeps moving.
                   </p>
                 </div>
               </div>
@@ -460,17 +461,18 @@
                   <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
                   <h3>Trusted Products</h3>
                   <p>
-                    Provide high-quality products to meet your industrial needs.
+                    We supply high-quality industrial products that meet your
+                    specifications.
                   </p>
                 </div>
               </div>
               <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="value-card">
                   <div class="value-icon"><i class="fas fa-truck-fast"></i></div>
-                  <h3>Time Delivery</h3>
+                  <h3>On-Time Delivery</h3>
                   <p>
-                    Dependable shipping to ensure optimal efficiency of your
-                    operations.
+                    We ship on schedule, so your operations run without
+                    interruption.
                   </p>
                 </div>
               </div>
@@ -479,8 +481,8 @@
                   <div class="value-icon"><i class="fas fa-handshake"></i></div>
                   <h3>Long-Term Partnership</h3>
                   <p>
-                    Sustaining valuable business relationships through reliable and
-                    professional service.
+                    We build lasting relationships through reliable, professional
+                    service.
                   </p>
                 </div>
               </div>
