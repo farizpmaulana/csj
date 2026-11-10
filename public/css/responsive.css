@@ -80,9 +80,9 @@
 
 /* ===== RESPONSIVE NAVBAR ===== */
 .navbar {
-  padding: var(--space-md) 0;
-  min-height: 5rem; /* 80px */
-  max-height: 5rem;
+  padding: 0.85rem 0;
+  min-height: 4.25rem; /* 68px */
+  max-height: 4.25rem;
   background: rgba(255 255 255 0.7) !important; /* Lebih transparan */
   backdrop-filter: blur(8px) !important; /* Efek blur yang lebih halus */
   -webkit-backdrop-filter: blur(8px) !important; /* Support untuk Safari */
@@ -98,28 +98,28 @@
 }
 
 .navbar .container {
-  height: 3.125rem; /* 50px */
-  max-height: 3.125rem;
+  height: 2.65625rem; /* 42.5px */
+  max-height: 2.65625rem;
 }
 
 .navbar-brand {
-  height: 3.125rem;
-  max-height: 3.125rem;
+  height: 2.65625rem;
+  max-height: 2.65625rem;
   width: 8.59375rem; /* 137.5px */
   min-width: 8.59375rem;
 }
 
 .logo {
-  height: 3.125rem;
-  max-height: 3.125rem;
+  height: 2.65625rem;
+  max-height: 2.65625rem;
   width: 8.59375rem; /* 137.5px */
   min-width: 8.59375rem;
 }
 
 .logo-image {
-  width: 8.59375rem; /* 137.5px */
-  height: 4.296875rem; /* 68.75px */
-  top: -0.4296875rem; /* -6.875px */
+  width: 7.3046875rem; /* 116.875px */
+  height: 3.65234375rem; /* 58.4375px */
+  top: -0.365234375rem; /* -5.84375px */
   left: 0;
 }
 
@@ -305,18 +305,18 @@
   }
 
   .logo-image {
-    width: 10rem; /* 160px */
-    height: 10rem;
-    top: -3.4375rem; /* -55px */
-    left: -2.5rem; /* -40px (disesuaikan untuk 20px ke kanan) */
+    width: 8.5rem; /* 136px */
+    height: 8.5rem;
+    top: -2.921875rem; /* -46.75px */
+    left: -2.125rem; /* -34px */
   }
 }
 
 @media (max-width: 768px) {
   .navbar {
-    padding: var(--space-sm) 0;
-    min-height: 4.375rem; /* 70px */
-    max-height: 4.375rem;
+    padding: 0.425rem 0;
+    min-height: 3.71875rem; /* 59.5px */
+    max-height: 3.71875rem;
     background: rgba(
       255,
       255,
@@ -328,21 +328,21 @@
   }
 
   .navbar .container {
-    height: 2.875rem; /* 46px */
-    max-height: 2.875rem;
+    height: 2.44375rem; /* 39.1px */
+    max-height: 2.44375rem;
   }
 
   .navbar-brand,
   .logo {
-    height: 2.875rem;
-    max-height: 2.875rem;
+    height: 2.44375rem;
+    max-height: 2.44375rem;
   }
 
   .logo-image {
-    width: 9.375rem; /* 150px */
-    height: 9.375rem;
-    top: -3.125rem; /* -50px */
-    left: -1.875rem; /* -30px (disesuaikan untuk 20px ke kanan) */
+    width: 7.96875rem; /* 127.5px */
+    height: 7.96875rem;
+    top: -2.65625rem; /* -42.5px */
+    left: -1.59375rem; /* -25.5px */
   }
 
   .company-name {
@@ -375,9 +375,9 @@
 
 @media (max-width: 576px) {
   .navbar {
-    padding: var(--space-xs) 0;
-    min-height: 4.0625rem; /* 65px */
-    max-height: 4.0625rem;
+    padding: 0.2125rem 0;
+    min-height: 3.453125rem; /* 55.25px */
+    max-height: 3.453125rem;
     background: rgba(
       255,
       255,
@@ -389,23 +389,23 @@
   }
 
   .navbar .container {
-    height: 2.8125rem; /* 45px */
-    max-height: 2.8125rem;
+    height: 2.390625rem; /* 38.25px */
+    max-height: 2.390625rem;
   }
 
   .navbar-brand,
   .logo {
-    height: 2.8125rem;
-    max-height: 2.8125rem;
+    height: 2.390625rem;
+    max-height: 2.390625rem;
     width: 2.1875rem; /* 35px */
     min-width: 2.1875rem;
   }
 
   .logo-image {
-    width: 7.5rem; /* 120px */
-    height: 7.5rem;
-    top: -2.1875rem; /* -35px */
-    left: -0.625rem; /* -10px (disesuaikan untuk 20px ke kanan) */
+    width: 6.375rem; /* 102px */
+    height: 6.375rem;
+    top: -1.859375rem; /* -29.75px */
+    left: -0.53125rem; /* -8.5px */
   }
 
   .company-name {
@@ -449,9 +449,9 @@
 
 @media (max-width: 480px) {
   .navbar {
-    padding: 0.5rem 0;
-    min-height: 3.75rem; /* 60px */
-    max-height: 3.75rem;
+    padding: 0.425rem 0;
+    min-height: 3.1875rem; /* 51px */
+    max-height: 3.1875rem;
     background: rgba(
       255,
       255,
@@ -465,22 +465,22 @@
   }
 
   .navbar .container {
-    height: 2.75rem; /* 44px */
-    max-height: 2.75rem;
+    height: 2.3375rem; /* 37.4px */
+    max-height: 2.3375rem;
   }
 
   .navbar-brand,
   .logo {
-    height: 2.75rem;
-    max-height: 2.75rem;
+    height: 2.3375rem;
+    max-height: 2.3375rem;
     width: 1.875rem; /* 30px */
     min-width: 1.875rem;
   }
 
   .logo-image {
-    width: 6.25rem; /* 100px */
-    height: 6.25rem;
-    top: -1.875rem; /* -30px */
+    width: 5.3125rem; /* 85px */
+    height: 5.3125rem;
+    top: -1.59375rem; /* -25.5px */
     left: 0rem; /* 0px (disesuaikan untuk 20px ke kanan) */
   }
 
@@ -653,4 +653,9 @@
   .about-stats {
     margin-bottom: 1.75rem;
   }
+}
+
+body:has(.hero-section) #about .about-section-title {
+  font-size: var(--about-type-display);
+  line-height: 1.15;
 }

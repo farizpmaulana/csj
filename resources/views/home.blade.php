@@ -223,25 +223,29 @@
               <div class="about-purpose">
                 <div class="about-purpose-card about-purpose-vision">
                   <div class="about-purpose-icon">
-                    <i class="fas fa-arrow-up-right-from-square" aria-hidden="true"></i>
+                    <i class="fas fa-eye" aria-hidden="true"></i>
                   </div>
-                  <h3 class="about-purpose-label">Our Vision</h3>
-                  <p class="about-purpose-text">
-                    To be a fast, trustworthy one-stop supplier of industrial
-                    goods for companies around the world.
-                  </p>
+                  <div class="about-purpose-content">
+                    <h3 class="about-purpose-label">Our Vision</h3>
+                    <p class="about-purpose-text">
+                      To be a fast, trustworthy one-stop supplier of industrial
+                      goods for companies around the world.
+                    </p>
+                  </div>
                 </div>
                 <div class="about-purpose-card about-purpose-mission">
                   <div class="about-purpose-icon">
-                    <i class="fas fa-layer-group" aria-hidden="true"></i>
+                    <i class="fas fa-bullseye" aria-hidden="true"></i>
                   </div>
-                  <h3 class="about-purpose-label">Our Mission</h3>
-                  <ul class="about-purpose-list">
-                    <li>To deliver top-quality products to our customers.</li>
-                    <li>To become the first choice of global partners for top-quality brands.</li>
-                    <li>To connect brands and customers through a smooth business process.</li>
-                    <li>To do business with trust and integrity.</li>
-                  </ul>
+                  <div class="about-purpose-content">
+                    <h3 class="about-purpose-label">Our Mission</h3>
+                    <ul class="about-purpose-list">
+                      <li>To deliver top-quality products to our customers.</li>
+                      <li>To become the first choice of global partners for top-quality brands.</li>
+                      <li>To connect brands and customers through a smooth business process.</li>
+                      <li>To do business with trust and integrity.</li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
@@ -326,40 +330,57 @@
           data-bg-lazy="{{ media('images/bg/background-navy-07.webp') }}"
         >
           <div class="container">
-            <div class="partners-intro">
-              <h2 class="section-title">Our Partners</h2>
-              <p class="partners-description">
-                We are proud to work with trusted partners as an official
-                distributor of quality products for industry.
-              </p>
-            </div>
+            <div class="partners-header">
+              <div class="partners-intro">
+                <p class="partners-eyebrow">Our Partners</p>
+                <h2 class="partners-headline">
+                  Trusted Partnerships
+                  <span>for Better Solutions</span>
+                </h2>
+                <p class="partners-description">
+                  We are proud to work with trusted partners as an official
+                  distributor of quality products for industry.
+                </p>
+              </div>
 
-            <div class="partners-brand-selectors" role="group" aria-label="Filter product showcase by brand">
-              @foreach ($brands as $partner)
-                <button
-                  class="partners-brand-selector"
-                  type="button"
-                  data-partner-brand-filter="{{ $partner->slug }}"
-                  aria-pressed="false"
-                  aria-label="Show {{ $partner->name }} products"
-                >
-                  <img
-                    class="partners-brand-logo {{ in_array($partner->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partners-brand-logo-wide' : 'partners-brand-logo-compact' }}"
-                    src="{{ media($partner->card_image) }}"
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </button>
-              @endforeach
+              <div class="partners-brand-panel">
+                <div class="partners-brand-selectors" role="group" aria-label="Filter product showcase by brand">
+                  @foreach ($brands as $partner)
+                    <button
+                      class="partners-brand-selector"
+                      type="button"
+                      data-partner-brand-filter="{{ $partner->slug }}"
+                      aria-pressed="false"
+                      aria-label="Show {{ $partner->name }} products"
+                    >
+                      <img
+                        class="partners-brand-logo {{ in_array($partner->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partners-brand-logo-wide' : 'partners-brand-logo-compact' }}"
+                        src="{{ media($partner->card_image) }}"
+                        alt=""
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </button>
+                  @endforeach
+                </div>
+              </div>
             </div>
 
             <div class="partner-product-showcase" data-partner-product-showcase>
               <div class="partner-product-showcase-heading">
-                <div>
-                  <h3>A closer look at our partners' products</h3>
+                <div class="partner-product-showcase-title">
+                  <h3>Our Partners' Products</h3>
                 </div>
                 <div class="partner-product-showcase-actions">
+                  <a class="partner-product-showcase-link" href="{{ route('products.index') }}">
+                    <span class="partner-product-showcase-link-label">Browse full catalog</span>
+                    <span aria-hidden="true">&rarr;</span>
+                  </a>
+                </div>
+              </div>
+
+              @if ($partnerProducts->isNotEmpty())
+                <div class="partner-product-carousel">
                   <div class="partner-product-carousel-controls" data-partner-product-controls>
                     <button type="button" data-partner-product-previous aria-label="Previous products" disabled>
                       <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m12.5 4.5-5.5 5.5 5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
@@ -368,56 +389,54 @@
                       <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
                     </button>
                   </div>
-                </div>
-              </div>
-
-              @if ($partnerProducts->isNotEmpty())
-                <div class="partner-product-grid" data-partner-product-track role="list" aria-label="Products">
-                  @php
-                    $brandProductIndexes = [];
-                  @endphp
-                  @foreach ($partnerProducts as $product)
+                  <div class="partner-product-grid" data-partner-product-track role="list" aria-label="Products">
                     @php
-                      $brandProductIndex = $brandProductIndexes[$product->brand_id] ?? 0;
-                      $brandProductIndexes[$product->brand_id] = $brandProductIndex + 1;
-                      $showByDefault = in_array($product->id, $initialShowcaseProductIds, true);
+                      $brandProductIndexes = [];
                     @endphp
-                    <a
-                      class="partner-product-card"
-                      href="{{ $product->url }}"
-                      data-product-brand="{{ $product->brand->slug }}"
-                      data-product-index="{{ $brandProductIndex }}"
-                      {{ $showByDefault ? '' : 'hidden' }}
-                      role="listitem"
-                      aria-label="{{ $product->name }} by {{ $product->brand->name }}"
-                    >
-                      <span class="partner-product-card-image">
-                        <img
-                          src="{{ media($product->card_image) }}"
-                          alt="{{ $product->card_alt }}"
-                          width="480"
-                          height="320"
-                          loading="lazy"
-                          decoding="async"
-                        />
-                        <span class="partner-product-brand-badge">
+                    @foreach ($partnerProducts as $product)
+                      @php
+                        $brandProductIndex = $brandProductIndexes[$product->brand_id] ?? 0;
+                        $brandProductIndexes[$product->brand_id] = $brandProductIndex + 1;
+                        $showByDefault = in_array($product->id, $initialShowcaseProductIds, true);
+                      @endphp
+                      <a
+                        class="partner-product-card"
+                        href="{{ $product->url }}"
+                        data-product-brand="{{ $product->brand->slug }}"
+                        data-product-index="{{ $brandProductIndex }}"
+                        {{ $showByDefault ? '' : 'hidden' }}
+                        role="listitem"
+                        aria-label="{{ $product->name }} by {{ $product->brand->name }}"
+                      >
+                        <span class="partner-product-card-image">
                           <img
-                            class="partner-product-brand-logo {{ in_array($product->brand->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partner-product-brand-logo-wide' : 'partner-product-brand-logo-compact' }}"
-                            src="{{ media($product->brand->card_image) }}"
-                            alt=""
+                            src="{{ media($product->card_image) }}"
+                            alt="{{ $product->card_alt }}"
+                            width="480"
+                            height="320"
                             loading="lazy"
                             decoding="async"
                           />
+                          <span class="partner-product-brand-badge">
+                            <img
+                              class="partner-product-brand-logo {{ in_array($product->brand->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partner-product-brand-logo-wide' : 'partner-product-brand-logo-compact' }}"
+                              src="{{ media($product->brand->card_image) }}"
+                              alt=""
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          </span>
                         </span>
-                        <span class="partner-product-card-arrow" aria-hidden="true">
-                          <svg viewBox="0 0 20 20" fill="none">
-                            <path d="M5 15 15 5M6 5h9v9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
+                        <span class="partner-product-card-content">
+                          <span class="partner-product-card-title">{{ $product->name }}</span>
+                          <span class="partner-product-card-cta">
+                            View Details
+                            <span aria-hidden="true">&rarr;</span>
+                          </span>
                         </span>
-                      </span>
-                      <span class="partner-product-card-title">{{ $product->name }}</span>
-                    </a>
-                  @endforeach
+                      </a>
+                    @endforeach
+                  </div>
                 </div>
                 <p class="partner-product-empty" data-partner-product-empty hidden>
                   No products are currently listed for this brand.
@@ -427,11 +446,39 @@
                   We will add products to the showcase soon.
                 </p>
               @endif
-              <div class="partner-product-showcase-footer">
-                <a class="partner-product-showcase-link" href="{{ route('products.index') }}">
-                  <span class="partner-product-showcase-link-label">Browse full catalog</span>
-                  <span aria-hidden="true">&rarr;</span>
-                </a>
+            </div>
+
+            <div class="partners-trust-points" role="list" aria-label="Our commitments">
+              <div class="partners-trust-point" role="listitem">
+                <span class="partners-trust-icon partners-trust-icon-shield" aria-hidden="true">
+                  <i class="fas fa-shield-halved"></i>
+                  <i class="fas fa-check"></i>
+                </span>
+                <div>
+                  <h3>Official Distributor</h3>
+                  <p>Guaranteed Authentic Products</p>
+                </div>
+              </div>
+              <div class="partners-trust-point" role="listitem">
+                <i class="fas fa-handshake" aria-hidden="true"></i>
+                <div>
+                  <h3>Trusted Partnership</h3>
+                  <p>Long-Term Collaboration</p>
+                </div>
+              </div>
+              <div class="partners-trust-point" role="listitem">
+                <i class="fas fa-award" aria-hidden="true"></i>
+                <div>
+                  <h3>High Quality Products</h3>
+                  <p>For Your Industrial Needs</p>
+                </div>
+              </div>
+              <div class="partners-trust-point" role="listitem">
+                <i class="fas fa-headset" aria-hidden="true"></i>
+                <div>
+                  <h3>Dedicated Support</h3>
+                  <p>Always Here to Help</p>
+                </div>
               </div>
             </div>
           </div>
@@ -440,13 +487,23 @@
         <!-- Why Choose Us Section -->
         <section id="why-us" class="why-us-section">
           <div class="container">
-            <h2 class="section-title">Why Choose Us</h2>
-            <p class="section-intro">
-              We help procurement and operations teams get the right supplies
-              quickly, and reliably.
-            </p>
-            <div class="row">
-              <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="why-us-layout">
+              <div class="why-us-intro">
+                <h2 class="section-title">
+                  Why<br />
+                  Choose <span>Us</span>
+                </h2>
+                <p class="section-intro">
+                  We help procurement and operations teams get the right supplies
+                  quickly, and reliably.
+                </p>
+                <a class="why-us-trust-note" href="#clients">
+                  <i class="fas fa-users" aria-hidden="true"></i>
+                  <span>Trusted by our reliable customers</span>
+                  <i class="fas fa-arrow-right why-us-trust-arrow" aria-hidden="true"></i>
+                </a>
+              </div>
+              <div class="why-us-grid">
                 <div class="value-card">
                   <div class="value-icon"><i class="fas fa-bolt"></i></div>
                   <h3>Quick Response</h3>
@@ -455,8 +512,6 @@
                     project keeps moving.
                   </p>
                 </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="value-card">
                   <div class="value-icon"><i class="fas fa-shield-alt"></i></div>
                   <h3>Trusted Products</h3>
@@ -465,8 +520,6 @@
                     specifications.
                   </p>
                 </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="value-card">
                   <div class="value-icon"><i class="fas fa-truck-fast"></i></div>
                   <h3>On-Time Delivery</h3>
@@ -475,8 +528,6 @@
                     interruption.
                   </p>
                 </div>
-              </div>
-              <div class="col-lg-3 col-md-6 col-sm-12">
                 <div class="value-card">
                   <div class="value-icon"><i class="fas fa-handshake"></i></div>
                   <h3>Long-Term Partnership</h3>
@@ -487,12 +538,7 @@
                 </div>
               </div>
             </div>
-          </div>
-        </section>
 
-        <!-- CTA Strip -->
-        <section class="cta-strip-section">
-          <div class="container">
             <div class="cta-strip">
               <div class="cta-strip-text">
                 <h3>Need a quick quote for your project or operational needs?</h3>
