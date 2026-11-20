@@ -593,9 +593,11 @@
                         />
                       </picture>
                       <div class="gallery-overlay">
-                        @if ($image->caption)
-                          <p class="gallery-caption">{{ $image->caption }}</p>
-                        @endif
+                        <div class="gallery-caption-wrapper">
+                          @if ($image->caption)
+                            <p class="gallery-caption">{{ $image->caption }}</p>
+                          @endif
+                        </div>
                         <button
                           type="button"
                           class="gallery-zoom-button"

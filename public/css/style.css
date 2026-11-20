@@ -852,15 +852,15 @@ section::before {
     background: #ffffff;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
         box-shadow 0.35s ease,
-        border-color 0.35s ease,
-        transform 0.35s ease;
+        border-color 0.35s ease;
 }
 
 .about-purpose-card:hover {
-    border-color: #93c5fd;
-    box-shadow: 0 14px 32px rgba(2, 46, 84, 0.14);
-    transform: translateY(-3px);
+    border-color: var(--brand-accent);
+    box-shadow: 0 16px 36px rgba(2, 46, 84, 0.16);
+    transform: translateY(-5px);
 }
 
 .about-purpose-icon {
@@ -993,13 +993,7 @@ section::before {
     justify-self: center;
     color: inherit;
     text-decoration: none;
-    transition: box-shadow 0.4s ease;
     border-radius: 20px;
-}
-
-.partners-section .partner-card:hover,
-.gallery-item:hover {
-    box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
 }
 
 .partners-section .partner-logo {
@@ -1066,14 +1060,6 @@ section::before {
 .partners-section .partner-card:focus-visible {
     outline: 3px solid #93c5fd;
     outline-offset: 4px;
-}
-
-/* Partner hover: outer glow only. Purely box-shadow, so it never touches
-   the GSAP entrance transform and can't break the scroll fade-in. */
-.partners-section .partner-card:hover {
-    box-shadow:
-        0 0 0 1px rgba(125, 211, 252, 0.45),
-        0 24px 52px rgba(4, 46, 82, 0.28);
 }
 
 /* Mobile: 2 kolom, Consumables di tengah baris bawah */
@@ -1160,11 +1146,6 @@ section::before {
 .product-card {
     text-align: center;
     margin-bottom: 40px;
-    transition: all 0.5s ease;
-}
-
-.product-card:hover {
-    transform: translateY(-10px);
 }
 
 .product-image {
@@ -1301,21 +1282,30 @@ section::before {
 .client-logo-img {
     width: 140px;
     height: 100px;
-    border-radius: 10px;
+    border-radius: 12px;
     background: white;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border: 1px solid transparent;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e2e8f0;
     padding: 15px;
     overflow: hidden;
-    transition: border-color 500ms ease;
+    transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
 .client-logo:hover .client-logo-img {
-    border-color: var(--brand-accent);
+    border-color: #0284c7;
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .client-logo-image {
@@ -1571,8 +1561,23 @@ section::before {
 .map-container {
     width: 100%;
     height: 240px;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 8px 24px rgba(1, 15, 30, 0.35);
+    transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+.office-block:hover .map-container,
+.map-container:hover {
+    border-color: #7dd3fc;
+    transform: translateY(-5px);
+    box-shadow:
+        0 18px 36px rgba(1, 15, 30, 0.6),
+        0 0 0 1px #7dd3fc;
 }
 
 .office-block > .map-container {
@@ -3170,27 +3175,21 @@ html {
     padding: 24px 18px;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     height: 100%;
+    transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
-/* Hover lift is applied to the inner logo wrapper (the card itself carries
-   a GSAP entrance transform, which must not be overwritten). */
 .partners-section .partner-card:hover,
 .product-card:hover {
-    border-color: #d5deec;
-    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.16);
-}
-.partners-section .partner-card {
-    will-change: transform, box-shadow;
-    transition:
-        box-shadow 240ms cubic-bezier(0.2, 0.8, 0.2, 1),
-        border-color 240ms ease;
-}
-.partners-section .partner-card:hover .partner-logo {
-    transform: translateY(-4px);
-}
-.partners-section .partner-card .partner-logo {
-    will-change: transform;
-    transition: transform 240ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    border-color: #0284c7;
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .partner-name,
@@ -3221,38 +3220,46 @@ html {
     border-radius: 12px;
 }
 
-.gallery-item {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    padding-bottom: 0;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
-    height: 100%;
-    transition:
-        box-shadow 0.5s ease,
-        border-color 0.5s ease,
-        transform 0.5s ease;
-}
-
-.gallery-image {
-    border-radius: 12px;
-    margin: 0;
-}
-
 .gallery-section .row {
     row-gap: 24px;
 }
 
+/* Redesigned Gallery Card */
 .gallery-item {
+    position: relative;
+    height: 100%;
+    border-radius: 18px;
     overflow: hidden;
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+        0 10px 28px -6px rgba(1, 18, 34, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    isolation: isolate;
+    transition:
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    border-color: #7dd3fc;
+    box-shadow:
+        0 24px 50px -8px rgba(1, 14, 28, 0.75),
+        0 0 0 1px #7dd3fc,
+        0 8px 32px rgba(20, 116, 181, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
 .gallery-image-container {
-    height: auto;
-    aspect-ratio: 4 / 3;
-    background: #dbe4f0;
     position: relative;
+    height: 100%;
+    aspect-ratio: 4 / 3;
+    background: #042440;
     overflow: hidden;
+    border-radius: inherit;
 }
 
 .gallery-image {
@@ -3261,26 +3268,33 @@ html {
     height: 100% !important;
     object-fit: cover;
     cursor: pointer;
+    border-radius: inherit;
+    margin: 0;
     /* Scale/translate the image itself (never the GSAP-animated parent), so
      the entrance transform on .gallery-item is preserved. */
     --gallery-zoom: 1;
     --gallery-lift: 0px;
     transform: translateY(var(--gallery-lift)) scale(var(--gallery-zoom));
-    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: transform;
+    filter: brightness(1) contrast(1);
+    transition:
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform, filter;
 }
 
 .gallery-image-container:hover .gallery-image {
     --gallery-zoom: 1.06;
-    --gallery-lift: 0px;
+    filter: brightness(1.03) contrast(1.02);
 }
 
 html.js-img-fade .gallery-image.img-fade {
     transition:
         opacity 0.35s ease-in-out,
-        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.65s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Navy gradient from bottom (kept as requested for spacious caption readability) */
 .gallery-overlay {
     position: absolute;
     inset: 0;
@@ -3289,7 +3303,7 @@ html.js-img-fade .gallery-image.img-fade {
     align-items: flex-end;
     justify-content: space-between;
     gap: 16px;
-    padding: 16px 18px;
+    padding: 22px 20px 18px;
     background: linear-gradient(
         180deg,
         rgba(4, 46, 82, 0) 52%,
@@ -3297,37 +3311,10 @@ html.js-img-fade .gallery-image.img-fade {
         rgba(4, 46, 82, 0.94) 100%
     );
     opacity: 1;
-    transition: opacity 0.4s ease;
-    pointer-events: none;
-}
-
-.gallery-caption {
-    margin: 0;
-    color: #ffffff;
-    font-size: 13.5px;
-    font-weight: 600;
-    line-height: 1.4;
-}
-
-.gallery-zoom-button {
-    display: inline-flex;
-    width: 2.5rem;
-    height: 2.5rem;
-    flex: 0 0 2.5rem;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid rgba(255, 255, 255, 0.9);
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
-    cursor: pointer;
-    pointer-events: auto;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
     transition:
-        background-color 0.4s ease,
-        color 0.4s ease,
-        box-shadow 0.4s ease,
-        transform 0.4s ease;
+        background 0.4s ease,
+        opacity 0.4s ease;
+    pointer-events: none;
 }
 
 .gallery-image-container:hover .gallery-overlay {
@@ -3339,22 +3326,86 @@ html.js-img-fade .gallery-image.img-fade {
     );
 }
 
+.gallery-caption-wrapper {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.gallery-caption {
+    margin: 0;
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    text-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.8),
+        0 2px 8px rgba(4, 46, 82, 0.85);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Elevated Glassmorphic Zoom Button */
+.gallery-zoom-button {
+    display: inline-flex;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex: 0 0 2.75rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.16);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #ffffff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    pointer-events: auto;
+    box-shadow: 0 4px 14px rgba(2, 20, 38, 0.4);
+    transition:
+        background-color 0.3s ease,
+        border-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease,
+        transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
 .gallery-image-container:hover .gallery-zoom-button {
-    background: #ffffff;
-    color: var(--brand-ink);
-    transform: scale(1.08);
-    box-shadow: 0 8px 22px rgba(125, 211, 252, 0.45);
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #ffffff;
+    box-shadow: 0 6px 18px rgba(125, 211, 252, 0.35);
+    transform: scale(1.04);
 }
 
 .gallery-zoom-button:hover,
 .gallery-zoom-button:focus-visible {
     background: #ffffff;
     color: var(--brand-ink);
+    border-color: #ffffff;
+    transform: scale(1.12);
+    box-shadow:
+        0 8px 24px rgba(125, 211, 252, 0.55),
+        0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .gallery-zoom-button:focus-visible {
-    outline: 3px solid #93c5fd;
+    outline: 3px solid #7dd3fc;
     outline-offset: 3px;
+}
+
+.gallery-empty {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 48px 24px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px dashed rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    margin: 0;
 }
 
 .gallery-modal-image {
@@ -3470,6 +3521,18 @@ html.js-img-fade .client-logo-img.img-loaded::after {
 
     .product-image-img {
         height: 180px;
+    }
+
+    .gallery-overlay {
+        padding: 16px 14px 12px;
+        gap: 12px;
+    }
+
+    .gallery-zoom-button {
+        width: 2.5rem;
+        height: 2.5rem;
+        flex: 0 0 2.5rem;
+        font-size: 0.875rem;
     }
 }
 
@@ -3596,23 +3659,27 @@ html.js-img-fade .client-logo-img.img-loaded::after {
 .why-us-section .value-card {
     min-height: 164px;
     background: #ffffff;
-    border: 1px solid rgba(2, 46, 84, 0.28);
+    border: 1px solid rgba(2, 46, 84, 0.22);
     border-radius: 16px;
     box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     padding: 20px 18px;
     text-align: left;
     height: auto;
     transition:
-        box-shadow 0.4s ease,
-        border-color 0.4s ease,
-        background-color 0.4s ease,
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease,
+        background-color 0.35s ease,
         color 0.25s ease;
 }
 
 .why-us-section .value-card:hover {
-    border-color: var(--brand-ink);
+    border-color: var(--brand-accent);
+    transform: translateY(-5px);
     background: linear-gradient(180deg, #ffffff, #f5f8ff);
-    box-shadow: 0 18px 40px rgba(2, 46, 84, 0.16);
+    box-shadow:
+        0 0 0 1px var(--brand-accent),
+        0 20px 42px rgba(2, 46, 84, 0.16);
 }
 
 .why-us-section .value-icon {
@@ -3667,7 +3734,6 @@ html.js-img-fade .client-logo-img.img-loaded::after {
 }
 
 .why-us-section .section-title,
-.why-us-section .value-card,
 .why-us-section .cta-strip {
     transform: none !important;
     will-change: auto;
@@ -3779,15 +3845,17 @@ html.js-img-fade .client-logo-img.img-loaded::after {
     background: #ffffff;
     box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
     transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease,
-        border-color 0.25s ease;
+        transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
 }
 
 .recent-article-card:hover,
 .recent-article-card:focus-visible {
-    border-color: #cbd8ed;
-    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+    border-color: var(--brand-accent);
+    box-shadow:
+        0 0 0 1px var(--brand-accent),
+        0 20px 42px rgba(15, 23, 42, 0.14);
     transform: translateY(-5px);
 }
 
@@ -4056,13 +4124,23 @@ html.js-img-fade .client-logo-img.img-loaded::after {
     height: 72px;
     padding: 9px;
     border: 1px solid #e6ebf2;
-    border-radius: 7px;
+    border-radius: 8px;
+    background: #ffffff;
     box-shadow: 0 3px 10px rgba(15, 23, 42, 0.045);
-    transition: border-color 700ms cubic-bezier(0.42, 0, 0.8, 0.35);
+    transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
 .clients-static .client-logo:hover .client-logo-img {
-    border-color: #93c5fd;
+    border-color: #0284c7;
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 14px 28px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .clients-static .client-logo-image {
@@ -4074,10 +4152,10 @@ html.js-img-fade .client-logo-img.img-loaded::after {
 }
 
 .clients-showcase .clients-marquee {
-    min-height: 126px;
-    max-height: 150px;
+    min-height: 136px;
+    max-height: 160px;
     margin-top: 0;
-    padding: 12px 0;
+    padding: 16px 0;
     opacity: 1;
     transform: translateY(0);
     transition:
@@ -4126,18 +4204,23 @@ html.js-img-fade .client-logo-img.img-loaded::after {
     height: 100px;
     padding: 15px;
     border: 1px solid #e6ebf2;
-    border-radius: 8px;
+    border-radius: 10px;
+    background: #ffffff;
     box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
     transition:
-        border-color 750ms cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 750ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 750ms cubic-bezier(0.22, 1, 0.36, 1);
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
 .clients-showcase .client-logo:hover .client-logo-img {
-    border-color: #93c5fd;
-    box-shadow: 0 8px 22px rgba(15, 23, 42, 0.11);
-    transform: translateY(-2px);
+    border-color: #0284c7;
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 html.js-img-fade .clients-showcase .client-logo-image.img-fade,
@@ -4352,12 +4435,6 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
         box-shadow 400ms cubic-bezier(0.2, 0.8, 0.2, 1),
         border-color 400ms ease,
         transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.partners-section .partner-card:hover {
-    border-color: #d5deec;
-    background: #ffffff;
-    box-shadow: 0 16px 30px rgba(15, 23, 42, 0.18);
 }
 
 .partners-section .partner-logo {
@@ -4790,11 +4867,6 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
         box-shadow 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.partners-section .partner-card:hover {
-    border-color: #bfdbfe;
-    box-shadow: 0 22px 40px rgba(2, 13, 28, 0.3);
-}
-
 .partners-section .partner-logo {
     min-height: 122px;
     margin: 0 0 14px;
@@ -5108,9 +5180,15 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
 
 .partners-brand-selector:hover,
 .partners-brand-selector:focus-visible {
-    border-color: rgba(186, 230, 253, 0.8);
-    background: rgba(255, 255, 255, 0.1);
-    color: #ffffff;
+    border-color: #0284c7;
+    background: #ffffff;
+    color: var(--brand-ink);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    transform: translateY(-6px);
+    position: relative;
+    z-index: 5;
 }
 
 .partners-brand-selector:focus-visible {
@@ -5210,16 +5288,20 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
     text-decoration: none;
     box-shadow: 0 8px 22px rgba(1, 17, 34, 0.18);
     transition:
-        border-color 350ms ease,
-        box-shadow 420ms cubic-bezier(0.22, 1, 0.36, 1),
-        transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
 .partner-product-card:hover {
-    border-color: #bfcee2;
+    border-color: #0284c7;
     color: #172033;
-    box-shadow: 0 17px 32px rgba(1, 17, 34, 0.28);
-    transform: translateY(-4px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    transform: translateY(-6px);
+    position: relative;
+    z-index: 5;
 }
 
 .partner-product-card:focus-visible {
@@ -5431,15 +5513,15 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
     align-items: center;
     justify-content: center;
     padding: 16px;
-    border: 1px solid rgba(226, 232, 240, 0.35);
+    border: 1.5px solid rgba(226, 232, 240, 0.5);
     border-radius: 12px;
     background: #ffffff;
+    box-shadow: 0 4px 14px rgba(2, 13, 28, 0.15);
     transition:
-        border-color 300ms ease,
-        background-color 300ms ease,
-        color 300ms ease,
-        box-shadow 350ms ease,
-        transform 350ms ease;
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease,
+        background-color 0.25s ease;
 }
 
 .partners-brand-selector::after {
@@ -5447,13 +5529,16 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
 }
 
 .partners-brand-selector:hover,
-.partners-brand-selector:focus-visible,
-.partners-brand-selector.is-active {
-    border-color: #7dd3fc;
+.partners-brand-selector:focus-visible {
+    border-color: #0284c7;
     background: #ffffff;
-    color: #ffffff;
-    box-shadow: 0 8px 20px rgba(2, 13, 28, 0.2);
-    transform: translateY(-2px);
+    color: var(--brand-ink);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    transform: translateY(-6px);
+    position: relative;
+    z-index: 5;
 }
 
 .partners-brand-selector.is-active::after {
@@ -5461,10 +5546,21 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
 }
 
 .partners-brand-selector.is-active {
-    border-color: #7dd3fc;
+    border-color: #0284c7;
     background: #ffffff;
     color: var(--brand-ink);
-    box-shadow: 0 5px 18px rgba(2, 13, 28, 0.2);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 6px 18px rgba(1, 15, 30, 0.3);
+}
+
+.partners-brand-selector.is-active:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .partners-brand-selector:focus-visible {
@@ -5478,6 +5574,11 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
     height: auto;
     object-fit: contain;
     object-position: center;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.partners-brand-selector:hover .partners-brand-logo {
+    transform: scale(1.06);
 }
 
 .partners-brand-logo-wide {
@@ -5493,19 +5594,29 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
 }
 
 .partner-product-card {
-    border-color: rgba(226, 232, 240, 0.22);
+    border: 1px solid rgba(226, 232, 240, 0.22);
     border-radius: 16px;
     background: rgba(1, 26, 49, 0.5);
     color: #ffffff;
     box-shadow: 0 12px 28px rgba(1, 17, 34, 0.2);
     backdrop-filter: blur(12px);
+    transition:
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease,
+        background-color 0.25s ease;
 }
 
 .partner-product-card:hover {
-    border-color: rgba(125, 211, 252, 0.72);
-    background: rgba(1, 26, 49, 0.62);
+    border-color: #0284c7;
+    background: rgba(1, 26, 49, 0.68);
     color: #ffffff;
-    box-shadow: 0 18px 34px rgba(1, 17, 34, 0.3);
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .partner-product-card-image {
@@ -5966,23 +6077,38 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
     background: #ffffff;
     box-shadow: 0 8px 18px rgba(1, 17, 34, 0.12);
     transition:
-        border-color 180ms ease,
-        box-shadow 180ms ease,
-        transform 180ms ease;
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
 .partners-section .partners-brand-selector:hover,
-.partners-section .partners-brand-selector:focus-visible,
-.partners-section .partners-brand-selector.is-active {
-    border-color: #7dd3fc;
-    box-shadow: 0 10px 24px rgba(1, 17, 34, 0.2);
-    transform: translateY(-2px);
+.partners-section .partners-brand-selector:focus-visible {
+    border-color: #0284c7;
+    background: #ffffff;
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .partners-section .partners-brand-selector.is-active {
+    border-color: #0284c7;
+    background: #ffffff;
     box-shadow:
-        0 0 0 2px rgba(125, 211, 252, 0.42),
-        0 10px 24px rgba(1, 17, 34, 0.2);
+        0 0 0 2px #0284c7,
+        0 8px 20px rgba(1, 15, 30, 0.3);
+}
+
+.partners-section .partners-brand-selector.is-active:hover {
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .partners-section .partners-brand-logo-wide {
@@ -6089,24 +6215,29 @@ html.js-img-fade .clients-showcase .client-logo-img:not(.img-loaded)::after {
 }
 
 .partners-section .partner-product-card {
-    border-color: #e1e8f0;
+    border: 1px solid #e1e8f0;
     border-radius: 14px;
     background: #ffffff;
     color: #172033;
-    box-shadow: none;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
     backdrop-filter: none;
     min-height: 230px;
     transition:
-        border-color 180ms ease,
-        transform 180ms ease;
+        transform 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.25s ease,
+        box-shadow 0.28s ease;
 }
 
 .partners-section .partner-product-card:hover {
-    border-color: #7dd3fc;
+    border-color: #0284c7;
     background: #ffffff;
     color: #172033;
-    box-shadow: none;
-    transform: translateY(-1px);
+    transform: translateY(-6px);
+    box-shadow:
+        0 0 0 2px #0284c7,
+        0 18px 34px rgba(2, 46, 84, 0.16);
+    position: relative;
+    z-index: 5;
 }
 
 .partners-section .partner-product-card-image {
