@@ -17,5 +17,11 @@ foreach ($storageDirs as $dir) {
     }
 }
 
-// Forward Vercel request to Laravel's public entrypoint
-require __DIR__ . '/../public/index.php';
+// Tell Laravel to use /tmp/storage as the writable storage path on Vercel
+$_ENV['LARAVEL_STORAGE_PATH'] = '/tmp/storage';
+putenv('LARAVEL_STORAGE_PATH=/tmp/storage');
+$_ENV['VIEW_COMPILED_PATH'] = '/tmp/storage/framework/views';
+putenv('VIEW_COMPILED_PATH=/tmp/storage/framework/views');
+
+// Forward request to Laravel's public entrypoint
+require __DIR__.'/../public/index.php';
