@@ -19,11 +19,25 @@ use Illuminate\Database\Eloquent\Model;
     'facebook_url',
     'linkedin_url',
     'default_social_image',
+    'about_tagline',
+    'about_description',
+    'vision_text',
+    'mission_items',
 ])]
 class SiteSetting extends Model
 {
     /** @use HasFactory<SiteSettingFactory> */
     use HasFactory;
+
+    /**
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'mission_items' => 'array',
+        ];
+    }
 
     /**
      * The single settings row, created on first use.

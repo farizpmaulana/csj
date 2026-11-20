@@ -209,7 +209,8 @@ it('creates a partner through the panel and links it to its own catalog page', f
     expect($brand->exists)->toBeTrue()
         ->and(is_file(storage_path('app/public/'.$brand->card_image)))->toBeTrue();
 
-    $this->get(route('products.brand', ['brand' => 'makita']))
+    $this->followingRedirects()
+        ->get(route('products.brand', ['brand' => 'makita']))
         ->assertOk()
         ->assertSee('Makita Indonesia');
 });
@@ -257,9 +258,9 @@ it('takes a partner created in the panel all the way to a published product', fu
     expect(Product::where('slug', 'makita-hammer')->firstOrFail()->product_category_id)
         ->toBe($category->getKey());
 
-    $this->get(route('products.brand', ['brand' => 'makita']))
+    $this->followingRedirects()
+        ->get(route('products.brand', ['brand' => 'makita']))
         ->assertOk()
-        ->assertSee('Power Tools')
         ->assertSee('Makita Hammer');
 });
 

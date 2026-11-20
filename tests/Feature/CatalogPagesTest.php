@@ -34,9 +34,12 @@ it('renders a catalog page for every brand', function () {
 
     $brands->each(function (Brand $brand): void {
         $this->get(route('products.brand', ['brand' => $brand->slug]))
+            ->assertRedirect(route('products.index', ['brand' => [$brand->slug]]));
+
+        $this->followingRedirects()
+            ->get(route('products.brand', ['brand' => $brand->slug]))
             ->assertOk()
-            ->assertSee($brand->name)
-            ->assertSee($brand->intro, escape: false);
+            ->assertSee($brand->name);
     });
 });
 
@@ -160,7 +163,8 @@ it('lists a product that is not filed under any category', function () {
         'is_visible' => true,
     ]);
 
-    $this->get(route('products.brand', ['brand' => 'makita']))
+    $this->followingRedirects()
+        ->get(route('products.brand', ['brand' => 'makita']))
         ->assertOk()
         ->assertSee('Makita Hammer')
         ->assertSee(route('products.show', ['brand' => 'makita', 'product' => 'makita-hammer']), escape: false);

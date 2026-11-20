@@ -7,6 +7,8 @@ use App\Models\SiteSetting;
 use BackedEnum;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
@@ -56,6 +58,39 @@ class SiteSettingResource extends Resource
                             ->maxLength(32),
                     ])
                     ->columns(2),
+                Section::make('About Us')
+                    ->description('Shown on the homepage beneath the hero banner.')
+                    ->schema([
+                        TextInput::make('about_tagline')
+                            ->label('Tagline')
+                            ->maxLength(500)
+                            ->columnSpanFull(),
+                        Textarea::make('about_description')
+                            ->label('Description')
+                            ->rows(4)
+                            ->columnSpanFull(),
+                    ]),
+                Section::make('Vision & Mission')
+                    ->description('Shown on the homepage about section.')
+                    ->schema([
+                        Textarea::make('vision_text')
+                            ->label('Vision')
+                            ->rows(3)
+                            ->columnSpanFull(),
+                        Repeater::make('mission_items')
+                            ->label('Mission points')
+                            ->schema([
+                                TextInput::make('text')
+                                    ->required()
+                                    ->hiddenLabel()
+                                    ->maxLength(500),
+                            ])
+                            ->defaultItems(0)
+                            ->addActionLabel('Add mission point')
+                            ->reorderable()
+                            ->itemLabel(fn (array $state): ?string => $state['text'] ?? null)
+                            ->columnSpanFull(),
+                    ]),
                 Section::make('Addresses')
                     ->schema([
                         TextInput::make('address_primary')

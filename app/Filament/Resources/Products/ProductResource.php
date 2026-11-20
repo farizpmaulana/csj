@@ -199,6 +199,19 @@ class ProductResource extends Resource
                             ->default(true),
                     ])
                     ->columns(2),
+                Section::make('Homepage showcase')
+                    ->description('Products marked for showcase appear on the homepage. Place one product from each partner to get alternating brands.')
+                    ->schema([
+                        Toggle::make('is_showcase')
+                            ->label('Show on homepage')
+                            ->default(false),
+                        TextInput::make('showcase_position')
+                            ->label('Showcase order')
+                            ->numeric()
+                            ->default(0)
+                            ->helperText('Lower numbers appear first. Products automatically interleave by partner.'),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -228,12 +241,16 @@ class ProductResource extends Resource
                     ->placeholder('No WhatsApp number set')
                     ->limit(48)
                     ->tooltip('Click to copy'),
+                IconColumn::make('is_showcase')
+                    ->label('Showcase')
+                    ->boolean(),
                 IconColumn::make('is_visible')
                     ->label('Visible')
                     ->boolean(),
             ])
             ->filters([
                 SelectFilter::make('brand')->relationship('brand', 'name'),
+                TernaryFilter::make('is_showcase')->label('Showcase'),
                 TernaryFilter::make('is_visible')->label('Visible'),
             ])
             ->defaultSort('position')

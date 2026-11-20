@@ -1,4 +1,8 @@
 @php
+    $siteSettings = $siteSettings ?? \App\Models\SiteSetting::current();
+    $clientCount = $clientCount ?? \App\Models\Client::where('is_visible', true)->count();
+    $partnerCount = $partnerCount ?? \App\Models\Brand::where('is_visible', true)->count();
+
     $title = 'PT Cahaya Sarange Jaya - Company Profile';
     $description = 'PT Cahaya Sarange Jaya - Reliable and experienced general supplier and distributor in the supply chain with a promise to deliver satisfactory exchanges.';
     $canonical = route('home');
@@ -11,8 +15,8 @@
         'name' => 'PT Cahaya Sarange Jaya',
         'url' => route('home'),
         'logo' => media('images/logo_own/logo_csj02.png'),
-        'email' => 'info@cahayasarangejaya.co.id',
-        'telephone' => '+62 542 8860262',
+        'email' => $siteSettings->contact_email ?? 'info@cahayasarangejaya.co.id',
+        'telephone' => $siteSettings->contact_phone ?? '+62 542 8860262',
         'sameAs' => [
             'https://www.instagram.com/cahayasarangejaya',
             'https://www.facebook.com/ptcahayasarangejaya',
@@ -186,21 +190,18 @@
               <div class="about-overview">
                 <h2 class="section-title about-section-title">About Us</h2>
                 <h3 class="about-panel-headline">
-                  Official Distributor of Sumato, Bosch, and Buccheri Industrial
+                  {{ $siteSettings->about_tagline }}
                 </h3>
                 <p class="about-panel-sub">
-                  PT Cahaya Sarange Jaya connects businesses with dependable
-                  products from Sumato, Bosch, and Buccheri. We pair quality
-                  products with practical guidance and responsive service, so
-                  your teams can move with confidence.
+                  {{ $siteSettings->about_description }}
                 </p>
                 <div class="about-stats" aria-label="Company network statistics">
                   <div class="about-stat">
-                    <strong data-target="17">0</strong>
+                    <strong data-target="{{ $clientCount }}">0</strong>
                     <span>Total Clients</span>
                   </div>
                   <div class="about-stat">
-                    <strong data-target="5">0</strong>
+                    <strong data-target="{{ $partnerCount }}">0</strong>
                     <span>Total Partners</span>
                   </div>
                 </div>
@@ -228,8 +229,7 @@
                   <div class="about-purpose-content">
                     <h3 class="about-purpose-label">Our Vision</h3>
                     <p class="about-purpose-text">
-                      To be a fast, trustworthy one-stop supplier of industrial
-                      goods for companies around the world.
+                      {{ $siteSettings->vision_text }}
                     </p>
                   </div>
                 </div>
@@ -240,10 +240,9 @@
                   <div class="about-purpose-content">
                     <h3 class="about-purpose-label">Our Mission</h3>
                     <ul class="about-purpose-list">
-                      <li>To deliver top-quality products to our customers.</li>
-                      <li>To become the first choice of global partners for top-quality brands.</li>
-                      <li>To connect brands and customers through a smooth business process.</li>
-                      <li>To do business with trust and integrity.</li>
+                      @foreach ($siteSettings->mission_items ?? [] as $missionItem)
+                        <li>{{ is_array($missionItem) ? ($missionItem['text'] ?? '') : $missionItem }}</li>
+                      @endforeach
                     </ul>
                   </div>
                 </div>
@@ -552,7 +551,7 @@
                   >Contact Us</a
                 >
                 <a
-                  href="https://wa.me/6281140000223"
+                  href="{{ wa_link() }}"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="cta-strip-btn cta-strip-btn-secondary"
@@ -792,7 +791,7 @@
                 <div class="contact-list">
                   <a
                     class="contact-item"
-                    href="https://wa.me/6281140000223"
+                    href="{{ wa_link() }}"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -801,12 +800,12 @@
                     </div>
                     <div class="contact-item-body">
                       <span class="contact-item-label">WhatsApp</span>
-                      <span class="contact-item-value">+62 811 40000 223</span>
+                      <span class="contact-item-value">{{ $siteSettings->contact_phone }}</span>
                     </div>
                   </a>
                   <a
                     class="contact-item"
-                    href="mailto:info@cahayasarangejaya.co.id"
+                    href="mailto:{{ $siteSettings->contact_email }}"
                   >
                     <div class="contact-item-icon">
                       <i class="fas fa-envelope" aria-hidden="true"></i>
@@ -814,7 +813,7 @@
                     <div class="contact-item-body">
                       <span class="contact-item-label">Email</span>
                       <span class="contact-item-value"
-                        >info@cahayasarangejaya.co.id</span
+                        >{{ $siteSettings->contact_email }}</span
                       >
                     </div>
                   </a>
@@ -823,30 +822,22 @@
                 <div class="contact-social">
                   <span class="contact-social-title">Follow us</span>
                   <div class="contact-social-icons">
-                    <a
-                      href="https://www.instagram.com/cahayasarangejaya"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on Instagram"
-                    >
-                      <i class="fab fa-instagram" aria-hidden="true"></i>
-                    </a>
-                    <a
-                      href="https://www.facebook.com/ptcahayasarangejaya"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on Facebook"
-                    >
-                      <i class="fab fa-facebook-f" aria-hidden="true"></i>
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/company/pt-cahayasarangejaya/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label="Follow us on LinkedIn"
-                    >
-                      <i class="fab fa-linkedin-in" aria-hidden="true"></i>
-                    </a>
+                    @foreach ([
+                        'instagram' => $siteSettings->instagram_url,
+                        'facebook' => $siteSettings->facebook_url,
+                        'linkedin' => $siteSettings->linkedin_url,
+                    ] as $network => $url)
+                        @if ($url)
+                            <a
+                              href="{{ $url }}"
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              aria-label="Follow us on {{ ucfirst($network) }}"
+                            >
+                              <i class="fab fa-{{ $network === 'linkedin' ? 'linkedin-in' : ($network === 'facebook' ? 'facebook-f' : $network) }}" aria-hidden="true"></i>
+                            </a>
+                        @endif
+                    @endforeach
                   </div>
                 </div>
               </div>

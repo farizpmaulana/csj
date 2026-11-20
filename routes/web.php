@@ -4,6 +4,7 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LegacyPageController;
 use App\Http\Controllers\ProductController;
+use App\Models\Brand;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,8 +18,14 @@ Route::get('/', HomeController::class)->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
-Route::get('/products/{brand}', fn (string $brand) => redirect()->route('products.index', ['brand' => [$brand]]))
-    ->where('brand', $slug);
+Route::get('/products/{brand}', function (string $brand) {
+    abort_unless(
+        Brand::query()->where('slug', $brand)->where('is_visible', true)->exists(),
+        404
+    );
+
+    return redirect()->route('products.index', ['brand' => [$brand]]);
+})->where('brand', $slug)->name('products.brand');
 
 Route::get('/products/{brand}/{product}', [ProductController::class, 'show'])
     ->where(['brand' => $slug, 'product' => $slug])

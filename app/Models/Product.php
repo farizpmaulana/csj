@@ -25,6 +25,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'whatsapp_message',
     'position',
     'is_visible',
+    'is_showcase',
+    'showcase_position',
 ])]
 class Product extends Model
 {
