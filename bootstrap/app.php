@@ -5,6 +5,9 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
 
+/* --------------------------------------------------------------
+   Build the application – Laravel 13 skeleton
+   -------------------------------------------------------------- */
 $app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -12,7 +15,7 @@ $app = Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // register global middleware here if needed
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
@@ -20,7 +23,11 @@ $app = Application::configure(basePath: dirname(__DIR__))
         );
     });
 
-// Use custom storage path when deployed on Vercel (env LARAVEL_STORAGE_PATH) otherwise default
+/**
+ * Vercel‑specific storage handling.
+ * `LARAVEL_STORAGE_PATH` is defined in vercel.json.
+ * Locally the variable is not set → default `storage_path()` is used.
+ */
 $app->useStoragePath(env('LARAVEL_STORAGE_PATH', storage_path()));
 
-return $app;->create();
+return $app;
