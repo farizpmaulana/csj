@@ -32,7 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Product extends Model
 {
     /** @use HasFactory<ProductFactory> */
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @return BelongsTo<Brand, $this>

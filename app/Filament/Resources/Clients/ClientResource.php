@@ -91,7 +91,8 @@ class ClientResource extends Resource
                             ])
                             ->defaultItems(0)
                             ->addActionLabel('Add variant')
-                            ->reorderable(),
+                            ->reorderable()
+                            ->collapsed(),
                     ]),
                 Section::make('Visibility')
                     ->schema([
@@ -131,7 +132,7 @@ class ClientResource extends Resource
             ->reorderable('position')
             ->recordActions([
                 ...static::getOrderActions(),
-                EditAction::make()->modalWidth(Width::FiveExtraLarge),
+                EditAction::make()->slideOver()->modalWidth(Width::TwoExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

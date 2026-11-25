@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends Model
 {
     /** @use HasFactory<ClientFactory> */
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @param  Builder<Client>  $query

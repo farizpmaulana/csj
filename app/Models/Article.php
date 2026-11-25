@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Model;
 class Article extends Model
 {
     /** @use HasFactory<ArticleFactory> */
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @param  Builder<Article>  $query

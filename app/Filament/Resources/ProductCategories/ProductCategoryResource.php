@@ -111,7 +111,7 @@ class ProductCategoryResource extends Resource
             ->defaultSort('position')
             ->reorderable('position')
             ->recordActions([
-                EditAction::make()->modalWidth(Width::FiveExtraLarge),
+                EditAction::make()->slideOver()->modalWidth(Width::TwoExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

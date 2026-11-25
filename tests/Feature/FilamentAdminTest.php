@@ -1,6 +1,8 @@
 <?php
 
-use App\Filament\Resources\Articles\Pages\ManageArticles;
+use App\Filament\Resources\ActivityLogs\Pages\ListActivityLogs;
+use App\Filament\Resources\Articles\Pages\EditArticle;
+use App\Filament\Resources\Articles\Pages\ListArticles;
 use App\Filament\Resources\Brands\BrandResource;
 use App\Filament\Resources\Brands\Pages\ManageBrands;
 use App\Filament\Resources\Clients\ClientResource;
@@ -9,10 +11,14 @@ use App\Filament\Resources\GalleryImages\GalleryImageResource;
 use App\Filament\Resources\GalleryImages\Pages\ManageGalleryImages;
 use App\Filament\Resources\LegacyRedirects\Pages\ManageLegacyRedirects;
 use App\Filament\Resources\ProductCategories\Pages\ManageProductCategories;
-use App\Filament\Resources\Products\Pages\ManageProducts;
+use App\Filament\Resources\Products\Pages\CreateProduct;
+use App\Filament\Resources\Products\Pages\EditProduct;
+use App\Filament\Resources\Products\Pages\ListProducts;
 use App\Filament\Resources\ShowcaseProducts\Pages\ManageShowcaseProducts;
 use App\Filament\Resources\ShowcaseProducts\ShowcaseProductResource;
 use App\Filament\Resources\SiteSettings\Pages\EditSiteSetting;
+use App\Filament\Resources\Users\Pages\ManageUsers;
+use App\Models\ActivityLog;
 use App\Models\Article;
 use App\Models\Brand;
 use App\Models\Client;
@@ -75,6 +81,8 @@ it('lets an administrator reach every resource page', function (string $page) {
     '/admin-cms/legacy-redirects',
     '/admin-cms/showcase-products',
     '/admin-cms/site-settings',
+    '/admin-cms/users',
+    '/admin-cms/activity-logs',
 ]);
 
 it('creates a client through the panel', function () {
@@ -120,14 +128,12 @@ it('unpublishes an article through the panel', function () {
     $this->actingAs($this->admin);
     $article = Article::first();
 
-    Livewire::test(ManageArticles::class)
-        ->callTableAction(EditAction::class, $article, [
-            'title' => $article->title,
-            'slug' => $article->slug,
-            'category' => $article->category->value,
+    Livewire::test(EditArticle::class, ['record' => $article->getRouteKey()])
+        ->fillForm([
             'is_published' => false,
         ])
-        ->assertHasNoTableActionErrors();
+        ->call('save')
+        ->assertHasNoFormErrors();
 
     expect($article->fresh()->is_published)->toBeFalse();
 });
@@ -192,8 +198,8 @@ it('shows products, articles, clients and redirects in the panel tables', functi
     $this->actingAs($this->admin);
 
     $page = match ($resource) {
-        'products' => ManageProducts::class,
-        'articles' => ManageArticles::class,
+        'products' => ListProducts::class,
+        'articles' => ListArticles::class,
         'clients' => ManageClients::class,
         'legacy-redirects' => ManageLegacyRedirects::class,
     };
@@ -266,14 +272,15 @@ it('takes a partner created in the panel all the way to a published product', fu
 
     $category = ProductCategory::where('brand_id', $brand->getKey())->firstOrFail();
 
-    Livewire::test(ManageProducts::class)
-        ->callAction(CreateAction::class, [
+    Livewire::test(CreateProduct::class)
+        ->fillForm([
             'brand_id' => $brand->getKey(),
             'name' => 'Makita Hammer',
             'slug' => 'makita-hammer',
             'position' => 0,
             'is_visible' => true,
         ])
+        ->call('create')
         ->assertHasNoFormErrors();
 
     expect(Product::where('slug', 'makita-hammer')->firstOrFail()->exists)
@@ -325,21 +332,20 @@ it('creates a product under a partner without requiring a category', function ()
     $this->actingAs($this->admin);
     $brand = Brand::where('slug', 'bosch')->firstOrFail();
 
-    $page = Livewire::test(ManageProducts::class)
-        ->mountAction('create')
-        ->set('mountedActions.0.data.brand_id', $brand->getKey())
-        ->set('mountedActions.0.data.name', 'Bosch Test Product')
-        ->set('mountedActions.0.data.slug', 'bosch-test-product');
+    $page = Livewire::test(CreateProduct::class)
+        ->set('data.brand_id', $brand->getKey())
+        ->set('data.name', 'Bosch Test Product')
+        ->set('data.slug', 'bosch-test-product');
 
-    expect($page->get('mountedActions.0.data.brand_id'))->toBe($brand->getKey());
+    expect($page->get('data.brand_id'))->toBe($brand->getKey());
 });
 
 it('creates a product under a partner with a multiple image gallery', function () {
     $this->actingAs($this->admin);
     $brand = Brand::where('slug', 'bosch')->firstOrFail();
 
-    Livewire::test(ManageProducts::class)
-        ->callAction(CreateAction::class, [
+    Livewire::test(CreateProduct::class)
+        ->fillForm([
             'brand_id' => $brand->getKey(),
             'name' => 'Bosch Corded Drill X',
             'slug' => 'bosch-corded-drill-x',
@@ -351,6 +357,7 @@ it('creates a product under a partner with a multiple image gallery', function (
             'position' => 0,
             'is_visible' => true,
         ])
+        ->call('create')
         ->assertHasNoFormErrors();
 
     $product = Product::where('slug', 'bosch-corded-drill-x')->firstOrFail();
@@ -379,30 +386,28 @@ it('builds a product gallery and specifications through the repeater add buttons
     $this->actingAs($this->admin);
     $brand = Brand::where('slug', 'sumato')->firstOrFail();
 
-    $page = Livewire::test(ManageProducts::class)->mountAction('create');
+    $page = Livewire::test(CreateProduct::class);
 
-    $schema = $page->instance()->getMountedActionSchemaName();
+    $page->set('data.brand_id', $brand->getKey())
+        ->set('data.name', 'Sumato Widget')
+        ->set('data.slug', 'sumato-widget')
+        ->set('data.position', 0)
+        ->set('data.is_visible', true);
 
-    $page->set('mountedActions.0.data.brand_id', $brand->getKey())
-        ->set('mountedActions.0.data.name', 'Sumato Widget')
-        ->set('mountedActions.0.data.slug', 'sumato-widget')
-        ->set('mountedActions.0.data.position', 0)
-        ->set('mountedActions.0.data.is_visible', true);
+    $page->callFormComponentAction('images', 'add', formName: 'form');
+    $imageKey = array_key_first(data_get($page->get('data'), 'images'));
+    $page->set('data.images.'.$imageKey.'.alt', 'Slider');
 
-    $page->callFormComponentAction('images', 'add', formName: $schema)->callMountedAction();
-    $imageKey = array_key_first(data_get($page->get('mountedActions.0.data'), 'images'));
-    $page->set('mountedActions.0.data.images.'.$imageKey.'.alt', 'Slider');
+    $page->callFormComponentAction('sections', 'add', formName: 'form');
+    $sectionKey = array_key_first(data_get($page->get('data'), 'sections'));
+    $page->set('data.sections.'.$sectionKey.'.title', 'Dimensions');
 
-    $page->callFormComponentAction('sections', 'add', formName: $schema)->callMountedAction();
-    $sectionKey = array_key_first(data_get($page->get('mountedActions.0.data'), 'sections'));
-    $page->set('mountedActions.0.data.sections.'.$sectionKey.'.title', 'Dimensions');
+    $page->callFormComponentAction("sections.{$sectionKey}.rows", 'add', formName: 'form');
+    $rowKey = array_key_first(data_get($page->get('data'), "sections.{$sectionKey}.rows"));
+    $page->set("data.sections.{$sectionKey}.rows.{$rowKey}.label", 'Height')
+        ->set("data.sections.{$sectionKey}.rows.{$rowKey}.value", '30 cm');
 
-    $page->callFormComponentAction("sections.{$sectionKey}.rows", 'add', formName: $schema)->callMountedAction();
-    $rowKey = array_key_first(data_get($page->get('mountedActions.0.data'), "sections.{$sectionKey}.rows"));
-    $page->set("mountedActions.0.data.sections.{$sectionKey}.rows.{$rowKey}.label", 'Height')
-        ->set("mountedActions.0.data.sections.{$sectionKey}.rows.{$rowKey}.value", '30 cm');
-
-    $data = $page->get('mountedActions.0.data');
+    $data = $page->get('data');
     $data['card_image'] = [UploadedFile::fake()->image('widget-card.png')];
     $data['images'][$imageKey]['path'] = [UploadedFile::fake()->image('widget-slider.png')];
 
@@ -412,17 +417,17 @@ it('builds a product gallery and specifications through the repeater add buttons
         if ($value instanceof UploadedFile
             || (is_array($value) && isset($value[0]) && $value[0] instanceof UploadedFile)
         ) {
-            $page->set('mountedActions.0.data.'.$path, $value);
+            $page->set('data.'.$path, $value);
 
-            Arr::set($data, $path, $page->get('mountedActions.0.data.'.$path));
+            Arr::set($data, $path, $page->get('data.'.$path));
         }
     }
 
     $page->call('enableSchemaStateUpdateHooksForTesting');
 
-    $page->set('mountedActions.0.data', $data)
-        ->callMountedAction()
-        ->assertHasNoActionErrors();
+    $page->set('data', $data)
+        ->call('create')
+        ->assertHasNoFormErrors();
 
     $product = Product::where('slug', 'sumato-widget')->firstOrFail();
 
@@ -445,8 +450,7 @@ it('builds a product gallery and specifications through the repeater add buttons
  */
 function editProductImages(Product $product, array $images): Testable
 {
-    $component = Livewire::test(ManageProducts::class)
-        ->mountTableAction(EditAction::class, $product);
+    $component = Livewire::test(EditProduct::class, ['record' => $product->getRouteKey()]);
 
     $state = ['images' => $images];
 
@@ -456,18 +460,18 @@ function editProductImages(Product $product, array $images): Testable
         if ($value instanceof UploadedFile
             || (is_array($value) && isset($value[0]) && $value[0] instanceof UploadedFile)
         ) {
-            $component->set('mountedActions.0.data.'.$path, $value);
+            $component->set('data.'.$path, $value);
 
-            Arr::set($state, $path, $component->get('mountedActions.0.data.'.$path));
+            Arr::set($state, $path, $component->get('data.'.$path));
         }
     }
 
     $component->call('enableSchemaStateUpdateHooksForTesting');
 
     return $component
-        ->set('mountedActions.0.data.images', $state['images'])
-        ->callMountedTableAction()
-        ->assertHasNoTableActionErrors();
+        ->set('data.images', $state['images'])
+        ->call('save')
+        ->assertHasNoFormErrors();
 }
 
 it('removes a single product image and renumbers the rest', function () {
@@ -513,7 +517,7 @@ it('deletes a product through the panel', function () {
     $this->actingAs($this->admin);
     $product = Product::whereHas('images')->firstOrFail();
 
-    Livewire::test(ManageProducts::class)
+    Livewire::test(ListProducts::class)
         ->callTableAction(DeleteAction::class, $product)
         ->assertHasNoTableActionErrors();
 
@@ -657,4 +661,73 @@ it('reorders clients using up and down table actions', function () {
 
     expect($first->fresh()->position)->toBe($secondPos)
         ->and($second->fresh()->position)->toBe($firstPos);
+});
+
+it('renders the custom CSJ executive dashboard widgets with real catalog metrics', function () {
+    $this->actingAs($this->admin)
+        ->get('/admin-cms')
+        ->assertOk()
+        ->assertSee('Welcome back,')
+        ->assertSee('Active Partners')
+        ->assertSee('Clients')
+        ->assertSee('Published Products')
+        ->assertSee('Partner Catalog Overview')
+        ->assertSee('Site Identity');
+});
+
+it('lets an administrator open full-page create and edit routes for products and articles', function () {
+    $product = Product::firstOrFail();
+    $article = Article::firstOrFail();
+
+    $this->actingAs($this->admin)->get('/admin-cms/products/create')->assertOk();
+    $this->actingAs($this->admin)->get("/admin-cms/products/{$product->getRouteKey()}/edit")->assertOk();
+    $this->actingAs($this->admin)->get('/admin-cms/articles/create')->assertOk();
+    $this->actingAs($this->admin)->get("/admin-cms/articles/{$article->getRouteKey()}/edit")->assertOk();
+});
+
+it('creates a new CMS user and grants them access to the admin panel', function () {
+    $this->actingAs($this->admin);
+
+    Livewire::test(ManageUsers::class)
+        ->callAction(CreateAction::class, [
+            'name' => 'Editor Staff',
+            'email' => 'editor@example.test',
+            'password' => 'secret-password-123',
+            'is_admin' => true,
+        ])
+        ->assertHasNoFormErrors();
+
+    $newUser = User::where('email', 'editor@example.test')->firstOrFail();
+
+    expect($newUser->is_admin)->toBeTrue();
+
+    $this->actingAs($newUser)
+        ->get('/admin-cms')
+        ->assertOk();
+});
+
+it('logs who created or updated content in activity logs', function () {
+    $this->actingAs($this->admin);
+
+    $brand = Brand::firstOrFail();
+    $oldName = $brand->name;
+
+    Livewire::test(ManageBrands::class)
+        ->callTableAction(EditAction::class, $brand, ['name' => 'Updated Partner Name'])
+        ->assertHasNoTableActionErrors();
+
+    $log = ActivityLog::query()
+        ->where('action', 'updated')
+        ->where('subject_type', Brand::class)
+        ->where('subject_id', $brand->getKey())
+        ->latest('id')
+        ->firstOrFail();
+
+    expect($log->user_id)->toBe($this->admin->getKey())
+        ->and($log->user_name)->toBe($this->admin->name)
+        ->and($log->changes['old']['name'])->toBe($oldName)
+        ->and($log->changes['new']['name'])->toBe('Updated Partner Name');
+
+    Livewire::test(ListActivityLogs::class)
+        ->assertCanSeeTableRecords([$log]);
 });

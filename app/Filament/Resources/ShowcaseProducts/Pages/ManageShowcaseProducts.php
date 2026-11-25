@@ -17,7 +17,8 @@ class ManageShowcaseProducts extends ManageRecords
             CreateAction::make()
                 ->label('Add product to showcase')
                 ->modalHeading('Add product to showcase')
-                ->modalWidth(Width::FiveExtraLarge)
+                ->slideOver()
+                ->modalWidth(Width::TwoExtraLarge)
                 ->createAnother(false),
         ];
     }

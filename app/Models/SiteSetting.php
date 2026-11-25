@@ -27,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
 class SiteSetting extends Model
 {
     /** @use HasFactory<SiteSettingFactory> */
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @return array<string, string>

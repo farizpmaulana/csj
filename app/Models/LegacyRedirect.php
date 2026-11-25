@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
 class LegacyRedirect extends Model
 {
     /** @use HasFactory<LegacyRedirectFactory> */
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @return array<string, mixed>

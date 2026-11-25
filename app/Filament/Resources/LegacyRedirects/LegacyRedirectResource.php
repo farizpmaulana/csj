@@ -90,7 +90,7 @@ class LegacyRedirectResource extends Resource
             ])
             ->defaultSort('from_path')
             ->recordActions([
-                EditAction::make()->modalWidth(Width::FiveExtraLarge),
+                EditAction::make()->slideOver()->modalWidth(Width::TwoExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

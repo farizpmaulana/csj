@@ -14,7 +14,7 @@ class ManageGalleryImages extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()->modalWidth(Width::FiveExtraLarge),
+            CreateAction::make()->slideOver()->modalWidth(Width::TwoExtraLarge),
         ];
     }
 }

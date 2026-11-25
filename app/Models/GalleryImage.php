@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Model;
 class GalleryImage extends Model
 {
     /** @use HasFactory<GalleryImageFactory> */
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @param  Builder<GalleryImage>  $query

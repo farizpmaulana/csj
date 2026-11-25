@@ -116,7 +116,7 @@ class GalleryImageResource extends Resource
             ->reorderable('position')
             ->recordActions([
                 ...static::getOrderActions(),
-                EditAction::make()->modalWidth(Width::FiveExtraLarge),
+                EditAction::make()->slideOver()->modalWidth(Width::TwoExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

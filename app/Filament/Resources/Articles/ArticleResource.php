@@ -3,7 +3,9 @@
 namespace App\Filament\Resources\Articles;
 
 use App\Enums\ArticleCategory;
-use App\Filament\Resources\Articles\Pages\ManageArticles;
+use App\Filament\Resources\Articles\Pages\CreateArticle;
+use App\Filament\Resources\Articles\Pages\EditArticle;
+use App\Filament\Resources\Articles\Pages\ListArticles;
 use App\Models\Article;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
@@ -18,11 +20,9 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
-use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -46,92 +46,85 @@ class ArticleResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
+            ->columns(['default' => 1, 'lg' => 3])
             ->components([
-                Tabs::make('Article')
-                    ->contained(false)
-                    ->tabs([
-                        Tab::make('General')
-                            ->schema([
-                                TextInput::make('title')
-                                    ->required()
-                                    ->maxLength(255),
-                                TextInput::make('slug')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->unique(ignoreRecord: true)
-                                    ->helperText('Used in the address, for example /articles/panduan-k3.'),
-                                Select::make('category')
-                                    ->options(collect(ArticleCategory::cases())->mapWithKeys(
-                                        fn (ArticleCategory $category) => [$category->value => $category->label()]
-                                    )->all())
-                                    ->required()
-                                    ->native(false),
-                                DateTimePicker::make('published_at')
-                                    ->label('Published at')
-                                    ->seconds(false),
-                                TextInput::make('reading_time')
-                                    ->placeholder('5 min read')
-                                    ->maxLength(255),
-                                Textarea::make('lead')
-                                    ->rows(2)
-                                    ->label('Standfirst'),
-                                Textarea::make('excerpt')
-                                    ->rows(2)
-                                    ->helperText('Shown on the article cards.'),
-                            ]),
-                        Tab::make('Body')
-                            ->schema([
-                                RichEditor::make('body')
-                                    ->required()
-                                    ->columnSpanFull(),
-                                TextInput::make('cta_text')
-                                    ->label('Closing call to action text')
-                                    ->maxLength(255)
-                                    ->columnSpanFull(),
-                            ]),
-                        Tab::make('Media')
-                            ->schema([
-                                Section::make('Card image')
-                                    ->schema([
-                                        FileUpload::make('card_image')
-                                            ->label('Card image')
-                                            ->image()
-                                            ->imagePreviewHeight('200')
-                                            ->disk('public')
-                                            ->directory('images/articles')
-                                            ->visibility('public'),
-                                        TextInput::make('card_alt')
-                                            ->label('Card alt text')
-                                            ->maxLength(255),
-                                    ]),
-                                Section::make('Hero image')
-                                    ->schema([
-                                        FileUpload::make('hero_image')
-                                            ->label('Hero image')
-                                            ->image()
-                                            ->imagePreviewHeight('200')
-                                            ->disk('public')
-                                            ->directory('images/articles')
-                                            ->visibility('public'),
-                                        TextInput::make('hero_alt')
-                                            ->label('Hero alt text')
-                                            ->maxLength(255),
-                                    ]),
-                            ]),
-                        Tab::make('Publishing & SEO')
-                            ->schema([
-                                TextInput::make('seo_title')
-                                    ->label('Meta title')
-                                    ->maxLength(255)
-                                    ->columnSpanFull(),
-                                Toggle::make('featured')
-                                    ->label('Featured'),
-                                Toggle::make('is_published')
-                                    ->label('Published')
-                                    ->default(true),
-                            ]),
-                    ]),
+                Group::make([
+                    Section::make('Article Content')
+                        ->schema([
+                            TextInput::make('title')
+                                ->required()
+                                ->maxLength(255),
+                            TextInput::make('slug')
+                                ->required()
+                                ->maxLength(255)
+                                ->unique(ignoreRecord: true)
+                                ->helperText('Used in the address, for example /articles/panduan-k3.'),
+                            Textarea::make('lead')
+                                ->rows(2)
+                                ->label('Standfirst'),
+                            Textarea::make('excerpt')
+                                ->rows(2)
+                                ->helperText('Shown on the article cards.'),
+                            RichEditor::make('body')
+                                ->required()
+                                ->columnSpanFull(),
+                            TextInput::make('cta_text')
+                                ->label('Closing call to action text')
+                                ->maxLength(255)
+                                ->columnSpanFull(),
+                        ]),
+                    Section::make('Media')
+                        ->schema([
+                            FileUpload::make('card_image')
+                                ->label('Card image')
+                                ->image()
+                                ->imagePreviewHeight('200')
+                                ->disk('public')
+                                ->directory('images/articles')
+                                ->visibility('public'),
+                            TextInput::make('card_alt')
+                                ->label('Card alt text')
+                                ->maxLength(255),
+                            FileUpload::make('hero_image')
+                                ->label('Hero image')
+                                ->image()
+                                ->imagePreviewHeight('200')
+                                ->disk('public')
+                                ->directory('images/articles')
+                                ->visibility('public'),
+                            TextInput::make('hero_alt')
+                                ->label('Hero alt text')
+                                ->maxLength(255),
+                        ]),
+                ])->columnSpan(['lg' => 2]),
+                Group::make([
+                    Section::make('Publishing')
+                        ->schema([
+                            Select::make('category')
+                                ->options(collect(ArticleCategory::cases())->mapWithKeys(
+                                    fn (ArticleCategory $category) => [$category->value => $category->label()]
+                                )->all())
+                                ->required()
+                                ->native(false),
+                            DateTimePicker::make('published_at')
+                                ->label('Published at')
+                                ->seconds(false),
+                            TextInput::make('reading_time')
+                                ->placeholder('5 min read')
+                                ->maxLength(255),
+                            Toggle::make('featured')
+                                ->label('Featured'),
+                            Toggle::make('is_published')
+                                ->label('Published')
+                                ->default(true),
+                        ]),
+                    Section::make('SEO')
+                        ->schema([
+                            TextInput::make('seo_title')
+                                ->label('Meta title')
+                                ->maxLength(255),
+                        ]),
+                ])->columnSpan(['lg' => 1]),
             ]);
     }
 
@@ -170,7 +163,7 @@ class ArticleResource extends Resource
             ])
             ->defaultSort('published_at', 'desc')
             ->recordActions([
-                EditAction::make()->modalWidth(Width::FiveExtraLarge),
+                EditAction::make(),
                 DeleteAction::make(),
             ])
             ->toolbarActions([
@@ -183,7 +176,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ManageArticles::route('/'),
+            'index' => ListArticles::route('/'),
+            'create' => CreateArticle::route('/create'),
+            'edit' => EditArticle::route('/{record}/edit'),
         ];
     }
 }

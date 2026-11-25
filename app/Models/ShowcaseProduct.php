@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ShowcaseProduct extends Model
 {
-    use HasFactory;
+    use Concerns\LogsActivity, HasFactory;
 
     /**
      * @var list<string>

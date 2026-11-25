@@ -3,18 +3,17 @@
 namespace App\Filament\Resources\Products\Pages;
 
 use App\Filament\Resources\Products\ProductResource;
-use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\ManageRecords;
-use Filament\Support\Enums\Width;
+use Filament\Actions\DeleteAction;
+use Filament\Resources\Pages\EditRecord;
 
-class ManageProducts extends ManageRecords
+class EditProduct extends EditRecord
 {
     protected static string $resource = ProductResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make()->modalWidth(Width::FiveExtraLarge),
+            DeleteAction::make(),
         ];
     }
 }
