@@ -73,7 +73,14 @@
                         <a class="nav-link" href="{{ $home }}#about">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ $home }}#partners">Partners</a>
+                        <a
+                            class="nav-link {{ request()->routeIs('products.*') ? 'active' : '' }}"
+                            href="{{ route('products.index') }}"
+                            data-nav-section="partners"
+                            @if (request()->routeIs('products.*')) aria-current="page" @endif
+                        >
+                            Partners
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ $home }}#gallery">Gallery</a>

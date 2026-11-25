@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Brands\Pages;
 use App\Filament\Resources\Brands\BrandResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Support\Enums\Width;
 
 class ManageBrands extends ManageRecords
 {
@@ -13,7 +14,7 @@ class ManageBrands extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()->modalWidth(Width::FiveExtraLarge),
         ];
     }
 }

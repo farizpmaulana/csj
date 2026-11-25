@@ -122,7 +122,7 @@
                                     class="products-brand-details"
                                     href="{{ route('products.index', ['brand' => [$brandModel->slug]]) }}"
                                 >
-                                    View products <span aria-hidden="true">&rarr;</span>
+                                    <span class="products-brand-details-text">View products</span> <span class="products-brand-details-arrow" aria-hidden="true">&rarr;</span>
                                 </a>
                             </header>
 
@@ -156,7 +156,7 @@
                 </div>
                 <div class="cta-actions">
                     <a href="{{ wa_link() }}" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">
-                        WhatsApp Consultation <span aria-hidden="true">&rarr;</span>
+                        <span class="btn-whatsapp-text">WhatsApp Consultation</span> <span class="btn-whatsapp-arrow" aria-hidden="true">&rarr;</span>
                     </a>
                 </div>
             </section>

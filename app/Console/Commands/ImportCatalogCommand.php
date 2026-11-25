@@ -35,6 +35,7 @@ class ImportCatalogCommand extends Command
             $this->importSiteSettings();
             $this->importBrands($catalog);
             $this->importProducts($catalog);
+            $this->importShowcaseProducts();
             $this->importArticles($articles);
             $this->importClients($homeMedia);
             $this->importGallery($homeMedia);
@@ -50,6 +51,7 @@ class ImportCatalogCommand extends Command
                 ['brands', (string) Brand::count()],
                 ['product_categories', (string) ProductCategory::count()],
                 ['products', (string) Product::count()],
+                ['showcase_products', (string) DB::table('showcase_products')->count()],
                 ['articles', (string) Article::count()],
                 ['clients', (string) Client::count()],
                 ['gallery_images', (string) GalleryImage::count()],
@@ -79,6 +81,7 @@ class ImportCatalogCommand extends Command
     protected function truncateContent(): void
     {
         foreach ([
+            'showcase_products',
             'product_section_rows',
             'product_sections',
             'product_images',
@@ -98,20 +101,26 @@ class ImportCatalogCommand extends Command
 
     protected function importSiteSettings(): void
     {
-        SiteSetting::query()->updateOrCreate([], [
-            'company_name' => 'PT Cahaya Sarange Jaya',
-            'logo_path' => 'images/logo_own/logo_csj02.png',
-            'favicon_path' => 'images/favicon.svg',
-            'whatsapp_number' => '6281140000223',
-            'contact_phone' => '+62 542 8860262',
-            'contact_email' => 'info@cahayasarangejaya.co.id',
-            'address_primary' => 'Jl. MT Haryono Ruko Haryono Palace No.25, Balikpapan, Kalimantan Timur 76125',
-            'address_secondary' => 'Jl. Cilandak Raya KKO / Komplek Vico Kav. 12, Jakarta Selatan, DKI Jakarta 12560',
-            'instagram_url' => 'https://www.instagram.com/cahayasarangejaya',
-            'facebook_url' => 'https://www.facebook.com/ptcahayasarangejaya',
-            'linkedin_url' => 'https://www.linkedin.com/company/pt-cahayasarangejaya/',
-            'default_social_image' => 'images/logo_own/logo_csj02.png',
-        ]);
+        $settingsFile = database_path('seed-data/site-settings.php');
+
+        $data = is_file($settingsFile)
+            ? require $settingsFile
+            : [
+                'company_name' => 'PT Cahaya Sarange Jaya',
+                'logo_path' => 'images/logo_own/logo_csj02.png',
+                'favicon_path' => 'images/favicon.svg',
+                'whatsapp_number' => '6281140000223',
+                'contact_phone' => '+62 542 8860262',
+                'contact_email' => 'info@cahayasarangejaya.co.id',
+                'address_primary' => 'Jl. MT Haryono Ruko Haryono Palace No.25, Balikpapan, Kalimantan Timur 76125',
+                'address_secondary' => 'Jl. Cilandak Raya KKO / Komplek Vico Kav. 12, Jakarta Selatan, DKI Jakarta 12560',
+                'instagram_url' => 'https://www.instagram.com/cahayasarangejaya',
+                'facebook_url' => 'https://www.facebook.com/ptcahayasarangejaya',
+                'linkedin_url' => 'https://www.linkedin.com/company/pt-cahayasarangejaya/',
+                'default_social_image' => 'images/logo_own/logo_csj02.png',
+            ];
+
+        SiteSetting::query()->updateOrCreate([], $data);
     }
 
     /**
@@ -175,6 +184,8 @@ class ImportCatalogCommand extends Command
                 'card_alt' => $product['card_alt'] ?? null,
                 'card_label' => null,
                 'whatsapp_message' => $product['whatsapp'] ?? null,
+                'is_showcase' => $product['is_showcase'] ?? false,
+                'showcase_position' => $product['showcase_position'] ?? 0,
                 'position' => $position++,
                 'is_visible' => true,
             ]);
@@ -327,6 +338,45 @@ class ImportCatalogCommand extends Command
                 'route_name' => $target['route'],
                 'parameters' => $target['parameters'] ?? [],
             ]);
+        }
+    }
+
+    protected function importShowcaseProducts(): void
+    {
+        $targetBrandSlugs = ['bosch', 'buccheri', 'sata', 'sumato'];
+        $brands = Brand::query()
+            ->whereIn('slug', $targetBrandSlugs)
+            ->with(['products' => fn ($q) => $q->where('is_visible', true)->orderBy('position')])
+            ->get()
+            ->keyBy('slug');
+
+        $position = 1;
+        $now = now();
+
+        foreach ([0, 1] as $index) {
+            foreach ($targetBrandSlugs as $slug) {
+                if ($position > 8) {
+                    break;
+                }
+
+                $product = $brands->get($slug)?->products->get($index);
+
+                if ($product) {
+                    DB::table('showcase_products')->insert([
+                        'product_id' => $product->id,
+                        'position' => $position,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ]);
+
+                    DB::table('products')->where('id', $product->id)->update([
+                        'is_showcase' => true,
+                        'showcase_position' => $position,
+                    ]);
+
+                    $position++;
+                }
+            }
         }
     }
 }

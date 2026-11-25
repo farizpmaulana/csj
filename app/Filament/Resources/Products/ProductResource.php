@@ -4,7 +4,6 @@ namespace App\Filament\Resources\Products;
 
 use App\Filament\Resources\Products\Pages\ManageProducts;
 use App\Models\Product;
-use App\Models\ProductCategory;
 use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
@@ -19,9 +18,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Utilities\Get;
-use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -43,175 +43,148 @@ class ProductResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Details')
-                    ->schema([
-                        Select::make('brand_id')
-                            ->label('Partner')
-                            ->relationship('brand', 'name')
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->live()
-                            ->afterStateUpdated(fn (Set $set) => $set('product_category_id', null)),
-                        Select::make('product_category_id')
-                            ->label('Category')
-                            ->options(fn (Get $get): array => ProductCategory::query()
-                                ->where('brand_id', $get('brand_id'))
-                                ->orderBy('position')
-                                ->orderBy('name')
-                                ->get()
-                                ->mapWithKeys(fn (ProductCategory $category) => [$category->id => $category->name ?: 'Uncategorised'])
-                                ->all())
-                            ->searchable()
-                            ->native(false)
-                            ->helperText('Products are grouped by category on the partner page. Add categories under Partners first.'),
-                        TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        TextInput::make('slug')
-                            ->required()
-                            ->maxLength(255)
-                            ->unique(ignoreRecord: true)
-                            ->helperText('Used in the address, for example /products/bosch/impact-wrench.'),
-                        TextInput::make('subtitle')
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2),
-                Section::make('Content')
-                    ->schema([
-                        Textarea::make('excerpt')
-                            ->rows(3)
-                            ->label('Card summary')
-                            ->helperText('Shown on the partner list page.'),
-                        RichEditor::make('description')
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2),
-                Section::make('Card image')
-                    ->schema([
-                        FileUpload::make('card_image')
-                            ->label('Image')
-                            ->image()
-                            ->disk('public')
-                            ->directory('images/products')
-                            ->visibility('public'),
-                        TextInput::make('card_alt')
-                            ->label('Alt text')
-                            ->maxLength(255),
-                        TextInput::make('card_label')
-                            ->label('Card label')
-                            ->maxLength(255),
-                    ])
-                    ->columns(2),
-                Section::make('Gallery')
-                    ->schema([
-                        Repeater::make('images')
-                            ->label('Slider images')
-                            ->relationship('images')
-                            ->orderColumn('position')
+                Tabs::make('Product')
+                    ->contained(false)
+                    ->tabs([
+                        Tab::make('General')
                             ->schema([
-                                FileUpload::make('path')
-                                    ->label('Image')
-                                    ->image()
-                                    ->disk('public')
-                                    ->directory('images/products')
-                                    ->visibility('public')
+                                Select::make('brand_id')
+                                    ->label('Partner')
+                                    ->relationship('brand', 'name')
+                                    ->searchable()
+                                    ->preload()
                                     ->required(),
-                                TextInput::make('alt')
-                                    ->label('Alt text')
-                                    ->maxLength(255),
-                            ])
-                            ->columns(2)
-                            ->defaultItems(0)
-                            ->addActionLabel('Add image')
-                            ->reorderable()
-                            ->itemLabel(fn (array $state): ?string => basename((string) ($state['path'] ?? '')) ?: null)
-                            ->columnSpanFull()
-                            ->helperText('These become the slides of the product image slider, in this order.'),
-                    ]),
-                Section::make('Specifications')
-                    ->schema([
-                        Repeater::make('sections')
-                            ->label('Specification sections')
-                            ->relationship('sections')
-                            ->orderColumn('position')
-                            ->schema([
-                                TextInput::make('title')
+                                TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
-                                Select::make('type')
-                                    ->options([
-                                        'list' => 'Bulleted list',
-                                        'ordered' => 'Numbered list',
-                                        'table' => 'Table',
-                                    ])
-                                    ->default('list')
-                                    ->required(),
-                                Repeater::make('rows')
-                                    ->label('Rows')
-                                    ->relationship('rows')
+                                TextInput::make('slug')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->unique(ignoreRecord: true)
+                                    ->helperText('Used in the address, for example /products/bosch/impact-wrench.'),
+                                TextInput::make('subtitle')
+                                    ->maxLength(255),
+                                Textarea::make('excerpt')
+                                    ->rows(3)
+                                    ->label('Card summary')
+                                    ->helperText('Shown on the partner list page.'),
+                                RichEditor::make('description')
+                                    ->columnSpanFull(),
+                            ]),
+                        Tab::make('Media')
+                            ->schema([
+                                Section::make('Card image')
+                                    ->schema([
+                                        FileUpload::make('card_image')
+                                            ->label('Image')
+                                            ->image()
+                                            ->imagePreviewHeight('200')
+                                            ->disk('public')
+                                            ->directory('images/products')
+                                            ->visibility('public'),
+                                        TextInput::make('card_alt')
+                                            ->label('Alt text')
+                                            ->maxLength(255),
+                                        TextInput::make('card_label')
+                                            ->label('Card label')
+                                            ->maxLength(255),
+                                    ]),
+                                Section::make('Gallery')
+                                    ->schema([
+                                        Repeater::make('images')
+                                            ->label('Slider images')
+                                            ->relationship('images')
+                                            ->orderColumn('position')
+                                            ->schema([
+                                                FileUpload::make('path')
+                                                    ->label('Image')
+                                                    ->image()
+                                                    ->imagePreviewHeight('200')
+                                                    ->disk('public')
+                                                    ->directory('images/products')
+                                                    ->visibility('public')
+                                                    ->required(),
+                                                TextInput::make('alt')
+                                                    ->label('Alt text')
+                                                    ->maxLength(255),
+                                            ])
+                                            ->defaultItems(0)
+                                            ->addActionLabel('Add image')
+                                            ->reorderable()
+                                            ->itemLabel(fn (array $state): ?string => basename((string) ($state['path'] ?? '')) ?: null)
+                                            ->columnSpanFull()
+                                            ->helperText('These become the slides of the product image slider, in this order.'),
+                                    ]),
+                            ]),
+                        Tab::make('Specifications')
+                            ->schema([
+                                Repeater::make('sections')
+                                    ->label('Specification sections')
+                                    ->relationship('sections')
                                     ->orderColumn('position')
                                     ->schema([
-                                        TextInput::make('label')
+                                        TextInput::make('title')
                                             ->required()
                                             ->maxLength(255),
-                                        TextInput::make('value')
-                                            ->maxLength(255),
+                                        Select::make('type')
+                                            ->options([
+                                                'list' => 'Bulleted list',
+                                                'ordered' => 'Numbered list',
+                                                'table' => 'Table',
+                                            ])
+                                            ->default('list')
+                                            ->required(),
+                                        Repeater::make('rows')
+                                            ->label('Rows')
+                                            ->relationship('rows')
+                                            ->orderColumn('position')
+                                            ->schema([
+                                                TextInput::make('label')
+                                                    ->required()
+                                                    ->maxLength(255),
+                                                TextInput::make('value')
+                                                    ->maxLength(255),
+                                            ])
+                                            ->columns(2)
+                                            ->defaultItems(0)
+                                            ->addActionLabel('Add row')
+                                            ->reorderable(),
                                     ])
-                                    ->columns(2)
+                                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
                                     ->defaultItems(0)
-                                    ->addActionLabel('Add row')
+                                    ->addActionLabel('Add section')
                                     ->reorderable()
-                                    ->itemLabel(fn (array $state): ?string => $state['label'] ?? null)
-                                    ->collapsed(),
-                            ])
-                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
-                            ->defaultItems(0)
-                            ->addActionLabel('Add section')
-                            ->reorderable()
-                            ->collapsed()
-                            ->columnSpanFull(),
+                                    ->columnSpanFull(),
+                            ]),
+                        Tab::make('Visibility & SEO')
+                            ->schema([
+                                Section::make('Visibility')
+                                    ->schema([
+                                        TextInput::make('position')
+                                            ->label('Order')
+                                            ->numeric()
+                                            ->required()
+                                            ->default(0),
+                                        Toggle::make('is_visible')
+                                            ->label('Visible on the website')
+                                            ->default(true),
+                                    ]),
+                                Section::make('Enquiry and SEO')
+                                    ->schema([
+                                        TextInput::make('whatsapp_message')
+                                            ->label('WhatsApp message')
+                                            ->maxLength(255)
+                                            ->helperText('Leave empty to use the generic message.')
+                                            ->columnSpanFull(),
+                                        TextInput::make('seo_title')
+                                            ->label('Meta title')
+                                            ->maxLength(255)
+                                            ->columnSpanFull(),
+                                    ]),
+                            ]),
                     ]),
-                Section::make('Enquiry and SEO')
-                    ->schema([
-                        TextInput::make('whatsapp_message')
-                            ->label('WhatsApp message')
-                            ->maxLength(255)
-                            ->helperText('Leave empty to use the generic message.')
-                            ->columnSpanFull(),
-                        TextInput::make('seo_title')
-                            ->label('Meta title')
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                    ])
-                    ->columns(2),
-                Section::make('Visibility')
-                    ->schema([
-                        TextInput::make('position')
-                            ->label('Order')
-                            ->numeric()
-                            ->required()
-                            ->default(0),
-                        Toggle::make('is_visible')
-                            ->label('Visible on the website')
-                            ->default(true),
-                    ])
-                    ->columns(2),
-                Section::make('Homepage showcase')
-                    ->description('Products marked for showcase appear on the homepage. Place one product from each partner to get alternating brands.')
-                    ->schema([
-                        Toggle::make('is_showcase')
-                            ->label('Show on homepage')
-                            ->default(false),
-                        TextInput::make('showcase_position')
-                            ->label('Showcase order')
-                            ->numeric()
-                            ->default(0)
-                            ->helperText('Lower numbers appear first. Products automatically interleave by partner.'),
-                    ])
-                    ->columns(2),
             ]);
     }
 
@@ -233,14 +206,6 @@ class ProductResource extends Resource
                 TextColumn::make('category.name')
                     ->label('Category')
                     ->placeholder('Uncategorised'),
-                TextColumn::make('images_count')
-                    ->label('Images')
-                    ->counts('images'),
-                TextColumn::make('whatsapp_link')
-                    ->label('Enquiry link')
-                    ->placeholder('No WhatsApp number set')
-                    ->limit(48)
-                    ->tooltip('Click to copy'),
                 IconColumn::make('is_showcase')
                     ->label('Showcase')
                     ->boolean(),
@@ -256,7 +221,7 @@ class ProductResource extends Resource
             ->defaultSort('position')
             ->reorderable('position')
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->modalWidth(Width::FiveExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

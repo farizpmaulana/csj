@@ -299,7 +299,7 @@
                       aria-expanded="false"
                       aria-controls="clients-static-list"
                     >
-                      See all clients <span aria-hidden="true">&rarr;</span>
+                      <span class="clients-mode-link-text">See all clients</span> <span class="clients-mode-link-arrow" aria-hidden="true">&rarr;</span>
                     </button>
                     <button
                       type="button"
@@ -309,7 +309,7 @@
                       aria-controls="clients-static-list"
                       hidden
                     >
-                      Back to carousel <span aria-hidden="true">&larr;</span>
+                      <span class="clients-mode-link-arrow" aria-hidden="true">&larr;</span> <span class="clients-mode-link-text">Back to carousel</span>
                     </button>
                   </div>
                 </div>
@@ -343,23 +343,27 @@
               </div>
 
               <div class="partners-brand-panel">
-                <div class="partners-brand-selectors" role="group" aria-label="Filter product showcase by brand">
+                <div
+                  class="partners-brand-selectors"
+                  data-partner-count="{{ $brands->count() }}"
+                  style="--partner-count: {{ $brands->count() }};"
+                  role="navigation"
+                  aria-label="Our partners"
+                >
                   @foreach ($brands as $partner)
-                    <button
+                    <a
                       class="partners-brand-selector"
-                      type="button"
-                      data-partner-brand-filter="{{ $partner->slug }}"
-                      aria-pressed="false"
-                      aria-label="Show {{ $partner->name }} products"
+                      href="{{ route('products.brand', ['brand' => $partner->slug]) }}"
+                      aria-label="View {{ $partner->name }} products"
                     >
                       <img
                         class="partners-brand-logo {{ in_array($partner->slug, ['bosch', 'sata', 'sumato', 'buccheri'], true) ? 'partners-brand-logo-wide' : 'partners-brand-logo-compact' }}"
                         src="{{ media($partner->card_image) }}"
-                        alt=""
+                        alt="{{ $partner->name }}"
                         loading="lazy"
                         decoding="async"
                       />
-                    </button>
+                    </a>
                   @endforeach
                 </div>
               </div>
@@ -373,7 +377,7 @@
                 <div class="partner-product-showcase-actions">
                   <a class="partner-product-showcase-link" href="{{ route('products.index') }}">
                     <span class="partner-product-showcase-link-label">Browse full catalog</span>
-                    <span aria-hidden="true">&rarr;</span>
+                    <span class="partner-product-showcase-link-arrow" aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </div>
@@ -389,21 +393,11 @@
                     </button>
                   </div>
                   <div class="partner-product-grid" data-partner-product-track role="list" aria-label="Products">
-                    @php
-                      $brandProductIndexes = [];
-                    @endphp
                     @foreach ($partnerProducts as $product)
-                      @php
-                        $brandProductIndex = $brandProductIndexes[$product->brand_id] ?? 0;
-                        $brandProductIndexes[$product->brand_id] = $brandProductIndex + 1;
-                        $showByDefault = in_array($product->id, $initialShowcaseProductIds, true);
-                      @endphp
                       <a
                         class="partner-product-card"
                         href="{{ $product->url }}"
                         data-product-brand="{{ $product->brand->slug }}"
-                        data-product-index="{{ $brandProductIndex }}"
-                        {{ $showByDefault ? '' : 'hidden' }}
                         role="listitem"
                         aria-label="{{ $product->name }} by {{ $product->brand->name }}"
                       >
@@ -429,8 +423,8 @@
                         <span class="partner-product-card-content">
                           <span class="partner-product-card-title">{{ $product->name }}</span>
                           <span class="partner-product-card-cta">
-                            View Details
-                            <span aria-hidden="true">&rarr;</span>
+                            <span class="partner-product-card-cta-text">View Details</span>
+                            <span class="partner-product-card-cta-arrow" aria-hidden="true">&rarr;</span>
                           </span>
                         </span>
                       </a>
@@ -658,7 +652,8 @@
                 <h2 class="section-title">Recent Articles</h2>
               </div>
               <a class="recent-articles-view-all" href="{{ route('articles.index') }}">
-                View all articles <span aria-hidden="true">&rarr;</span>
+                <span class="recent-articles-view-all-text">View all articles</span>
+                <span class="recent-articles-view-all-arrow" aria-hidden="true">&rarr;</span>
               </a>
             </div>
 
@@ -686,7 +681,8 @@
                     <h3>{{ $article->title }}</h3>
                     <p>{{ $article->excerpt }}</p>
                     <span class="recent-article-link">
-                      Read more <span aria-hidden="true">&rarr;</span>
+                      <span class="recent-article-link-text">Read more</span>
+                      <span class="recent-article-link-arrow" aria-hidden="true">&rarr;</span>
                     </span>
                   </div>
                 </a>
@@ -742,7 +738,7 @@
                         class="office-directions-link"
                       >
                         <i class="fas fa-directions" aria-hidden="true"></i>
-                        Get Directions
+                        <span class="office-directions-text">Get Directions</span>
                       </a>
                     </div>
                   </div>
@@ -780,7 +776,7 @@
                         class="office-directions-link"
                       >
                         <i class="fas fa-directions" aria-hidden="true"></i>
-                        Get Directions
+                        <span class="office-directions-text">Get Directions</span>
                       </a>
                     </div>
                   </div>

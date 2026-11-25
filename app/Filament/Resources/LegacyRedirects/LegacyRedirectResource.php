@@ -15,6 +15,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -89,7 +90,7 @@ class LegacyRedirectResource extends Resource
             ])
             ->defaultSort('from_path')
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()->modalWidth(Width::FiveExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

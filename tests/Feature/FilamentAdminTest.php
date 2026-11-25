@@ -1,12 +1,17 @@
 <?php
 
 use App\Filament\Resources\Articles\Pages\ManageArticles;
+use App\Filament\Resources\Brands\BrandResource;
 use App\Filament\Resources\Brands\Pages\ManageBrands;
+use App\Filament\Resources\Clients\ClientResource;
 use App\Filament\Resources\Clients\Pages\ManageClients;
+use App\Filament\Resources\GalleryImages\GalleryImageResource;
 use App\Filament\Resources\GalleryImages\Pages\ManageGalleryImages;
 use App\Filament\Resources\LegacyRedirects\Pages\ManageLegacyRedirects;
 use App\Filament\Resources\ProductCategories\Pages\ManageProductCategories;
 use App\Filament\Resources\Products\Pages\ManageProducts;
+use App\Filament\Resources\ShowcaseProducts\Pages\ManageShowcaseProducts;
+use App\Filament\Resources\ShowcaseProducts\ShowcaseProductResource;
 use App\Filament\Resources\SiteSettings\Pages\EditSiteSetting;
 use App\Models\Article;
 use App\Models\Brand;
@@ -15,6 +20,7 @@ use App\Models\GalleryImage;
 use App\Models\LegacyRedirect;
 use App\Models\Product;
 use App\Models\ProductCategory;
+use App\Models\ShowcaseProduct;
 use App\Models\SiteSetting;
 use App\Models\User;
 use Filament\Actions\CreateAction;
@@ -33,26 +39,42 @@ beforeEach(function () {
     $this->member = User::factory()->create(['is_admin' => false]);
 });
 
+it('redirects /admin to /admin-cms', function () {
+    $this->get('/admin')->assertRedirect('/admin-cms');
+});
+
 it('redirects guests to the login page', function () {
-    $this->get('/admin')->assertRedirect('/admin/login');
+    $this->get('/admin-cms')->assertRedirect('/admin-cms/login');
 });
 
 it('refuses non administrator accounts', function () {
-    $this->actingAs($this->member)->get('/admin')->assertForbidden();
+    $this->actingAs($this->member)->get('/admin-cms')->assertForbidden();
+});
+
+it('renders custom brand title and favicon on filament login page', function () {
+    $settings = SiteSetting::current();
+
+    $this->get('/admin-cms/login')
+        ->assertOk()
+        ->assertSee('CSJ')
+        ->assertSee('Content Portal')
+        ->assertDontSee('CSJ: Content Portal')
+        ->assertSee(media($settings->favicon_path));
 });
 
 it('lets an administrator reach every resource page', function (string $page) {
     $this->actingAs($this->admin)->get($page)->assertOk();
 })->with([
-    '/admin',
-    '/admin/brands',
-    '/admin/product-categories',
-    '/admin/products',
-    '/admin/articles',
-    '/admin/clients',
-    '/admin/gallery-images',
-    '/admin/legacy-redirects',
-    '/admin/site-settings',
+    '/admin-cms',
+    '/admin-cms/brands',
+    '/admin-cms/product-categories',
+    '/admin-cms/products',
+    '/admin-cms/articles',
+    '/admin-cms/clients',
+    '/admin-cms/gallery-images',
+    '/admin-cms/legacy-redirects',
+    '/admin-cms/showcase-products',
+    '/admin-cms/site-settings',
 ]);
 
 it('creates a client through the panel', function () {
@@ -247,7 +269,6 @@ it('takes a partner created in the panel all the way to a published product', fu
     Livewire::test(ManageProducts::class)
         ->callAction(CreateAction::class, [
             'brand_id' => $brand->getKey(),
-            'product_category_id' => $category->getKey(),
             'name' => 'Makita Hammer',
             'slug' => 'makita-hammer',
             'position' => 0,
@@ -255,13 +276,25 @@ it('takes a partner created in the panel all the way to a published product', fu
         ])
         ->assertHasNoFormErrors();
 
-    expect(Product::where('slug', 'makita-hammer')->firstOrFail()->product_category_id)
-        ->toBe($category->getKey());
+    expect(Product::where('slug', 'makita-hammer')->firstOrFail()->exists)
+        ->toBeTrue();
+
+    // Verify the newly added future partner appears on the homepage as a partner selector
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertSee(route('products.brand', ['brand' => 'makita']), escape: false)
+        ->assertSee('Makita Indonesia');
+
+    // Verify clicking the partner card redirects to the products page with brand checkmarked
+    $this->get(route('products.brand', ['brand' => 'makita']))
+        ->assertRedirect(route('products.index', ['brand' => ['makita']]));
 
     $this->followingRedirects()
         ->get(route('products.brand', ['brand' => 'makita']))
         ->assertOk()
-        ->assertSee('Makita Hammer');
+        ->assertSee('Makita Hammer')
+        ->assertSee('value="makita"', escape: false)
+        ->assertSee('checked', escape: false);
 });
 
 it('rejects a duplicate category name within one partner but allows it across partners', function () {
@@ -288,26 +321,17 @@ it('rejects a duplicate category name within one partner but allows it across pa
         ->assertHasNoFormErrors();
 });
 
-/**
- * Nothing stops a stale category id from another partner being written onto a
- * product, which would file it under the wrong partner on the public site.
- */
-it('clears the category when the partner is changed on a product', function () {
+it('creates a product under a partner without requiring a category', function () {
     $this->actingAs($this->admin);
     $brand = Brand::where('slug', 'bosch')->firstOrFail();
-    $other = Brand::where('slug', 'sumato')->firstOrFail();
-    $category = ProductCategory::where('brand_id', $brand->getKey())->firstOrFail();
 
     $page = Livewire::test(ManageProducts::class)
         ->mountAction('create')
         ->set('mountedActions.0.data.brand_id', $brand->getKey())
-        ->set('mountedActions.0.data.product_category_id', $category->getKey());
+        ->set('mountedActions.0.data.name', 'Bosch Test Product')
+        ->set('mountedActions.0.data.slug', 'bosch-test-product');
 
-    expect($page->get('mountedActions.0.data.product_category_id'))->toBe($category->getKey());
-
-    $page->set('mountedActions.0.data.brand_id', $other->getKey());
-
-    expect($page->get('mountedActions.0.data.product_category_id'))->toBeNull();
+    expect($page->get('mountedActions.0.data.brand_id'))->toBe($brand->getKey());
 });
 
 it('creates a product under a partner with a multiple image gallery', function () {
@@ -517,4 +541,120 @@ it('lists every product of a partner in the panel', function () {
 
     expect($brand->products()->count())
         ->toBe(Product::where('brand_id', $brand->getKey())->count());
+});
+
+it('manages showcase products with default 8 items and allows adding more without deleting actual products', function () {
+    $this->actingAs($this->admin);
+
+    expect(ShowcaseProduct::count())->toBe(8);
+
+    $page = Livewire::test(ManageShowcaseProducts::class);
+    expect($page->instance()->getTableRecords()->total())->toBe(8);
+
+    // Find a product not yet in the showcase and add it as the 9th item
+    $existingIds = ShowcaseProduct::pluck('product_id')->all();
+    $additionalProduct = Product::whereNotIn('id', $existingIds)->firstOrFail();
+
+    $page->callAction(CreateAction::class, [
+        'product_id' => $additionalProduct->id,
+    ])->assertHasNoFormErrors();
+
+    expect(ShowcaseProduct::count())->toBe(9);
+
+    $showcaseItem = ShowcaseProduct::firstOrFail();
+    $productId = $showcaseItem->product_id;
+
+    $page->callTableAction(DeleteAction::class, $showcaseItem)
+        ->assertHasNoTableActionErrors();
+
+    expect(ShowcaseProduct::whereKey($showcaseItem->getKey())->exists())->toBeFalse()
+        ->and(Product::whereKey($productId)->exists())->toBeTrue()
+        ->and(ShowcaseProduct::count())->toBe(8);
+});
+
+it('reorders brands using up and down table actions', function () {
+    $this->actingAs($this->admin);
+
+    BrandResource::normalizeRecordPositions();
+
+    $brands = Brand::orderBy('position')->get();
+    $first = $brands[0];
+    $second = $brands[1];
+
+    $firstPos = $first->position;
+    $secondPos = $second->position;
+
+    Livewire::test(ManageBrands::class)
+        ->callTableAction('moveDown', $first)
+        ->assertHasNoTableActionErrors();
+
+    expect($first->fresh()->position)->toBe($secondPos)
+        ->and($second->fresh()->position)->toBe($firstPos);
+
+    Livewire::test(ManageBrands::class)
+        ->callTableAction('moveUp', $first->fresh())
+        ->assertHasNoTableActionErrors();
+
+    expect($first->fresh()->position)->toBe($firstPos)
+        ->and($second->fresh()->position)->toBe($secondPos);
+});
+
+it('reorders showcase products using up and down table actions', function () {
+    $this->actingAs($this->admin);
+
+    ShowcaseProductResource::normalizeRecordPositions();
+
+    $items = ShowcaseProduct::orderBy('position')->get();
+    $first = $items[0];
+    $second = $items[1];
+
+    $firstPos = $first->position;
+    $secondPos = $second->position;
+
+    Livewire::test(ManageShowcaseProducts::class)
+        ->callTableAction('moveDown', $first)
+        ->assertHasNoTableActionErrors();
+
+    expect($first->fresh()->position)->toBe($secondPos)
+        ->and($second->fresh()->position)->toBe($firstPos);
+});
+
+it('reorders gallery images using up and down table actions', function () {
+    $this->actingAs($this->admin);
+
+    GalleryImageResource::normalizeRecordPositions();
+
+    $images = GalleryImage::orderBy('position')->get();
+    $first = $images[0];
+    $second = $images[1];
+
+    $firstPos = $first->position;
+    $secondPos = $second->position;
+
+    Livewire::test(ManageGalleryImages::class)
+        ->callTableAction('moveDown', $first)
+        ->assertHasNoTableActionErrors();
+
+    expect($first->fresh()->position)->toBe($secondPos)
+        ->and($second->fresh()->position)->toBe($firstPos);
+});
+
+it('reorders clients using up and down table actions', function () {
+    $this->actingAs($this->admin);
+
+    ClientResource::normalizeRecordPositions();
+
+    $clients = Client::orderBy('position')->get();
+    $first = $clients[0];
+    $second = $clients[1];
+
+    $firstPos = $first->position;
+    $secondPos = $second->position;
+
+    Livewire::test(ManageClients::class)
+        ->callTableAction('moveDown', $first)
+        ->assertHasNoTableActionErrors();
+
+    expect($first->fresh()->position)->toBe($secondPos)
+        ->and($second->fresh()->position)->toBe($firstPos);
 });

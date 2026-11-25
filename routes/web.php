@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 $slug = '[a-z0-9]+(?:-[a-z0-9]+)*';
 
+Route::redirect('/admin', '/admin-cms');
+
 Route::get('/', HomeController::class)->name('home');
 
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');

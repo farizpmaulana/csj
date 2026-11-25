@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Brands;
 
+use App\Filament\Concerns\HasOrderActions;
 use App\Filament\Resources\Brands\Pages\ManageBrands;
 use App\Models\Brand;
 use BackedEnum;
@@ -16,6 +17,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -25,6 +27,8 @@ use Filament\Tables\Table;
 
 class BrandResource extends Resource
 {
+    use HasOrderActions;
+
     protected static ?string $model = Brand::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -40,6 +44,7 @@ class BrandResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Section::make('Details')
                     ->schema([
@@ -56,29 +61,27 @@ class BrandResource extends Resource
                         Textarea::make('intro')
                             ->rows(3)
                             ->columnSpanFull(),
-                    ])
-                    ->columns(2),
+                    ]),
                 Section::make('Card image')
                     ->schema([
                         FileUpload::make('card_image')
                             ->label('Image')
                             ->image()
+                            ->imagePreviewHeight('200')
                             ->disk('public')
                             ->directory('images/partners')
                             ->visibility('public'),
                         TextInput::make('card_alt')
                             ->label('Alt text')
                             ->maxLength(255),
-                    ])
-                    ->columns(2),
+                    ]),
                 Section::make('SEO')
                     ->schema([
                         TextInput::make('seo_title')
                             ->label('Meta title')
                             ->maxLength(255)
                             ->columnSpanFull(),
-                    ])
-                    ->columns(2),
+                    ]),
                 Section::make('Visibility')
                     ->schema([
                         TextInput::make('position')
@@ -90,8 +93,7 @@ class BrandResource extends Resource
                         Toggle::make('is_visible')
                             ->label('Visible on the website')
                             ->default(true),
-                    ])
-                    ->columns(2),
+                    ]),
             ]);
     }
 
@@ -116,6 +118,7 @@ class BrandResource extends Resource
                 IconColumn::make('is_visible')
                     ->label('Visible')
                     ->boolean(),
+                ...static::getOrderColumns(),
             ])
             ->filters([
                 TernaryFilter::make('is_visible')->label('Visible'),
@@ -123,7 +126,8 @@ class BrandResource extends Resource
             ->defaultSort('position')
             ->reorderable('position')
             ->recordActions([
-                EditAction::make(),
+                ...static::getOrderActions(),
+                EditAction::make()->modalWidth(Width::FiveExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

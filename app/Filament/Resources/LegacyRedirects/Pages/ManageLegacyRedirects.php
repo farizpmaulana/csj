@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LegacyRedirects\Pages;
 use App\Filament\Resources\LegacyRedirects\LegacyRedirectResource;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Support\Enums\Width;
 
 class ManageLegacyRedirects extends ManageRecords
 {
@@ -13,7 +14,7 @@ class ManageLegacyRedirects extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            CreateAction::make(),
+            CreateAction::make()->modalWidth(Width::FiveExtraLarge),
         ];
     }
 }

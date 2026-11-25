@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\GalleryImages;
 
+use App\Filament\Concerns\HasOrderActions;
 use App\Filament\Resources\GalleryImages\Pages\ManageGalleryImages;
 use App\Models\GalleryImage;
 use BackedEnum;
@@ -16,6 +17,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -26,6 +28,8 @@ use UnitEnum;
 
 class GalleryImageResource extends Resource
 {
+    use HasOrderActions;
+
     protected static ?string $model = GalleryImage::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedPhoto;
@@ -41,12 +45,14 @@ class GalleryImageResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Section::make('Image')
                     ->schema([
                         FileUpload::make('path')
                             ->label('Card image')
                             ->image()
+                            ->imagePreviewHeight('200')
                             ->disk('public')
                             ->directory('images/gallery')
                             ->visibility('public')
@@ -55,6 +61,7 @@ class GalleryImageResource extends Resource
                         FileUpload::make('full_path')
                             ->label('Full size image')
                             ->image()
+                            ->imagePreviewHeight('200')
                             ->disk('public')
                             ->directory('images/gallery')
                             ->visibility('public')
@@ -65,8 +72,7 @@ class GalleryImageResource extends Resource
                         Textarea::make('caption')
                             ->rows(2)
                             ->maxLength(255),
-                    ])
-                    ->columns(2),
+                    ]),
                 Section::make('Visibility')
                     ->schema([
                         TextInput::make('position')
@@ -77,8 +83,7 @@ class GalleryImageResource extends Resource
                         Toggle::make('is_visible')
                             ->label('Visible on the website')
                             ->default(true),
-                    ])
-                    ->columns(2),
+                    ]),
             ]);
     }
 
@@ -99,11 +104,10 @@ class GalleryImageResource extends Resource
                     ->label('Alt text')
                     ->limit(40)
                     ->placeholder('—'),
-                TextColumn::make('position')
-                    ->sortable(),
                 IconColumn::make('is_visible')
                     ->label('Visible')
                     ->boolean(),
+                ...static::getOrderColumns(),
             ])
             ->filters([
                 TernaryFilter::make('is_visible')->label('Visible'),
@@ -111,7 +115,8 @@ class GalleryImageResource extends Resource
             ->defaultSort('position')
             ->reorderable('position')
             ->recordActions([
-                EditAction::make(),
+                ...static::getOrderActions(),
+                EditAction::make()->modalWidth(Width::FiveExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

@@ -69,7 +69,9 @@
                             </div>
                             <h3 class="article-card-title">{{ $article->title }}</h3>
                             <p class="article-card-excerpt">{{ $article->excerpt }}</p>
-                            <span class="article-card-link">Read more &rarr;</span>
+                            <span class="article-card-link">
+                                <span class="article-card-link-text">Read more</span> <span class="article-card-link-arrow" aria-hidden="true">&rarr;</span>
+                            </span>
                         </div>
                     </a>
                 @endforeach

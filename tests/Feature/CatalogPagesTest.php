@@ -223,6 +223,33 @@ it('omits the product description card when a product has no description', funct
         ->assertDontSee('detail-description', escape: false);
 });
 
+it('displays product specifications before product description with product types moved into description and updated brand bar', function () {
+    $product = Product::where('slug', 'bosch-battery-100-ah')->firstOrFail();
+
+    $response = $this->get(route('products.show', ['brand' => $product->brand->slug, 'product' => $product->slug]));
+
+    $response->assertOk()
+        ->assertSee('Product Specifications')
+        ->assertDontSee('General Specifications')
+        ->assertDontSee('Product Types')
+        ->assertSee('<div class="product-brand-bar">', escape: false)
+        ->assertDontSee('<a class="product-brand-bar"', escape: false)
+        ->assertDontSee('product-brand-bar-btn', escape: false)
+        ->assertDontSee('View Partners')
+        ->assertSee('View more')
+        ->assertSee('fa-truck-fast', escape: false)
+        ->assertSee('On-Time Delivery')
+        ->assertDontSee('we ship on schedule')
+        ->assertSee('fab fa-whatsapp', escape: false)
+        ->assertSeeInOrder([
+            'Product Specifications',
+            'Product Description',
+            'detail-description',
+            '<h3>Bosch Battery SM100</h3>',
+            '<ul><li>Compact batteries for light to medium-duty work.</li>',
+        ]);
+});
+
 it('returns 404 for an unknown brand', function () {
     $this->get('/products/nonexistent')->assertNotFound();
 });

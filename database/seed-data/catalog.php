@@ -279,7 +279,9 @@ return [
             'excerpt' => 'Bosch Battery SM 100Ah',
             'card_image' => 'images/foto-product/bosch/BOSCH100.png',
             'card_alt' => 'Bosch Battery 100Ah',
-            'description' => 'Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.',
+            'description' => '<h3>Bosch Battery SM100</h3>
+<p>Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.</p>
+<ul><li>Compact batteries for light to medium-duty work.</li><li>High-capacity batteries for extended work duration.</li><li>Fast charging compatible batteries for project efficiency.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/BOSCH100.png',
@@ -292,7 +294,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -357,15 +359,6 @@ return [
                         ],
                     ],
                 ],
-                1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Compact batteries for light to medium-duty work.',
-                        1 => 'High-capacity batteries for extended work duration.',
-                        2 => 'Fast charging compatible batteries for project efficiency.',
-                    ],
-                ],
             ],
             'whatsapp' => 'Hello, I would like information about Bosch Battery SM100',
         ],
@@ -378,7 +371,9 @@ return [
             'excerpt' => 'Bosch Battery SM 120Ah',
             'card_image' => 'images/foto-product/bosch/BOSCH120.png',
             'card_alt' => 'Bosch Battery 120Ah',
-            'description' => 'Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.',
+            'description' => '<h3>Bosch Battery SM120</h3>
+<p>Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.</p>
+<ul><li>Compact batteries for light to medium-duty work.</li><li>High-capacity batteries for extended work duration.</li><li>Fast charging compatible batteries for project efficiency.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/BOSCH120.png',
@@ -391,7 +386,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -460,15 +455,6 @@ return [
                         ],
                     ],
                 ],
-                1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Compact batteries for light to medium-duty work.',
-                        1 => 'High-capacity batteries for extended work duration.',
-                        2 => 'Fast charging compatible batteries for project efficiency.',
-                    ],
-                ],
             ],
             'whatsapp' => 'Hello, I would like information about Bosch Battery SM120',
         ],
@@ -481,7 +467,9 @@ return [
             'excerpt' => 'Bosch Battery SM 150Ah',
             'card_image' => 'images/foto-product/bosch/BOSCH150.png',
             'card_alt' => 'Bosch Battery 150Ah',
-            'description' => 'Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.',
+            'description' => '<h3>Bosch Battery SM150</h3>
+<p>Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.</p>
+<ul><li>Compact batteries for light to medium-duty work.</li><li>High-capacity batteries for extended work duration.</li><li>Fast charging compatible batteries for project efficiency.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/BOSCH150.png',
@@ -494,7 +482,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -563,15 +551,6 @@ return [
                         ],
                     ],
                 ],
-                1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Compact batteries for light to medium-duty work.',
-                        1 => 'High-capacity batteries for extended work duration.',
-                        2 => 'Fast charging compatible batteries for project efficiency.',
-                    ],
-                ],
             ],
             'whatsapp' => 'Hello, I would like information about Bosch Battery SM150',
         ],
@@ -584,7 +563,9 @@ return [
             'excerpt' => 'Bosch Battery SM 200Ah',
             'card_image' => 'images/foto-product/bosch/BOSCH200.png',
             'card_alt' => 'Bosch Battery 200Ah',
-            'description' => 'Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.',
+            'description' => '<h3>Bosch Battery SM200</h3>
+<p>Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.</p>
+<ul><li>Compact batteries for light to medium-duty work.</li><li>High-capacity batteries for extended work duration.</li><li>Fast charging compatible batteries for project efficiency.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/BOSCH200.png',
@@ -597,7 +578,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -666,15 +647,6 @@ return [
                         ],
                     ],
                 ],
-                1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Compact batteries for light to medium-duty work.',
-                        1 => 'High-capacity batteries for extended work duration.',
-                        2 => 'Fast charging compatible batteries for project efficiency.',
-                    ],
-                ],
             ],
             'whatsapp' => 'Hello, I would like information about Bosch Battery SM200',
         ],
@@ -687,7 +659,9 @@ return [
             'excerpt' => 'Bosch Battery SM 70Ah',
             'card_image' => 'images/foto-product/bosch/BOSCH70.png',
             'card_alt' => 'Bosch Battery 70Ah',
-            'description' => 'Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.',
+            'description' => '<h3>Bosch Battery SM70</h3>
+<p>Bosch Battery is the primary power source for Bosch cordless tool lines that require stable performance and optimal runtime. With modern battery technology, these products support field team productivity through efficient charging and consistent power output.</p>
+<ul><li>Compact batteries for light to medium-duty work.</li><li>High-capacity batteries for extended work duration.</li><li>Fast charging compatible batteries for project efficiency.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/BOSCH70.png',
@@ -700,7 +674,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -765,15 +739,6 @@ return [
                         ],
                     ],
                 ],
-                1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Compact batteries for light to medium-duty work.',
-                        1 => 'High-capacity batteries for extended work duration.',
-                        2 => 'Fast charging compatible batteries for project efficiency.',
-                    ],
-                ],
             ],
             'whatsapp' => 'Hello, I would like information about Bosch Battery SM70',
         ],
@@ -786,7 +751,8 @@ return [
             'excerpt' => 'Wood-shaping tool accompanied by a dust bag, a guide fence, and a rest bracket',
             'card_image' => 'images/foto-product/bosch/boschgho1682professionalplaner.png',
             'card_alt' => 'Bosch GHO 16-82 Professional Planer',
-            'description' => 'Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.',
+            'description' => '<h3>Bosch GHO 16-82 Professional Planer</h3>
+<p>Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/boschgho1682professionalplaner.png',
@@ -820,7 +786,8 @@ return [
             'excerpt' => 'Heavy-duty 6-inch electric grinding and sharpening tool',
             'card_image' => 'images/foto-product/bosch/boschgbg3515benchgrinder.png',
             'card_alt' => 'Bosch GBG 35-15 Bench Grinder',
-            'description' => 'Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.',
+            'description' => '<h3>Bosch GBG 35-15 Bench Grinder</h3>
+<p>Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/boschgbg3515benchgrinder.png',
@@ -890,7 +857,8 @@ return [
             'excerpt' => 'Heavy-duty electrical woodworking and finishing tool',
             'card_image' => 'images/foto-product/bosch/boschgbs750sander.png',
             'card_alt' => 'Bosch GBS 750 Belt Sander',
-            'description' => 'Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.',
+            'description' => '<h3>Bosch GBS 750 Belt Sander</h3>
+<p>Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/boschgbs750sander.png',
@@ -924,7 +892,8 @@ return [
             'excerpt' => 'Lightweight cordless for assembly and installation',
             'card_image' => 'images/foto-product/bosch/boschgsr12vdrill.png',
             'card_alt' => 'Bosch GSR 12V Cordless Drill',
-            'description' => 'Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.',
+            'description' => '<h3>Bosch GSR 12 V Cordless Drill</h3>
+<p>Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/boschgsr12vdrill.png',
@@ -937,7 +906,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1010,7 +979,8 @@ return [
             'excerpt' => 'Titanium-coated metal bits, masonry bits with carbide tips, and standard wood drill bits',
             'card_image' => 'images/foto-product/bosch/boschscrewdrillset.png',
             'card_alt' => 'Bosch 41-Piece X-Line Titanium Drill and Screwdriver Bit Set',
-            'description' => 'Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.',
+            'description' => '<h3>Bosch 41-Piece X-Line Titanium Drill and Screwdriver Bit Set</h3>
+<p>Bosch Tools covers a range of professional work equipment to support installation, construction, and maintenance tasks. Designed for precision and durability, these products help work teams complete tasks with consistent, fast, and safe results.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/bosch/boschscrewdrillset.png',
@@ -1023,7 +993,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1100,7 +1070,9 @@ return [
             'excerpt' => 'Designed for static-sensitive areas such as electronics and oil & gas.',
             'card_image' => 'images/foto-product/buccheri/static.png',
             'card_alt' => 'Buccheri Antistatic',
-            'description' => 'Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.',
+            'description' => '<h3>Buccheri Antistatic Safety Shoes</h3>
+<p>Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.</p>
+<ul><li>Low-cut safety shoes for high mobility.</li><li>High-cut safety boots for maximum protection.</li><li>Antistatic models for specific areas.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/buccheri/static.png',
@@ -1113,7 +1085,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1135,15 +1107,6 @@ return [
                     ],
                 ],
                 1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Low-cut safety shoes for high mobility.',
-                        1 => 'High-cut safety boots for maximum protection.',
-                        2 => 'Antistatic models for specific areas.',
-                    ],
-                ],
-                2 => [
                     'title' => 'Functions',
                     'type' => 'list',
                     'items' => [
@@ -1152,7 +1115,7 @@ return [
                         2 => 'Support compliance with company PPE standards.',
                     ],
                 ],
-                3 => [
+                2 => [
                     'title' => 'How to Use',
                     'type' => 'ordered',
                     'items' => [
@@ -1174,7 +1137,9 @@ return [
             'excerpt' => 'Maximum protection for heavy-duty work and construction areas.',
             'card_image' => 'images/foto-product/buccheri/highcut.png',
             'card_alt' => 'Buccheri High Cut',
-            'description' => 'Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.',
+            'description' => '<h3>Buccheri High Cut Safety Shoes / Boots</h3>
+<p>Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.</p>
+<ul><li>Low-cut safety shoes for high mobility.</li><li>High-cut safety boots for maximum protection.</li><li>Antistatic models for specific areas.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/buccheri/highcut.png',
@@ -1187,7 +1152,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1209,15 +1174,6 @@ return [
                     ],
                 ],
                 1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Low-cut safety shoes for high mobility.',
-                        1 => 'High-cut safety boots for maximum protection.',
-                        2 => 'Antistatic models for specific areas.',
-                    ],
-                ],
-                2 => [
                     'title' => 'Functions',
                     'type' => 'list',
                     'items' => [
@@ -1226,7 +1182,7 @@ return [
                         2 => 'Support compliance with company PPE standards.',
                     ],
                 ],
-                3 => [
+                2 => [
                     'title' => 'How to Use',
                     'type' => 'ordered',
                     'items' => [
@@ -1248,7 +1204,9 @@ return [
             'excerpt' => 'Low-cut model for high mobility, ideal for workshop areas.',
             'card_image' => 'images/foto-product/buccheri/allshoes.png',
             'card_alt' => 'Buccheri low cut shoes',
-            'description' => 'Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.',
+            'description' => '<h3>Buccheri Low Cut Safety Shoes</h3>
+<p>Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.</p>
+<ul><li>Low-cut safety shoes for high mobility.</li><li>High-cut safety boots for maximum protection.</li><li>Antistatic models for specific areas.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/Buccheri_Safety_Shoes2.jpg',
@@ -1261,7 +1219,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1283,15 +1241,6 @@ return [
                     ],
                 ],
                 1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Low-cut safety shoes for high mobility.',
-                        1 => 'High-cut safety boots for maximum protection.',
-                        2 => 'Antistatic models for specific areas.',
-                    ],
-                ],
-                2 => [
                     'title' => 'Functions',
                     'type' => 'list',
                     'items' => [
@@ -1300,7 +1249,7 @@ return [
                         2 => 'Support compliance with company PPE standards.',
                     ],
                 ],
-                3 => [
+                2 => [
                     'title' => 'How to Use',
                     'type' => 'ordered',
                     'items' => [
@@ -1322,7 +1271,9 @@ return [
             'excerpt' => 'Ankle protection for mixed-risk areas.',
             'card_image' => 'images/foto-product/buccheri/allshoes.png',
             'card_alt' => 'Buccheri mid cut shoes',
-            'description' => 'Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.',
+            'description' => '<h3>Buccheri Mid Cut Safety Shoes</h3>
+<p>Buccheri Safety Shoes are protective work footwear designed to provide safety and comfort during operational activities in project sites, workshops, and factories. These products help reduce foot injury risks while supporting PPE compliance in the workplace.</p>
+<ul><li>Low-cut safety shoes for high mobility.</li><li>High-cut safety boots for maximum protection.</li><li>Antistatic models for specific areas.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/buccheri_safety_shoes.png',
@@ -1335,7 +1286,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1357,15 +1308,6 @@ return [
                     ],
                 ],
                 1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Low-cut safety shoes for high mobility.',
-                        1 => 'High-cut safety boots for maximum protection.',
-                        2 => 'Antistatic models for specific areas.',
-                    ],
-                ],
-                2 => [
                     'title' => 'Functions',
                     'type' => 'list',
                     'items' => [
@@ -1374,7 +1316,7 @@ return [
                         2 => 'Support compliance with company PPE standards.',
                     ],
                 ],
-                3 => [
+                2 => [
                     'title' => 'How to Use',
                     'type' => 'ordered',
                     'items' => [
@@ -1396,7 +1338,9 @@ return [
             'excerpt' => 'General industrial consumables and maintenance supplies for daily operations.',
             'card_image' => 'images/foto-product/consumable/consumables.jpg',
             'card_alt' => 'Industrial consumables',
-            'description' => 'Our industrial consumables and maintenance supplies support routine work across project sites, workshops, facilities, and production environments. Keeping the right supporting materials available can reduce downtime, maintain consistent work quality, and help teams complete daily tasks efficiently.',
+            'description' => '<h3>Consumables</h3>
+<p>Our industrial consumables and maintenance supplies support routine work across project sites, workshops, facilities, and production environments. Keeping the right supporting materials available can reduce downtime, maintain consistent work quality, and help teams complete daily tasks efficiently.</p>
+<ul><li>Abrasive, cutting, and finishing accessories.</li><li>Drill bits and task-specific tool accessories.</li><li>General maintenance and workshop supplies.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/consumable/consumables.jpg',
@@ -1405,7 +1349,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1427,15 +1371,6 @@ return [
                     ],
                 ],
                 1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Abrasive, cutting, and finishing accessories.',
-                        1 => 'Drill bits and task-specific tool accessories.',
-                        2 => 'General maintenance and workshop supplies.',
-                    ],
-                ],
-                2 => [
                     'title' => 'Functions',
                     'type' => 'list',
                     'items' => [
@@ -1444,7 +1379,7 @@ return [
                         2 => 'Reduce avoidable interruptions caused by unavailable supplies.',
                     ],
                 ],
-                3 => [
+                2 => [
                     'title' => 'How to Use',
                     'type' => 'ordered',
                     'items' => [
@@ -1466,7 +1401,9 @@ return [
             'excerpt' => 'Durable piping solutions for industrial and commercial fluid transport.',
             'card_image' => 'images/foto-product/consumable/HDPE.jpg',
             'card_alt' => 'HDPE Pipes',
-            'description' => 'HDPE Pipes are manufactured from high-density polyethylene to provide a durable, flexible, and corrosion-resistant route for moving water and other compatible fluids. They support industrial facilities, commercial properties, utility networks, and project infrastructure where dependable long-term service is important.',
+            'description' => '<h3>HDPE Pipes</h3>
+<p>HDPE Pipes are manufactured from high-density polyethylene to provide a durable, flexible, and corrosion-resistant route for moving water and other compatible fluids. They support industrial facilities, commercial properties, utility networks, and project infrastructure where dependable long-term service is important.</p>
+<ul><li>Water supply and utility distribution lines.</li><li>Industrial and commercial fluid transport networks.</li><li>Project piping systems with compatible HDPE fittings.</li></ul>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/consumable/HDPE.jpg',
@@ -1479,7 +1416,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1501,15 +1438,6 @@ return [
                     ],
                 ],
                 1 => [
-                    'title' => 'Product Types',
-                    'type' => 'list',
-                    'items' => [
-                        0 => 'Water supply and utility distribution lines.',
-                        1 => 'Industrial and commercial fluid transport networks.',
-                        2 => 'Project piping systems with compatible HDPE fittings.',
-                    ],
-                ],
-                2 => [
                     'title' => 'Functions',
                     'type' => 'list',
                     'items' => [
@@ -1518,7 +1446,7 @@ return [
                         2 => 'Accommodate practical installation requirements through flexibility.',
                     ],
                 ],
-                3 => [
+                2 => [
                     'title' => 'How to Use',
                     'type' => 'ordered',
                     'items' => [
@@ -1540,7 +1468,8 @@ return [
             'excerpt' => 'Multi-type pliers for gripping, cutting, and bending applications.',
             'card_image' => 'images/foto-product/sata/combinationpliers.jpg',
             'card_alt' => 'SATA Combination Pliers',
-            'description' => 'SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.',
+            'description' => '<h3>SATA Combination Pliers</h3>
+<p>SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sata/combinationpliers.jpg',
@@ -1553,7 +1482,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1594,7 +1523,8 @@ return [
             'excerpt' => 'Precision needle nose pliers for gripping and bending in tight spaces.',
             'card_image' => 'images/foto-product/sata/needlenosepliers.jpg',
             'card_alt' => 'SATA Needle Nose Pliers',
-            'description' => 'SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.',
+            'description' => '<h3>SATA Needle-Nose Pliers</h3>
+<p>SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sata/needlenosepliers.jpg',
@@ -1607,7 +1537,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1652,7 +1582,8 @@ return [
             'excerpt' => 'Ratchet and socket set for fastening work in maintenance and assembly tasks.',
             'card_image' => 'images/foto-product/sata/ratchetingset.jpg',
             'card_alt' => 'SATA Ratcheting Set',
-            'description' => 'SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.',
+            'description' => '<h3>SATA Ratcheting Set</h3>
+<p>SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sata/ratchetingset.jpg',
@@ -1665,7 +1596,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1710,7 +1641,8 @@ return [
             'excerpt' => 'Complete socket tray set for efficient organization and quick access to sockets.',
             'card_image' => 'images/foto-product/sata/sockettrayset.jpg',
             'card_alt' => 'SATA Socket Tray Set',
-            'description' => 'SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.',
+            'description' => '<h3>SATA Socket Tray Set</h3>
+<p>SATA Tools offers a range of professional hand tools designed for workshops, manufacturing lines, and field service teams. Built for durability and precision, SATA products help technicians complete maintenance and assembly tasks efficiently and safely.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sata/sockettrayset.jpg',
@@ -1723,7 +1655,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1764,7 +1696,8 @@ return [
             'excerpt' => 'Automatic fire extinguisher for Electric Panel areas, Excavator Engines, Car Engines',
             'card_image' => 'images/foto-product/sumato/sumato_SM05.png',
             'card_alt' => 'Sumato SM-05',
-            'description' => 'Sumato Fire Extinguishers are portable fire extinguishers (APAR) designed for initial fire response in commercial and industrial areas. Available in several extinguishing media to match fire risk characteristics, they help companies improve emergency readiness and workplace safety standards.',
+            'description' => '<h3>Sumato SM-05</h3>
+<p>Sumato Fire Extinguishers are portable fire extinguishers (APAR) designed for initial fire response in commercial and industrial areas. Available in several extinguishing media to match fire risk characteristics, they help companies improve emergency readiness and workplace safety standards.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sumato/sumato_SM05.png',
@@ -1777,7 +1710,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1818,7 +1751,8 @@ return [
             'excerpt' => 'Automatic fire extinguisher for gas cylinder area, electrical McB, electrical kWh.',
             'card_image' => 'images/foto-product/sumato/sumato_SM10.png',
             'card_alt' => 'Sumato SM-10',
-            'description' => 'Sumato Fire Extinguishers are portable fire extinguishers (APAR) designed for initial fire response in commercial and industrial areas. Available in several extinguishing media to match fire risk characteristics, they help companies improve emergency readiness and workplace safety standards.',
+            'description' => '<h3>Sumato SM-10</h3>
+<p>Sumato Fire Extinguishers are portable fire extinguishers (APAR) designed for initial fire response in commercial and industrial areas. Available in several extinguishing media to match fire risk characteristics, they help companies improve emergency readiness and workplace safety standards.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sumato/sumato_SM10.png',
@@ -1831,7 +1765,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [
@@ -1868,7 +1802,8 @@ return [
             'excerpt' => 'Automatic fire extinguisher for warehouse areas, generators, diesel tanks.',
             'card_image' => 'images/foto-product/sumato/sumato_SM40.png',
             'card_alt' => 'Sumato SM-40',
-            'description' => 'Sumato Fire Extinguishers are portable fire extinguishers (APAR) designed for initial fire response in commercial and industrial areas. Available in several extinguishing media to match fire risk characteristics, they help companies improve emergency readiness and workplace safety standards.',
+            'description' => '<h3>Sumato SM-40</h3>
+<p>Sumato Fire Extinguishers are portable fire extinguishers (APAR) designed for initial fire response in commercial and industrial areas. Available in several extinguishing media to match fire risk characteristics, they help companies improve emergency readiness and workplace safety standards.</p>',
             'gallery' => [
                 0 => [
                     'src' => 'images/foto-product/sumato/sumato_SM40.png',
@@ -1881,7 +1816,7 @@ return [
             ],
             'sections' => [
                 0 => [
-                    'title' => 'General Specifications',
+                    'title' => 'Product Specifications',
                     'type' => 'table',
                     'rows' => [
                         0 => [

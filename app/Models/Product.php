@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
     'brand_id',
@@ -100,6 +101,14 @@ class Product extends Model
             'brand' => $this->brand->slug,
             'product' => $this->slug,
         ]));
+    }
+
+    /**
+     * @return HasOne<ShowcaseProduct, $this>
+     */
+    public function showcaseItem(): HasOne
+    {
+        return $this->hasOne(ShowcaseProduct::class);
     }
 
     public function getRouteKeyName(): string

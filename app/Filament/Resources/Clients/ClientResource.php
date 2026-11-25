@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Clients;
 
+use App\Filament\Concerns\HasOrderActions;
 use App\Filament\Resources\Clients\Pages\ManageClients;
 use App\Models\Client;
 use BackedEnum;
@@ -16,6 +17,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\ImageColumn;
@@ -26,13 +28,19 @@ use UnitEnum;
 
 class ClientResource extends Resource
 {
+    use HasOrderActions;
+
     protected static ?string $model = Client::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBuildingOffice2;
 
     protected static string|UnitEnum|null $navigationGroup = 'Homepage';
 
-    protected static ?string $navigationLabel = 'Client logos';
+    protected static ?string $navigationLabel = 'Client list';
+
+    protected static ?string $modelLabel = 'client';
+
+    protected static ?string $pluralModelLabel = 'clients';
 
     protected static ?string $recordTitleAttribute = 'name';
 
@@ -41,6 +49,7 @@ class ClientResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Section::make('Client')
                     ->schema([
@@ -54,14 +63,14 @@ class ClientResource extends Resource
                         FileUpload::make('path')
                             ->label('Logo')
                             ->image()
+                            ->imagePreviewHeight('200')
                             ->disk('public')
                             ->directory('images/clients')
                             ->visibility('public')
                             ->required()
                             ->helperText('A single file is expected, ideally a transparent PNG.')
                             ->columnSpanFull(),
-                    ])
-                    ->columns(2),
+                    ]),
                 Section::make('Responsive variants')
                     ->description('Optional. The browser picks the best file for the screen it is on. The main logo is used when this list is empty.')
                     ->schema([
@@ -80,7 +89,6 @@ class ClientResource extends Resource
                                     ->required()
                                     ->default(280),
                             ])
-                            ->columns(2)
                             ->defaultItems(0)
                             ->addActionLabel('Add variant')
                             ->reorderable(),
@@ -95,8 +103,7 @@ class ClientResource extends Resource
                         Toggle::make('is_visible')
                             ->label('Visible on the website')
                             ->default(true),
-                    ])
-                    ->columns(2),
+                    ]),
             ]);
     }
 
@@ -112,18 +119,10 @@ class ClientResource extends Resource
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('alt')
-                    ->label('Alt text')
-                    ->searchable()
-                    ->limit(40)
-                    ->placeholder('—'),
-                TextColumn::make('variants')
-                    ->label('Variants')
-                    ->badge()
-                    ->formatStateUsing(fn (?array $state): string => count($state ?? []).' files'),
                 IconColumn::make('is_visible')
                     ->label('Visible')
                     ->boolean(),
+                ...static::getOrderColumns(),
             ])
             ->filters([
                 TernaryFilter::make('is_visible')->label('Visible'),
@@ -131,7 +130,8 @@ class ClientResource extends Resource
             ->defaultSort('position')
             ->reorderable('position')
             ->recordActions([
-                EditAction::make(),
+                ...static::getOrderActions(),
+                EditAction::make()->modalWidth(Width::FiveExtraLarge),
                 DeleteAction::make(),
             ])
             ->toolbarActions([

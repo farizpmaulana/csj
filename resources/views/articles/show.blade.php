@@ -48,12 +48,12 @@
                         <p>{{ $articleModel->cta_text }}</p>
                     </div>
                     <a href="{{ wa_link() }}" target="_blank" rel="noopener noreferrer">
-                        Contact Our Team <span aria-hidden="true">&rarr;</span>
+                        <span>Contact Our Team</span> <span aria-hidden="true">&rarr;</span>
                     </a>
                 </div>
             </article>
             <a class="article-detail-back article-detail-back-bottom" href="{{ route('articles.index') }}">
-                <span aria-hidden="true">&larr;</span> Back to Articles
+                <span aria-hidden="true">&larr;</span> <span>Back to Articles</span>
             </a>
         </div>
     </main>

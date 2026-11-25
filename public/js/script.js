@@ -264,11 +264,13 @@ function setActiveNavLink() {
     });
     links.forEach((link) => {
         const href = link.getAttribute("href");
-        let targetId = "";
-        try {
-            targetId = new URL(href, window.location.href).hash.slice(1);
-        } catch {
-            targetId = "";
+        let targetId = link.dataset.navSection || "";
+        if (!targetId) {
+            try {
+                targetId = new URL(href, window.location.href).hash.slice(1);
+            } catch {
+                targetId = "";
+            }
         }
         const active = targetId !== "" && targetId === current;
         link.classList.toggle("active", active);
@@ -558,12 +560,19 @@ function initClientsMarquee() {
             showAllButton.setAttribute("aria-expanded", "true");
             showCarouselButton.hidden = false;
             requestAnimationFrame(() => {
-                staticList.style.maxHeight = `${staticList.scrollHeight}px`;
+                staticList.style.maxHeight = `${staticList.scrollHeight + 36}px`;
                 staticList.style.opacity = "1";
             });
             marqueeHideTimer = window.setTimeout(() => {
                 if (showcase.classList.contains("is-static")) {
                     track.parentElement.hidden = true;
+                }
+            }, 950);
+            staticListCollapseTimer = window.setTimeout(() => {
+                if (showcase.classList.contains("is-static")) {
+                    staticList.classList.add("is-expanded");
+                    staticList.style.maxHeight = "none";
+                    staticList.style.overflow = "visible";
                 }
             }, 950);
             showCarouselButton.focus();
@@ -575,6 +584,8 @@ function initClientsMarquee() {
             window.clearTimeout(marqueeHideTimer);
             showcase.classList.remove("is-static");
             track.parentElement.hidden = false;
+            staticList.classList.remove("is-expanded");
+            staticList.style.overflow = "hidden";
             staticList.style.maxHeight = `${staticList.scrollHeight}px`;
             staticList.style.opacity = "1";
             requestAnimationFrame(() => {
@@ -595,17 +606,11 @@ function initClientsMarquee() {
     });
 }
 
-function initPartnerProductFilter() {
+function initPartnerProductCarousel() {
     const showcase = document.querySelector("[data-partner-product-showcase]");
     if (!showcase) return;
 
-    const filters = [
-        ...showcase.parentElement.querySelectorAll(
-            "[data-partner-brand-filter]",
-        ),
-    ];
-    const products = [...showcase.querySelectorAll("[data-product-brand]")];
-    const emptyState = showcase.querySelector("[data-partner-product-empty]");
+    const products = [...showcase.querySelectorAll(".partner-product-card")];
     const track = showcase.querySelector("[data-partner-product-track]");
     const controls = showcase.querySelector("[data-partner-product-controls]");
     const previousButton = showcase.querySelector(
@@ -640,36 +645,6 @@ function initPartnerProductFilter() {
             behavior: "smooth",
         });
     };
-
-    filters.forEach((filter) => {
-        filter.addEventListener("click", () => {
-            const selectedBrand = filter.dataset.partnerBrandFilter;
-            let visibleProducts = 0;
-
-            filters.forEach((button) => {
-                const isSelected = button === filter;
-                button.classList.toggle("is-active", isSelected);
-                button.setAttribute("aria-pressed", String(isSelected));
-            });
-
-            products.forEach((product) => {
-                const shouldShow =
-                    product.dataset.productBrand === selectedBrand &&
-                    Number(product.dataset.productIndex) < 4;
-
-                product.hidden = !shouldShow;
-                if (shouldShow) visibleProducts += 1;
-            });
-
-            if (track) track.scrollTo({ left: 0, behavior: "smooth" });
-
-            if (emptyState) {
-                emptyState.hidden = visibleProducts > 0;
-            }
-
-            window.requestAnimationFrame(updateCarouselControls);
-        });
-    });
 
     previousButton?.addEventListener("click", () => scrollCarousel(-1));
     nextButton?.addEventListener("click", () => scrollCarousel(1));
@@ -744,30 +719,11 @@ function initMotionEffects() {
         "(prefers-reduced-motion: reduce)",
     ).matches;
 
-    const revealOffset = window.matchMedia("(max-width: 767px)").matches
-        ? 24
-        : 36;
+    if (prefersReducedMotion) return;
 
-    const revealSelectors = [
-        ".section-title:not(.about-section-title)",
-        ".partners-description",
-        ".partners-brand-selector",
-        ".partner-product-showcase-heading",
-        ".partner-product-grid",
-        ".partner-product-showcase-footer",
-        ".gallery-item",
-        ".value-card",
-        ".cta-strip",
-        ".contact-item",
-        ".office-block",
-        ".contact-social-icons",
-        ".recent-article-card",
-        ".about-overview",
-        ".about-visual",
-        ".about-purpose",
-        ".clients-showcase",
-        ".partners-grid .partner-card",
-    ];
+    const revealOffset = window.matchMedia("(max-width: 767px)").matches
+        ? 14
+        : 20;
 
     const counterAnimation = () => {
         document
@@ -789,64 +745,180 @@ function initMotionEffects() {
             });
     };
 
-    const sectionReveals = new Map();
+    const sectionConfigs = [
+        // 1. About Us
+        {
+            section: "#about",
+            part1: [
+                ".about-overview",
+                ".about-visual",
+                ".about-purpose",
+            ],
+            part2: [
+                ".clients-showcase-info",
+                ".clients-showcase-content",
+            ],
+            onEnter: counterAnimation,
+        },
+        // 2. Partners
+        {
+            section: "#partners",
+            part1: [
+                ".partners-intro",
+                ".partners-brand-panel",
+            ],
+            part2: [
+                ".partner-product-showcase",
+                ".partners-trust-point",
+            ],
+        },
+        // 3. Why Choose Us
+        {
+            section: "#why-us",
+            part1: [
+                ".why-us-intro",
+                ".value-card",
+            ],
+            part2: [
+                ".cta-strip",
+            ],
+        },
+        // 4. Gallery (Single key point)
+        {
+            section: "#gallery",
+            elements: [
+                "#gallery .section-title",
+                ".gallery-item",
+            ],
+        },
+        // 5. Recent Articles (Single key point)
+        {
+            section: "#recent-articles",
+            elements: [
+                ".recent-articles-heading",
+                ".recent-article-card",
+            ],
+        },
+        // 6. Find Us / Contact (Single key point)
+        {
+            section: "#contact",
+            elements: [
+                "#contact .section-title",
+                ".office-block",
+                ".contact-item",
+                ".contact-social",
+            ],
+        },
+    ];
 
-    gsap.utils.toArray(revealSelectors.join(",")).forEach((element) => {
-        if (element.hidden) return;
-
-        const section = element.closest("section") || element.parentElement;
-        if (!section) return;
-
-        if (!sectionReveals.has(section)) {
-            sectionReveals.set(section, []);
+    const resolveElements = (container, selectorsOrFn) => {
+        if (typeof selectorsOrFn === "function") {
+            return selectorsOrFn(container).filter((el) => el && !el.hidden);
         }
+        const elements = [];
+        selectorsOrFn.forEach((selector) => {
+            const matches = container.matches(selector)
+                ? [container]
+                : Array.from(container.querySelectorAll(selector));
+            matches.forEach((el) => {
+                if (!el.hidden && !elements.includes(el)) {
+                    elements.push(el);
+                }
+            });
+        });
+        return elements;
+    };
 
-        sectionReveals.get(section).push(element);
-    });
+    sectionConfigs.forEach((config) => {
+        const sectionElement = document.querySelector(config.section);
+        if (!sectionElement) return;
 
-    sectionReveals.forEach((elements, section) => {
-        if (prefersReducedMotion) return;
+        const isTwoPart = Boolean(config.part1 && config.part2);
+        const part1Elements = isTwoPart
+            ? resolveElements(sectionElement, config.part1)
+            : resolveElements(
+                  sectionElement,
+                  config.elements || config.part1 || [],
+              );
+        const part2Elements = isTwoPart
+            ? resolveElements(sectionElement, config.part2)
+            : [];
+        const allElements = [...part1Elements, ...part2Elements];
 
-        elements.forEach((element) => {
+        if (allElements.length === 0) return;
+
+        allElements.forEach((element) => {
             element.classList.add("motion-reveal", "motion-revealing");
         });
 
-        gsap.set(elements, { autoAlpha: 0, x: 0, y: revealOffset });
+        gsap.set(allElements, { autoAlpha: 0, x: 0, y: revealOffset });
 
         window.ScrollTrigger.create({
-            trigger: section,
-            start: "top 82%",
+            trigger: sectionElement,
+            start: "top 60%",
             once: true,
             onEnter: () => {
-                gsap.to(elements, {
-                    autoAlpha: 1,
-                    x: 0,
-                    y: 0,
-                    duration: 0.9,
-                    ease: "power3.out",
-                    delay: 0.3,
-                    stagger: 0.08,
-                    overwrite: true,
-                    onComplete: () => {
-                        elements.forEach((element) => {
-                            element.classList.remove(
-                                "motion-reveal",
-                                "motion-revealing",
-                            );
-                            gsap.set(element, { clearProps: "transform" });
-                        });
+                if (config.onEnter) {
+                    config.onEnter();
+                }
 
-                        if (
-                            section.querySelector(
-                                ".about-stat strong[data-target]",
-                            )
-                        ) {
-                            counterAnimation();
-                        }
-                    },
-                });
+                // Part 1 / Single-phase reveal: Starts immediately
+                if (part1Elements.length > 0) {
+                    gsap.to(part1Elements, {
+                        autoAlpha: 1,
+                        x: 0,
+                        y: 0,
+                        duration: 0.65,
+                        ease: "power2.out",
+                        delay: 0,
+                        stagger: 0.06,
+                        force3D: true,
+                        overwrite: true,
+                        onComplete: () => {
+                            part1Elements.forEach((el) => {
+                                el.classList.remove(
+                                    "motion-reveal",
+                                    "motion-revealing",
+                                );
+                            });
+                            gsap.set(part1Elements, {
+                                clearProps: "transform,opacity,visibility",
+                            });
+                        },
+                    });
+                }
+
+                // Part 2: Starts 0.5s after Part 1
+                if (part2Elements.length > 0) {
+                    gsap.to(part2Elements, {
+                        autoAlpha: 1,
+                        x: 0,
+                        y: 0,
+                        duration: 0.65,
+                        ease: "power2.out",
+                        delay: 0.5,
+                        stagger: 0.06,
+                        force3D: true,
+                        overwrite: true,
+                        onComplete: () => {
+                            part2Elements.forEach((el) => {
+                                el.classList.remove(
+                                    "motion-reveal",
+                                    "motion-revealing",
+                                );
+                            });
+                            gsap.set(part2Elements, {
+                                clearProps: "transform,opacity,visibility",
+                            });
+                        },
+                    });
+                }
             },
         });
+    });
+
+    window.addEventListener("load", () => {
+        window.ScrollTrigger?.refresh();
     });
 
     gsap.fromTo(
@@ -892,7 +964,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.classList.add("js-img-fade");
     initImageLoading();
     initClientsMarquee();
-    initPartnerProductFilter();
+    initPartnerProductCarousel();
     initImageFade();
     initBgLazyLoad();
     initBannerSlider();
